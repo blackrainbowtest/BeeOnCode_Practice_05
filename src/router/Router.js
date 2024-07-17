@@ -1,6 +1,7 @@
 import { useRoutes } from "react-router-dom"
 import Error404Page from '../app/main/404/Error404Page'
 import Layout from '../app/main/layout/Layout';
+import Content from '../app/main/content/Content';
 
 /**
  * 
@@ -16,7 +17,7 @@ const Router = () => {
             path: "", element: <Layout />,
             children: [
                 {
-                    path: "/", element: <h1>body</h1>
+                    path: "/", element: <Content />
                 },
             ]
         },

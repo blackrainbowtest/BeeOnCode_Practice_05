@@ -1,7 +1,7 @@
 // src/auth/user_login/LoginAPI.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import apiUrl from '../../../base/base_url';
+import apiUrl from '../../../app/base/base_url';
 
 /**
  * Login user

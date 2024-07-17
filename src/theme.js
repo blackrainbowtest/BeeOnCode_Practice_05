@@ -18,10 +18,15 @@ export const theme = {
         white: '#ffffff',
         black: '#000000',
       },
+      text: {
+        primary: '#847F80',
+      },
       error: {
         main: '#ff0000',
       },
       background: {
+        main: '#DFD9D8',
+        secondary: '#E6E6E6',
         default: '#ffffff',
         search: '#E8EAEB',
         input: '#EBEBEB',

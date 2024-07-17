@@ -1,22 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getCategorys } from "./CategoryAPI"
+// import { getCategorys } from "./CategoryAPI"
 
 const initialState = {
     data: [],
-    errorMessage: "",
     gender: true,
     category: 1,
     value: "1",
-    loading: false
+    loading: false,
+    errorMessage: "",
 }
 
 export const categorySlice = createSlice({
     name: 'category',
     initialState: initialState,
-    reducers: {},
-    extraReducers: (builder) => {}
+    reducers: {
+        changeGender: (state, action) => {
+            state.gender = action.payload
+        },
+    },
+    // extraReducers: (builder) => { }
 })
 
 export default categorySlice.reducer
 
-export const {} = categorySlice.actions
+export const { changeGender } = categorySlice.actions
