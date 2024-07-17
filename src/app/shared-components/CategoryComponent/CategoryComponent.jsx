@@ -43,7 +43,7 @@ function CategoryComponent({ item, active, callback }) {
 
   return (
     <MainContainer
-      className={item.id === active ? "active" : ""}
+      className={active ? "active" : ""}
       onClick={handleClickCategory}
       onMouseDown={handleMouseDownCategory}
     >

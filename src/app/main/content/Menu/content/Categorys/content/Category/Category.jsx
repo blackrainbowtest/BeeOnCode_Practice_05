@@ -1,9 +1,10 @@
-import { memo, useState } from "react";
+import { memo, useEffect } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
-import logo from "../../../../../../../../logo.svg";
 import CategoryComponent from "../../../../../../../shared-components/CategoryComponent";
-import AddButtonComponent from '../../../../../../../shared-components/AddButtonComponent/AddButtonComponent';
+import AddButtonComponent from "../../../../../../../shared-components/AddButtonComponent/AddButtonComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCategory } from "../../../../../../../../features/Category/CategorySlice";
 
 const MainContainer = styled(Box)`
   width: 100%;
@@ -15,35 +16,59 @@ const MainContainer = styled(Box)`
   gap: 20px;
 `;
 
-const category = [
-  { id: 1, name: "cat1", gender: true, image: logo },
-  { id: 2, name: "cat2", gender: true, image: logo },
-  { id: 3, name: "cat345678912354565", gender: true, image: logo },
-  { id: 4, gender: true },
-];
-
 function Category() {
-  const [isActive, setIsActive] = useState(category[0]?.id);
+  const chooesedGender = useSelector((state) => state?.category?.gender);
+  const category = useSelector((state) => state?.category?.data);
+  const choosedCategory = useSelector((state) => state?.category?.category);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentCategory = category.filter((c) => c.gender === chooesedGender);
+    if (chooesedGender && choosedCategory.female === -1) {
+      category.filter((c) => c.gender === chooesedGender);
+      dispatch(
+        changeCategory({
+          ...choosedCategory,
+          female: currentCategory.length ? currentCategory[0].id : -1,
+        })
+      );
+    } else if (!chooesedGender && choosedCategory.male === -1) {
+      dispatch(
+        changeCategory({
+          ...choosedCategory,
+          male: currentCategory.length ? currentCategory[0].id : -1,
+        })
+      );
+    }
+  }, [choosedCategory, chooesedGender, category, dispatch]);
 
   const handleCallbackCategory = (data) => {
-    setIsActive(data);
+    if (chooesedGender) {
+      dispatch(changeCategory({...choosedCategory, female: data}))
+    } else {
+      dispatch(changeCategory({...choosedCategory, male: data}))
+    }
   };
 
   const handleAddCategory = () => {
-    console.log('Open window to add new Category');
-  }
+    console.log("Open window to add new Category");
+  };
 
   return (
     <MainContainer>
       {category.map((c) => {
-        return (
+        return chooesedGender === c.gender ? (
           <CategoryComponent
             key={c.id}
-            active={isActive}
+            active={chooesedGender ? (
+              choosedCategory.female === c.id
+            ) : (
+              choosedCategory.male === c.id
+            )}
             item={c}
             callback={handleCallbackCategory}
           />
-        );
+        ) : null;
       })}
       <AddButtonComponent callback={handleAddCategory} />
     </MainContainer>
