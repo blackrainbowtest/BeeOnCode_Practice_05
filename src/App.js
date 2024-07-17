@@ -1,15 +1,16 @@
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import Router from "../src/router/Router"
-import './App.css';
+import { theme } from './theme';
 
 function App() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Router />
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 }
 
