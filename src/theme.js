@@ -31,7 +31,9 @@ export const theme = {
         default: '#ffffff',
         search: '#E8EAEB',
         input: '#EBEBEB',
-        button: '#C10016'
+        button: '#C10016',
+        buttonTransparent: '#C10016AA',
+        upload: '#D3D3D3',
       },
       shadow: {
         default: '0px 4px 8px rgb(0 0 0 / 0.1)',
