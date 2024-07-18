@@ -2,28 +2,34 @@ import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
 
-const MainContainer = styled(Box)`
+const MainContainer = styled(Box)(
+  ({ theme, displaytext }) => `
   min-height: 32px;
-  width: 50px;
+  min-width: ${displaytext !== "false" ? "125px" : "50px"};
   border-radius: 5px;
-  background: ${(props) => props.theme.palette.background.default}!important;
-  color: ${(props) => props.theme.palette.secondary.button}!important;
+  padding: 4px;
+  background: ${theme.palette.background.default}!important;
+  color: ${theme.palette.secondary.button}!important;
+  box-shadow: ${theme.palette.shadow.default};
   font-size: 1.1rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
   cursor: pointer;
-  &.active {
-    color: ${(props) => props.theme.palette.primary.button}!important;
+  &:hover {
+    background: ${theme.palette.background.input}!important;
   }
-`;
+  &.active {
+    color: ${theme.palette.primary.button}!important;
+  }
+`
+);
 
-function GenderComponent({ gender, active, callback }) {
+function GenderComponent({ gender, active, callback, displayText = false }) {
   const handleClickGender = (event) => {
-    event.stopPropagation()
-    callback(gender)
+    event.stopPropagation();
+    callback(gender);
   };
 
   const handleMouseDownGender = (event) => {
@@ -32,6 +38,7 @@ function GenderComponent({ gender, active, callback }) {
 
   return (
     <MainContainer
+      displaytext={displayText.toString()}
       className={active === gender ? "active" : ""}
       onClick={handleClickGender}
       onMouseDown={handleMouseDownGender}
@@ -61,6 +68,7 @@ function GenderComponent({ gender, active, callback }) {
           />
         </svg>
       )}
+      {displayText ? gender ? <p>Female</p> : <p>Male</p> : null}
     </MainContainer>
   );
 }

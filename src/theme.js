@@ -3,6 +3,7 @@
  */
 export const theme = {
     palette: {
+      mode: 'light',
       primary: {
         main: '#007bff',
         dark: '#0056b3',
@@ -32,5 +33,8 @@ export const theme = {
         input: '#EBEBEB',
         button: '#C10016'
       },
+      shadow: {
+        default: '0px 4px 8px rgb(0 0 0 / 0.1)',
+      }
     },
   };

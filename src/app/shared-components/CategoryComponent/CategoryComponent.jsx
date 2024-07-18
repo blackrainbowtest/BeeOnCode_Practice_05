@@ -9,12 +9,16 @@ const MainContainer = styled(Box)`
   border-radius: 5px;
   background: ${(props) => props.theme.palette.background.default}!important;
   color: ${(props) => props.theme.palette.common.black}!important;
+  box-shadow: ${(props) => props.theme.palette.shadow.default};
   font-size: 1.1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  &:hover {
+    background: ${(props) => props.theme.palette.background.input}!important;
+  }
   &.active {
     border: 2px solid
       ${(props) => props.theme.palette.secondary.button}!important;

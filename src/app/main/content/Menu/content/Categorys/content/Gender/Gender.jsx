@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
 import GenderComponent from "../../../../../../../shared-components/GenderComponent";
-import { useDispatch, useSelector } from 'react-redux';
-import { changeGender } from '../../../../../../../../features/Category/CategorySlice';
+import { useDispatch, useSelector } from "react-redux";
+import { changeGender } from "../../../../../../../../features/Category/CategorySlice";
 
 const MainContainer = styled(Box)`
   min-height: 80px;
@@ -15,11 +15,9 @@ const MainContainer = styled(Box)`
   gap: 16px;
 `;
 
-const gender = [true, false];
-
 function Gender() {
   const dispatch = useDispatch();
-  const isActive = useSelector((state) => state?.category?.gender)
+  const isActive = useSelector((state) => state?.category?.gender);
 
   const genderChange = (g) => {
     dispatch(changeGender(g));
@@ -27,7 +25,7 @@ function Gender() {
 
   return (
     <MainContainer>
-      {gender.map((g, i) => {
+      {[true, false].map((g, i) => {
         return (
           <GenderComponent
             key={`gender_${i}`}

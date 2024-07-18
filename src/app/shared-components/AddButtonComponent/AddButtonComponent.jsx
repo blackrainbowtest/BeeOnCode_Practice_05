@@ -15,10 +15,10 @@ const MainContainer = styled(Button)`
   gap: 20px;
 `;
 
-function AddButtonComponent({ callback }) {
+function AddButtonComponent({ id, callback }) {
   const handleClickAddButton = (event) => {
     event.stopPropagation();
-    callback();
+    callback(event);
   };
 
   const handleMouseDownAddButton = (event) => {
@@ -27,6 +27,7 @@ function AddButtonComponent({ callback }) {
 
   return (
     <MainContainer
+      aria-describedby={id}
       variant='outlined'
       onClick={handleClickAddButton}
       onMouseDown={handleMouseDownAddButton}

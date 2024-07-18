@@ -1,26 +1,29 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import CategoryComponent from "../../../../../../../shared-components/CategoryComponent";
 import AddButtonComponent from "../../../../../../../shared-components/AddButtonComponent/AddButtonComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCategory } from "../../../../../../../../features/Category/CategorySlice";
+import PopupComponent from '../../../../../../../shared-components/PopupComponent/PopupComponent';
 
-const MainContainer = styled(Box)`
+const MainContainer = styled(Box)(
+  ({theme}) => `
   width: 100%;
   min-height: 80px;
   padding: 0px 30px;
-  background: ${(props) => props.theme.palette.background.main}!important;
   display: flex;
   align-items: center;
   gap: 20px;
-`;
+  `
+);
 
 function Category() {
   const chooesedGender = useSelector((state) => state?.category?.gender);
   const category = useSelector((state) => state?.category?.data);
   const choosedCategory = useSelector((state) => state?.category?.category);
   const dispatch = useDispatch();
+  const [anchor, setAnchor] = useState(null);
 
   useEffect(() => {
     const currentCategory = category.filter((c) => c.gender === chooesedGender);
@@ -50,9 +53,16 @@ function Category() {
     }
   };
 
-  const handleAddCategory = () => {
-    console.log("Open window to add new Category");
+  const handleAddCategory = (event) => {
+    setAnchor(anchor ? null : event.currentTarget);
   };
+
+  const handleClosePopup = () => {
+    setAnchor(null);
+  };
+
+  const open = Boolean(anchor);
+  const id = open ? 'simple-popup' : undefined;
 
   return (
     <MainContainer>
@@ -70,7 +80,8 @@ function Category() {
           />
         ) : null;
       })}
-      <AddButtonComponent callback={handleAddCategory} />
+      <AddButtonComponent id={id} callback={handleAddCategory} />
+      <PopupComponent id={id} open={open} anchor={anchor} close={handleClosePopup} />
     </MainContainer>
   );
 }
