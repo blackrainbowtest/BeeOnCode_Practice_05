@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const ActionContent = styled(Button)(
   ({ theme }) => `
-      width: 260px;
+      min-width: inherit!important;
       min-height: 32px;
       padding: 12px 16px;
       border-radius: 25px!important;
@@ -19,7 +19,7 @@ const ActionContent = styled(Button)(
     `
 );
 
-function ActionComponent({ callback }) {
+function ActionButtonComponent({ callback, label = "Add" }) {
   const handleMouseDownAction = (event) => {
     event.preventDefault();
   };
@@ -33,9 +33,9 @@ function ActionComponent({ callback }) {
       onClick={handleClickAction}
       onMouseDown={handleMouseDownAction}
     >
-      Add
+      { label }
     </ActionContent>
   );
 }
 
-export default memo(ActionComponent);
+export default memo(ActionButtonComponent);

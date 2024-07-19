@@ -4,14 +4,12 @@ import { memo } from "react";
 import styled from "styled-components";
 
 const MainContainer = styled(Button)`
-  width: 50px;
-  min-height: inherit;
-  padding: 0;
+  min-width: inherit!important;
+  min-height: inherit!important;
+  padding: 0px!important;
   background: ${(props) => props.theme.palette.background.default}!important;
   color: ${(props) => props.theme.palette.text.primary}!important;
   border: none !important;
-  display: flex;
-  align-items: center;
   gap: 20px;
 `;
 

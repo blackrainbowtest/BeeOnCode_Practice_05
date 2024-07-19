@@ -3,6 +3,7 @@ import { memo } from "react";
 import styled from "styled-components";
 import noImage from "../../../images/noImage.jpg";
 import { decodeBase64ToImage } from '../../../utils/image';
+import { truncateName } from '../../../utils/text';
 
 const MainContainer = styled(Box)`
   min-height: 80px;
@@ -30,12 +31,6 @@ const MainContainer = styled(Box)`
 `;
 
 function CategoryComponent({ item, active, callback }) {
-  const truncateName = (name) => {
-    if (name.length > 12) {
-      return name.substring(0, 9) + "...";
-    }
-    return name;
-  };
 
   const handleClickCategory = (event) => {
     event.stopPropagation()

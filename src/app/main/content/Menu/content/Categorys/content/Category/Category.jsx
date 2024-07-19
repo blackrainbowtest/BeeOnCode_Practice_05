@@ -6,6 +6,7 @@ import AddButtonComponent from "../../../../../../../shared-components/AddButton
 import { useDispatch, useSelector } from "react-redux";
 import { changeCategory } from "../../../../../../../../features/Category/CategorySlice";
 import PopupComponent from "../../../../../../../shared-components/PopupComponent/PopupComponent";
+import CategorysAdd from "../../../../../../../shared-components/CategorysAddComponent"
 
 const MainContainer = styled(Box)(
   ({ theme }) => `
@@ -15,6 +16,13 @@ const MainContainer = styled(Box)(
   display: flex;
   align-items: center;
   gap: 20px;
+  `
+);
+
+const ButtonContainer = styled(Box)(
+  ({ theme }) => `
+  min-width: 50px;
+  min-height: inherit;
   `
 );
 
@@ -32,7 +40,6 @@ function Category() {
     const currentCategory = category.filter((c) => c.gender === chooesedGender);
 
     if (chooesedGender !== undefined) {
-
       if (choosedCategory.female === -1 && chooesedGender) {
         const newCategory = currentCategory.length ? currentCategory[0].id : -1;
         if (choosedCategory.female !== newCategory) {
@@ -94,13 +101,17 @@ function Category() {
           />
         ) : null;
       })}
-      <AddButtonComponent id={id} callback={handleAddCategory} />
+      <ButtonContainer>
+        <AddButtonComponent id={id} callback={handleAddCategory} />
+      </ButtonContainer>
       <PopupComponent
         id={id}
         open={open}
         anchor={anchor}
         close={handleClosePopup}
-      />
+      >
+        <CategorysAdd close={handleClosePopup} />
+      </PopupComponent>
     </MainContainer>
   );
 }
