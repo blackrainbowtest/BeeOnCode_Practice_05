@@ -3,7 +3,9 @@ import styled from "styled-components";
 import ActionButtonComponent from "../ActionButtonComponent/ActionButtonComponent";
 import TitleActionComponent from "../TitleActionComponent/TitleActionComponent";
 import { truncateName } from "../../../utils/text";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import TextInputComponent from "../TextInputComponent/TextInputComponent";
+import { addSubCategory } from "../../../features/SubCategory/SubCategoryAPI";
 
 const PopupBody = styled("div")(
   ({ theme }) => `
@@ -25,20 +27,20 @@ const PopupBody = styled("div")(
 );
 
 function SubCategorysAdd({ close }) {
-  const [categoryItem, setCategoryItem] = useState({});
+  const [categoryItem, setCategoryItem] = useState("");
+  const [subCategoryName, setSubCategoryName] = useState("");
   const category = useSelector((state) => state?.category?.data);
   const chooesedGender = useSelector((state) => state?.category?.gender);
   const choosedCategory = useSelector((state) => state?.category?.category);
+  const dispatch = useDispatch();
+
   const handleActionPopup = () => {
-    // if (categoryName.trim() && categoryImage) {
-    //   dispatch(
-    //     addCategory({
-    //       name: categoryName,
-    //       image: categoryImage,
-    //       gender: gender,
-    //     })
-    //   );
-    // }
+    if (subCategoryName.trim()) {
+      console.log();
+      dispatch(
+        addSubCategory({ name: subCategoryName, parent: categoryItem.id })
+      );
+    }
     close();
   };
 
@@ -50,15 +52,21 @@ function SubCategorysAdd({ close }) {
       categoryID = choosedCategory.male;
     }
     const currCategory = category.slice().filter((c) => c.id === categoryID)[0];
-    console.log(currCategory?.name ? currCategory?.name : "no name");
-    setCategoryItem(currCategory?.name ? currCategory?.name : "no name");
+    setCategoryItem(currCategory);
   }, [category, chooesedGender, choosedCategory.female, choosedCategory.male]);
 
   return (
     <PopupBody>
       <TitleActionComponent
         close={close}
-        title={`${categoryItem}: Add subcategory`}
+        title={`${
+          categoryItem?.name ? truncateName(categoryItem?.name) : "no name"
+        }: Add subcategory`}
+      />
+      <TextInputComponent
+        value={subCategoryName}
+        callback={setSubCategoryName}
+        label='Subcategory'
       />
       <ActionButtonComponent callback={handleActionPopup} label='Add' />
     </PopupBody>

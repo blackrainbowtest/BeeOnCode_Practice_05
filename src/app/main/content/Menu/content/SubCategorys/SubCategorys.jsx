@@ -1,10 +1,12 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { memo, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import AddButtonComponent from "../../../../../shared-components/AddButtonComponent/AddButtonComponent";
 import PopupComponent from "../../../../../shared-components/PopupComponent/PopupComponent";
 import SubCategorysAdd from "../../../../../shared-components/SubCategorysAddComponent";
+import { changeCurrentSubcategory } from "../../../../../../features/SubCategory/SubCategorySlice";
+import { truncateName } from "../../../../../../utils/text";
 
 const MainContainer = styled(Box)`
   width: 100%;
@@ -46,6 +48,7 @@ function SubCategorys() {
   const [filtredSubCategory, setFiltredSubCategory] = useState([]);
   const [value, setValue] = useState("");
   const [anchor, setAnchor] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const filtered = subCategory
@@ -58,11 +61,15 @@ function SubCategorys() {
     setFiltredSubCategory(filtered);
     if (filtered.length) {
       setValue(filtered[0].id);
+      dispatch(changeCurrentSubcategory(filtered[0].id));
+    } else {
+      dispatch(changeCurrentSubcategory(-1));
     }
-  }, [subCategory, chooesedGender, choosedCategory]);
+  }, [subCategory, chooesedGender, choosedCategory, dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    dispatch(changeCurrentSubcategory(newValue));
   };
 
   const open = Boolean(anchor);
@@ -85,7 +92,11 @@ function SubCategorys() {
       >
         {filtredSubCategory.map((c) => {
           return (
-            <Tab key={c.id} value={c.id} label={c?.name ? c.name : "no-name"} />
+            <Tab
+              key={c.id}
+              value={c.id}
+              label={c?.name ? truncateName(c.name) : "no-name"}
+            />
           );
         })}
       </CustomTabs>

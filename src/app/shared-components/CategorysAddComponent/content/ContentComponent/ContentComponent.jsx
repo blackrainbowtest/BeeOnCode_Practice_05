@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
 import GednerComponent from "./content/GednerComponent/GednerComponent";
-import NameComponent from "./content/NameComponent/NameComponent";
 import ImageComponent from './content/ImageComponent/ImageComponent';
+import TextInputComponent from '../../../TextInputComponent/TextInputComponent';
 
 const MainContainer = styled(Box)(
   ({ theme }) => `
@@ -23,7 +23,7 @@ function ContentComponent({ props }) {
   return (
     <MainContainer sx={{ flexGrow: 1 }}>
       <GednerComponent gender={props.gender} setGender={props.setGender} />
-      <NameComponent categoryName={props.categoryName} setCategoryName={props.setCategoryName} />
+      <TextInputComponent value={props.categoryName} callback={props.setCategoryName} label='Category' />
       <ImageComponent categoryImage={props.categoryImage} setCategoryImage={props.setCategoryImage}/>
     </MainContainer>
   );
