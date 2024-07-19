@@ -4,6 +4,8 @@ import styled from "styled-components";
 import TitleComponent from "./content/TitleComponent/TitleComponent";
 import ContentComponent from "./content/ContentComponent/ContentComponent";
 import ActionComponent from "./content/ActionComponent/ActionComponent";
+import { useDispatch } from "react-redux";
+import { addCategory } from "../../../features/Category/CategoryAPI";
 
 const PopupBody = styled("div")(
   ({ theme }) => `
@@ -29,6 +31,7 @@ function PopupComponent({ id, open, anchor, placement = "bottom-end", close }) {
   const [categoryName, setCategoryName] = useState("");
   const [categoryImage, setCategoryImage] = useState(null);
   const popupRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (open) {
@@ -50,12 +53,14 @@ function PopupComponent({ id, open, anchor, placement = "bottom-end", close }) {
   };
 
   const handleActionPopup = () => {
-    console.log({
-      name: categoryName,
-      image: categoryImage,
-      gender: gender,
-    });
     if (categoryName.trim() && categoryImage) {
+      dispatch(
+        addCategory({
+          name: categoryName,
+          image: categoryImage,
+          gender: gender,
+        })
+      );
       close();
     }
   };

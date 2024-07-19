@@ -5,10 +5,10 @@ import CategoryComponent from "../../../../../../../shared-components/CategoryCo
 import AddButtonComponent from "../../../../../../../shared-components/AddButtonComponent/AddButtonComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCategory } from "../../../../../../../../features/Category/CategorySlice";
-import PopupComponent from '../../../../../../../shared-components/PopupComponent/PopupComponent';
+import PopupComponent from "../../../../../../../shared-components/PopupComponent/PopupComponent";
 
 const MainContainer = styled(Box)(
-  ({theme}) => `
+  ({ theme }) => `
   width: 100%;
   min-height: 80px;
   padding: 0px 30px;
@@ -26,30 +26,44 @@ function Category() {
   const [anchor, setAnchor] = useState(null);
 
   useEffect(() => {
+    if (category.length === 0) {
+      return;
+    }
     const currentCategory = category.filter((c) => c.gender === chooesedGender);
-    if (chooesedGender && choosedCategory.female === -1) {
-      category.filter((c) => c.gender === chooesedGender);
-      dispatch(
-        changeCategory({
-          ...choosedCategory,
-          female: currentCategory.length ? currentCategory[0].id : -1,
-        })
-      );
-    } else if (!chooesedGender && choosedCategory.male === -1) {
-      dispatch(
-        changeCategory({
-          ...choosedCategory,
-          male: currentCategory.length ? currentCategory[0].id : -1,
-        })
-      );
+
+    if (chooesedGender !== undefined) {
+
+      if (choosedCategory.female === -1 && chooesedGender) {
+        const newCategory = currentCategory.length ? currentCategory[0].id : -1;
+        if (choosedCategory.female !== newCategory) {
+          dispatch(
+            changeCategory({
+              ...choosedCategory,
+              female: newCategory,
+            })
+          );
+        }
+      }
+
+      if (chooesedGender === false && choosedCategory.male === -1) {
+        const newCategory = currentCategory.length ? currentCategory[0].id : -1;
+        if (choosedCategory.male !== newCategory) {
+          dispatch(
+            changeCategory({
+              ...choosedCategory,
+              male: newCategory,
+            })
+          );
+        }
+      }
     }
   }, [choosedCategory, chooesedGender, category, dispatch]);
 
   const handleCallbackCategory = (data) => {
     if (chooesedGender) {
-      dispatch(changeCategory({...choosedCategory, female: data}))
+      dispatch(changeCategory({ ...choosedCategory, female: data }));
     } else {
-      dispatch(changeCategory({...choosedCategory, male: data}))
+      dispatch(changeCategory({ ...choosedCategory, male: data }));
     }
   };
 
@@ -62,7 +76,7 @@ function Category() {
   };
 
   const open = Boolean(anchor);
-  const id = open ? 'simple-popup' : undefined;
+  const id = open ? "simple-popup" : undefined;
 
   return (
     <MainContainer>
@@ -70,18 +84,23 @@ function Category() {
         return chooesedGender === c.gender ? (
           <CategoryComponent
             key={c.id}
-            active={chooesedGender ? (
-              choosedCategory.female === c.id
-            ) : (
-              choosedCategory.male === c.id
-            )}
+            active={
+              chooesedGender
+                ? choosedCategory.female === c.id
+                : choosedCategory.male === c.id
+            }
             item={c}
             callback={handleCallbackCategory}
           />
         ) : null;
       })}
       <AddButtonComponent id={id} callback={handleAddCategory} />
-      <PopupComponent id={id} open={open} anchor={anchor} close={handleClosePopup} />
+      <PopupComponent
+        id={id}
+        open={open}
+        anchor={anchor}
+        close={handleClosePopup}
+      />
     </MainContainer>
   );
 }

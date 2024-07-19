@@ -1,40 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit"
-// import { getCategorys } from "./CategoryAPI"
+// src/app/Category/CategorySlice.js
+import { createSlice } from "@reduxjs/toolkit";
+import { addCategory, getCategorys } from "./CategoryAPI";
 
 const initialState = {
-    data: [
-        { id: 1, name: "cat1", gender: true },
-        { id: 2, name: "cat2", gender: true },
-        { id: 3, name: "cat345678912354565", gender: true },
-        { id: 4, gender: true },
-        { id: 5, name: "cat1", gender: false },
-        { id: 6, name: "cat2", gender: false },
-        { id: 7, name: "cat345678912354565", gender: false },
-    ],
+    data: [],
     gender: true,
     category: {
         male: -1,
         female: -1
     },
     value: "1",
-    loading: false,
-    errorMessage: "",
-}
+};
 
-export const categorySlice = createSlice({
+const categorySlice = createSlice({
     name: 'category',
     initialState: initialState,
     reducers: {
         changeGender: (state, action) => {
-            state.gender = action.payload
+            state.gender = action.payload;
         },
         changeCategory: (state, action) => {
-            state.category = action.payload
+            state.category = action.payload;
         },
     },
-    // extraReducers: (builder) => { }
-})
+    extraReducers: (builder) => {
+        builder
+            .addCase(getCategorys.fulfilled, (state, action) => {
+                state.data = action.payload;
+            })
+            .addCase(addCategory.fulfilled, (state, action) => {
+                state.data = [...state.data, action.payload];
+            });
+    }
+});
 
-export default categorySlice.reducer
+export default categorySlice.reducer;
 
-export const { changeGender, changeCategory } = categorySlice.actions
+export const { changeGender, changeCategory } = categorySlice.actions;

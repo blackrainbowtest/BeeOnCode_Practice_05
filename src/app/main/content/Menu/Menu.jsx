@@ -1,8 +1,11 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import Categorys from "./content/Categorys";
 import SubCategorys from "./content/SubCategorys";
-import styled from 'styled-components';
-import { Box } from '@mui/material';
+import styled from "styled-components";
+import { Box } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { getCategorys } from "../../../../features/Category/CategoryAPI";
+import { getSubCategorys } from "../../../../features/SubCategory/SubCategoryAPI";
 
 const MainContainer = styled(Box)`
   width: 100%;
@@ -14,6 +17,13 @@ const MainContainer = styled(Box)`
 `;
 
 function Menu() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategorys());
+    dispatch(getSubCategorys())
+  }, [dispatch]);
+
   return (
     <MainContainer>
       <Categorys />

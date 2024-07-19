@@ -4,6 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { memo } from "react";
 import styled from "styled-components";
+import { resizeImage } from '../../../../../../../utils/image';
 
 const MainContainer = styled(Box)`
   flex-grow: 1;
@@ -71,6 +72,9 @@ const StyledDeleteButton = styled(Button)(
       justify-content: center;
       font-size: 1.3rem;
       color: ${theme.palette.common.white}!important;
+      &:hover {
+        background: ${theme.palette.background.button}!important;
+      }
     `
 );
 
@@ -78,7 +82,9 @@ function ImageComponent({ categoryImage, setCategoryImage }) {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setCategoryImage(file);
+      resizeImage(file, 50, 50, (resizedImage) => {
+        setCategoryImage(resizedImage);
+      });
     }
   };
 
