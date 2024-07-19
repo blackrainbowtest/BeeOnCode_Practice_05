@@ -3,7 +3,7 @@ import { memo } from "react";
 import styled from "styled-components";
 import Menu from "./Menu/Menu";
 import Data from "./Data";
-import Filter from "./Filter";
+import Actions from "./Actions/Actions";
 
 const MainContainer = styled(Box)`
   width: 100%;
@@ -11,6 +11,7 @@ const MainContainer = styled(Box)`
   background: ${(props) => props.theme.palette.background.main}!important;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 function Content() {
@@ -18,7 +19,7 @@ function Content() {
     <MainContainer sx={{ flexGrow: 1 }}>
       <Menu />
       <Data />
-      <Filter />
+      <Actions />
     </MainContainer>
   );
 }
