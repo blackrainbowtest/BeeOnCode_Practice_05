@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import ActionButtonComponent from "../../../../../shared-components/ActionButtonComponent/ActionButtonComponent";
 import ModalComponent from "../../../../../shared-components/ModalComponent/ModalComponent";
+import NewProduct from "./content/NewProduct";
 
 const ActionButtonCss = `
   min-height: 60px!important;
@@ -20,7 +21,9 @@ function AddNewProduct() {
         label={<AddIcon />}
         customStyles={ActionButtonCss}
       />
-      <ModalComponent open={open} handleClose={handleClose} />
+      <ModalComponent open={open} handleClose={handleClose}>
+        <NewProduct handleClose={handleClose} />
+      </ModalComponent>
     </>
   );
 }

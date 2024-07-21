@@ -8,15 +8,16 @@ import SubCategorysAdd from "../../../../../shared-components/SubCategorysAddCom
 import { changeCurrentSubcategory } from "../../../../../../features/SubCategory/SubCategorySlice";
 import { truncateName } from "../../../../../../utils/text";
 
-const MainContainer = styled(Box)`
+const MainContainer = styled(Box)(
+  ({ theme }) => `
   width: 100%;
   min-height: 40px;
   padding: 0px 30px;
-  background: ${(props) => props.theme.palette.background.main}!important;
+  background: ${theme.palette.background.main}!important;
   display: flex;
   align-items: center;
   gap: 10px;
-`;
+`);
 
 const ButtonContainer = styled(Box)(
   ({ theme }) => `

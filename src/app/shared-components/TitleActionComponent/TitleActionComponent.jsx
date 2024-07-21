@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 const ActionContent = styled(Box)(
   ({ theme }) => `
+        width: 100%;
         min-width: inherit!important;
         min-height: 32px;
         color: ${theme.palette.primary.text}!important;
@@ -32,7 +33,7 @@ function TitleActionComponent({ close, title }) {
 
   return (
     <ActionContent>
-      <div>{ title }</div>
+      <div>{title}</div>
       <IconButton
         aria-label='close'
         onClick={handleClickAction}
