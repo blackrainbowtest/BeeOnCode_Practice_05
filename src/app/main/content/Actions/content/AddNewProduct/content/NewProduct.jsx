@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const MainContainer = styled(Box)(
   ({ theme }) => `
-  width: 500px;
+    width: 860px;
     background: ${theme.palette.background.main}!important;
     display: flex;
     flex-direction: column;
@@ -37,6 +37,7 @@ function NewProduct({ handleClose }) {
     const currentSubCategory = subCategory.filter(
       (sb) => sb.parent === selectedCategory
     );
+
     if (currentSubCategory.length) {
       setSelectedSubCategory(currentSubCategory[0].id);
     }

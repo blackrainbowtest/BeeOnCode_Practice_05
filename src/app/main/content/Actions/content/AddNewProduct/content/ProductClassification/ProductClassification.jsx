@@ -2,6 +2,8 @@ import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
 import ProductSubCategory from "./ProductSubCategory/ProductSubCategory";
+import ProductGender from "./ProductGender";
+import ProductCategory from "./ProductCategory/ProductCategory";
 
 const MainContainer = styled(Box)(
   ({ theme }) => `
@@ -9,7 +11,19 @@ const MainContainer = styled(Box)(
   min-height: 80px;
   padding: 30px 30px 0px 30px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+`
+);
+
+const ProductCategoryContainer = styled(Box)(
+  ({ theme }) => `
+  width: 100%;
+  min-height: 80px;
+  background: ${theme.palette.background.main}!important;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `
 );
 
@@ -18,14 +32,25 @@ function ProductClassification({ props }) {
     gender,
     setGender,
     selectedCategory,
+    setSelectedCategory,
     selectedSubCategory,
     setSelectedSubCategory,
   } = props;
 
   return (
     <MainContainer>
+      <ProductCategoryContainer>
+        <ProductGender props={{ gender, setGender }} />
+        <ProductCategory
+          props={{ gender, selectedCategory, setSelectedCategory }}
+        />
+      </ProductCategoryContainer>
       <ProductSubCategory
-        props={{ selectedSubCategory, setSelectedSubCategory, selectedCategory }}
+        props={{
+          selectedSubCategory,
+          setSelectedSubCategory,
+          selectedCategory,
+        }}
       />
     </MainContainer>
   );
