@@ -9,10 +9,10 @@ const MainContainer = styled(Box)(
   ({ theme }) => `
   width: 100%;
   min-height: 80px;
-  padding: 30px 30px 0px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 `
 );
 

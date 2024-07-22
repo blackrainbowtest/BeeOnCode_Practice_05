@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TitleActionComponent from "../../../../../../shared-components/TitleActionComponent/TitleActionComponent";
 import ProductClassification from "./ProductClassification";
 import { useSelector } from "react-redux";
+import ProductDetails from "./ProductDetails/ProductDetails";
 
 const MainContainer = styled(Box)(
   ({ theme }) => `
@@ -12,6 +13,8 @@ const MainContainer = styled(Box)(
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 30px;
+    padding: 30px;
     `
 );
 
@@ -21,17 +24,13 @@ function NewProduct({ handleClose }) {
   const [gender, setGender] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [productData, setProductData] = useState({
+    article: ''
+  });
 
   useEffect(() => {
     if (category.length === 0) {
       return;
-    }
-
-    const currentCategory = category.filter((c) => c.gender === gender);
-
-    if (selectedCategory === -1) {
-      const newCategory = currentCategory.length ? currentCategory[0].id : -1;
-      setSelectedCategory(newCategory);
     }
 
     const currentSubCategory = subCategory.filter(
@@ -40,26 +39,31 @@ function NewProduct({ handleClose }) {
 
     if (currentSubCategory.length) {
       setSelectedSubCategory(currentSubCategory[0].id);
+    } else {
+      setSelectedSubCategory("");
     }
-  }, [category, gender, selectedCategory, subCategory]);
+  }, [category, selectedCategory, subCategory]);
+
+  useEffect(() => {
+    const currentCategory = category.filter((c) => c.gender === gender);
+    const newCategory = currentCategory.length ? currentCategory[0].id : -1;
+    setSelectedCategory(newCategory);
+  }, [category, gender]);
 
   return (
     <MainContainer>
       <TitleActionComponent close={handleClose} title={"Add product"} />
-      {selectedSubCategory.length ? (
-        <ProductClassification
-          props={{
-            gender,
-            setGender,
-            selectedCategory,
-            setSelectedCategory,
-            selectedSubCategory,
-            setSelectedSubCategory,
-          }}
-        />
-      ) : null}
-
-      <div></div>
+      <ProductClassification
+        props={{
+          gender,
+          setGender,
+          selectedCategory,
+          setSelectedCategory,
+          selectedSubCategory,
+          setSelectedSubCategory,
+        }}
+      />
+      <ProductDetails props={{ productData, setProductData }} />
       <div></div>
     </MainContainer>
   );
