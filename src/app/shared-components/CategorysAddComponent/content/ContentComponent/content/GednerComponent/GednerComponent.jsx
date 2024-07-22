@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
-import GenderComponent from "../../../../../GenderComponent";
+import GenderComponent from "app/shared-components/GenderComponent";
 
 const ActionContent = styled(Box)(
   ({ theme }) => `

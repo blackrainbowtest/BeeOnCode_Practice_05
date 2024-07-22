@@ -3,8 +3,8 @@ import styled from "styled-components";
 import TitleComponent from "./content/TitleComponent/TitleComponent";
 import ContentComponent from "./content/ContentComponent/ContentComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory } from "../../../features/Category/CategoryAPI";
-import ActionButtonComponent from '../ActionButtonComponent';
+import { addCategory } from "features/Category/CategoryAPI";
+import ActionButtonComponent from 'app/shared-components/ActionButtonComponent';
 
 const PopupBody = styled("div")(
   ({ theme }) => `

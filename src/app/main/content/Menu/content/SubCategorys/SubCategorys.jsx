@@ -2,11 +2,11 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import AddButtonComponent from "../../../../../shared-components/AddButtonComponent/AddButtonComponent";
-import PopupComponent from "../../../../../shared-components/PopupComponent/PopupComponent";
-import SubCategorysAdd from "../../../../../shared-components/SubCategorysAddComponent";
-import { changeCurrentSubcategory } from "../../../../../../features/SubCategory/SubCategorySlice";
-import { truncateName } from "../../../../../../utils/text";
+import AddButtonComponent from "app/shared-components/AddButtonComponent/AddButtonComponent";
+import PopupComponent from "app/shared-components/PopupComponent/PopupComponent";
+import SubCategorysAdd from "app/shared-components/SubCategorysAddComponent";
+import { changeCurrentSubcategory } from "features/SubCategory/SubCategorySlice";
+import { truncateName } from "utils/text";
 
 const MainContainer = styled(Box)(
   ({ theme }) => `

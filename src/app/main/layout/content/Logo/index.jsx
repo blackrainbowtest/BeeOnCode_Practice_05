@@ -1,6 +1,6 @@
 import { memo } from "react";
 import styled from "styled-components";
-import logo from "../../../../../logo.svg";
+import logo from "logo.svg";
 
 const ImageContainer = styled.div`
   & img {

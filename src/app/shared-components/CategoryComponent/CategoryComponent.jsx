@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
-import noImage from "../../../images/noImage.jpg";
-import { decodeBase64ToImage } from '../../../utils/image';
-import { truncateName } from '../../../utils/text';
+import noImage from "images/noImage.jpg";
+import { decodeBase64ToImage } from 'utils/image';
+import { truncateName } from 'utils/text';
 
 const MainContainer = styled(Box)`
   min-height: 80px;

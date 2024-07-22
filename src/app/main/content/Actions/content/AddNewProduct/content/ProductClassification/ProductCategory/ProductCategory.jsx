@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useSelector } from "react-redux";
-import CategoryComponent from "../../../../../../../../shared-components/CategoryComponent";
-import CategoryMainContainer from '../../../../../../../../shared-components/CategoryMainContainerComponent/CategoryMainContainer';
+import CategoryComponent from "app/shared-components/CategoryComponent";
+import CategoryMainContainer from 'app/shared-components/CategoryMainContainerComponent/CategoryMainContainer';
 
 function ProductCategory({ props }) {
   const { gender, selectedCategory, setSelectedCategory } = props;

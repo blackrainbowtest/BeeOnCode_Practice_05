@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { memo } from "react";
 import styled from "styled-components";
-import { resizeImage } from '../../../../../../../utils/image';
+import { resizeImage } from 'utils/image';
 
 const MainContainer = styled(Box)`
   flex-grow: 1;

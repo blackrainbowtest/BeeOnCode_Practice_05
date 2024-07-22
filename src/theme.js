@@ -24,6 +24,8 @@ export const theme = {
       },
       error: {
         main: '#ff0000',
+        text: '#ffffff',
+        hover: '#e57373'
       },
       background: {
         main: '#DFD9D8',

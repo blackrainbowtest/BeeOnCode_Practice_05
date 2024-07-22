@@ -18,7 +18,6 @@ const MainContainer = styled(Box)(
 
 function ProductDetails({ props }) {
   const { productData, setProductData } = props;
-  console.log(props)
   return (
     <MainContainer>
       <ProductImages />

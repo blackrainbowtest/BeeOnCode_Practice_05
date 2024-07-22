@@ -1,9 +1,9 @@
 // src/app/Category/CategoryAPI.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import apiUrl from '../../app/base/base_url';
-import { convertImageToBase64 } from '../../utils/image';
-import { addError, setLoading } from '../global/GlobalSlice';
+import apiUrl from 'app/base/base_url';
+import { convertImageToBase64 } from 'utils/image';
+import { addError, setLoading } from 'features/global/GlobalSlice';
 
 const url = `${apiUrl}/category`;
 

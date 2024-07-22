@@ -4,8 +4,8 @@ import SubCategorys from "./content/SubCategorys";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { getCategorys } from "../../../../features/Category/CategoryAPI";
-import { getSubCategorys } from "../../../../features/SubCategory/SubCategoryAPI";
+import { getCategorys } from "features/Category/CategoryAPI";
+import { getSubCategorys } from "features/SubCategory/SubCategoryAPI";
 
 const MainContainer = styled(Box)`
   width: 100%;

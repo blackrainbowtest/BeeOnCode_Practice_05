@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
-import TitleActionComponent from "../../../../../../shared-components/TitleActionComponent/TitleActionComponent";
+import TitleActionComponent from "app/shared-components/TitleActionComponent/TitleActionComponent";
 import ProductClassification from "./ProductClassification";
 import { useSelector } from "react-redux";
 import ProductDetails from "./ProductDetails/ProductDetails";

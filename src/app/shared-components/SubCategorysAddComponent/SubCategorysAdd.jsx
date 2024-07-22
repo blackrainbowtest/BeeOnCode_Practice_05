@@ -1,11 +1,11 @@
 import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
-import ActionButtonComponent from "../ActionButtonComponent/ActionButtonComponent";
-import TitleActionComponent from "../TitleActionComponent/TitleActionComponent";
-import { truncateName } from "../../../utils/text";
+import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
+import TitleActionComponent from "app/shared-components/TitleActionComponent";
+import { truncateName } from "utils/text";
 import { useDispatch, useSelector } from "react-redux";
-import TextInputComponent from "../TextInputComponent/TextInputComponent";
-import { addSubCategory } from "../../../features/SubCategory/SubCategoryAPI";
+import TextInputComponent from "app/shared-components/TextInputComponent";
+import { addSubCategory } from "features/SubCategory/SubCategoryAPI";
 
 const PopupBody = styled("div")(
   ({ theme }) => `

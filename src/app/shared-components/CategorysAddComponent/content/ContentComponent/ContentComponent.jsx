@@ -3,7 +3,7 @@ import { memo } from "react";
 import styled from "styled-components";
 import GednerComponent from "./content/GednerComponent/GednerComponent";
 import ImageComponent from './content/ImageComponent/ImageComponent';
-import TextInputComponent from '../../../TextInputComponent/TextInputComponent';
+import TextInputComponent from 'app/shared-components/TextInputComponent';
 
 const MainContainer = styled(Box)(
   ({ theme }) => `

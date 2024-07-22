@@ -1,7 +1,7 @@
 import { Box, Tabs, Tab } from "@mui/material";
 import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
-import { truncateName } from "../../../../../../../../../utils/text";
+import { truncateName } from "utils/text";
 import { useSelector } from "react-redux";
 
 const SubCategoryContainer = styled(Box)(

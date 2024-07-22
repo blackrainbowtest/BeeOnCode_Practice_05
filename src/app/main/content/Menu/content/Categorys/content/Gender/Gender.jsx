@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
-import GenderComponent from "../../../../../../../shared-components/GenderComponent";
+import GenderComponent from "app/shared-components/GenderComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { changeGender } from "../../../../../../../../features/Category/CategorySlice";
+import { changeGender } from "features/Category/CategorySlice";
 
 const MainContainer = styled(Box)`
   min-height: 80px;

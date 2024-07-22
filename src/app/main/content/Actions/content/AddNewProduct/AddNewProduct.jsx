@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import ActionButtonComponent from "../../../../../shared-components/ActionButtonComponent/ActionButtonComponent";
-import ModalComponent from "../../../../../shared-components/ModalComponent/ModalComponent";
+import ActionButtonComponent from "app/shared-components/ActionButtonComponent/ActionButtonComponent";
+import ModalComponent from "app/shared-components/ModalComponent/ModalComponent";
 import NewProduct from "./content/NewProduct";
 
 const ActionButtonCss = `

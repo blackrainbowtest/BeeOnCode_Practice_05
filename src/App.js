@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import Router from "../src/router/Router"
+import Router from "router/Router"
 import { theme } from './theme';
 
 function App() {

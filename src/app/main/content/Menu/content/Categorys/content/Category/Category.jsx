@@ -1,12 +1,12 @@
 import { memo, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
-import CategoryComponent from "../../../../../../../shared-components/CategoryComponent";
-import AddButtonComponent from "../../../../../../../shared-components/AddButtonComponent/AddButtonComponent";
+import CategoryComponent from "app/shared-components/CategoryComponent";
+import AddButtonComponent from "app/shared-components/AddButtonComponent/AddButtonComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCategory } from "../../../../../../../../features/Category/CategorySlice";
-import PopupComponent from "../../../../../../../shared-components/PopupComponent/PopupComponent";
-import CategorysAdd from "../../../../../../../shared-components/CategorysAddComponent"
+import { changeCategory } from "features/Category/CategorySlice";
+import PopupComponent from "app/shared-components/PopupComponent/PopupComponent";
+import CategorysAdd from "app/shared-components/CategorysAddComponent"
 
 const MainContainer = styled(Box)(
   ({ theme }) => `

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import TextInputComponent from "../../../../../../../../shared-components/TextInputComponent/TextInputComponent";
+import TextInputComponent from "app/shared-components/TextInputComponent/TextInputComponent";
 
 function ProductArticle({ props }) {
   const { productData, setProductData } = props;

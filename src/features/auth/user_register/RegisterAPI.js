@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import apiUrl from '../../../app/base/base_url';
+import apiUrl from 'app/base/base_url';
 
 /**
  * Register user

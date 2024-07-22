@@ -1,5 +1,5 @@
 import { memo } from "react";
-import GenderComponent from "../../../../../../../../shared-components/GenderComponent";
+import GenderComponent from "app/shared-components/GenderComponent";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 

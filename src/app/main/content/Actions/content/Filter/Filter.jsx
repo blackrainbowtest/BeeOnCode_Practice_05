@@ -1,5 +1,5 @@
 import { memo } from "react";
-import ActionButtonComponent from "../../../../../shared-components/ActionButtonComponent/ActionButtonComponent";
+import ActionButtonComponent from "app/shared-components/ActionButtonComponent/ActionButtonComponent";
 import Label from './content/Label';
 
 const ActionButtonCss = `
