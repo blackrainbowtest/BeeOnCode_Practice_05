@@ -4,12 +4,6 @@ import ActionButtonComponent from "app/shared-components/ActionButtonComponent/A
 import ModalComponent from "app/shared-components/ModalComponent/ModalComponent";
 import NewProduct from "./content/NewProduct";
 
-const ActionButtonCss = `
-  min-height: 60px!important;
-  min-width: 50px!important;
-  border-radius: 10px 0px 0px 10px!important;
-`;
-
 function AddNewProduct() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -29,3 +23,9 @@ function AddNewProduct() {
 }
 
 export default memo(AddNewProduct);
+
+const ActionButtonCss = `
+  min-height: 60px!important;
+  min-width: 50px!important;
+  border-radius: 10px 0px 0px 10px!important;
+`;

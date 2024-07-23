@@ -5,18 +5,11 @@ import TitleActionComponent from "app/shared-components/TitleActionComponent/Tit
 import ProductClassification from "./ProductClassification";
 import { useSelector } from "react-redux";
 import ProductDetails from "./ProductDetails/ProductDetails";
-
-const MainContainer = styled(Box)(
-  ({ theme }) => `
-    width: 860px;
-    background: ${theme.palette.background.main}!important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    padding: 30px;
-    `
-);
+import ProductGold from "./ProductGold";
+import ProductWork from "./ProductWork";
+import ProductStones from "./ProductStones";
+import ProductPrice from "./ProductPrice";
+import ProductActions from './ProductActions';
 
 function NewProduct({ handleClose }) {
   const category = useSelector((state) => state?.category?.data);
@@ -25,7 +18,14 @@ function NewProduct({ handleClose }) {
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [productData, setProductData] = useState({
-    article: ''
+    article: "",
+    tags: [],
+    images: [],
+    gold: [],
+    price: {
+      productionPrice: "",
+      price: "",
+    }
   });
 
   useEffect(() => {
@@ -64,9 +64,32 @@ function NewProduct({ handleClose }) {
         }}
       />
       <ProductDetails props={{ productData, setProductData }} />
-      <div></div>
+      <ContentContainer>
+        <ProductGold props={{ productData, setProductData }} />
+        <ProductWork props={{ productData, setProductData }} />
+        <ProductStones props={{ productData, setProductData }} />
+        <ProductPrice props={{ productData, setProductData }} />
+      </ContentContainer>
+      <ProductActions />
     </MainContainer>
   );
 }
 
 export default memo(NewProduct);
+
+const MainContainer = styled(Box)(({ theme }) => ({
+  width: "860px",
+  background: `${theme.palette.background.main}!important`,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "10px",
+  padding: "30px",
+}));
+
+const ContentContainer = styled(Box)(({ theme }) => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}));

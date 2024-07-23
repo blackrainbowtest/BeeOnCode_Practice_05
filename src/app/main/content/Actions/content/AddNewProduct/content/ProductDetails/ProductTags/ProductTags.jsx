@@ -1,13 +1,17 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import TagInputComponent from "app/shared-components/TagInputComponent";
 
-function ProductTags() {
-  const [tags, setTags] = useState([]);
+function ProductTags({ props }) {
+  const { productData, setProductData } = props;
+
+  const setProductDataTag = (tagArray) => {
+    setProductData((prev) => ({ ...prev, tags: tagArray }));
+  };
 
   return (
     <TagInputComponent
-      value={tags}
-      callback={setTags}
+      value={productData.tags}
+      callback={setProductDataTag}
       id='tag-input'
       label='Enter tags'
     />
