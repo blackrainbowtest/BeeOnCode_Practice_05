@@ -25,7 +25,28 @@ function NewProduct({ handleClose }) {
     price: {
       productionPrice: "",
       price: "",
-    }
+    },
+    stones: [
+      {
+        type: "",
+        count: "",
+        diametr: "",
+        weight: "",
+        quality: "",
+        price: "",
+        GIA: false,
+        number: ""
+      }
+    ],
+    works: [
+      {
+        name: "",
+        count: "",
+        price: "",
+        amount: "",
+        comment: ""
+      }
+    ]
   });
 
   useEffect(() => {
@@ -79,6 +100,8 @@ export default memo(NewProduct);
 
 const MainContainer = styled(Box)(({ theme }) => ({
   width: "860px",
+  maxHeight: "800px",
+  overflow: "auto",
   background: `${theme.palette.background.main}!important`,
   display: "flex",
   flexDirection: "column",

@@ -8,7 +8,7 @@ import ProductCategory from "./ProductCategory/ProductCategory";
 const MainContainer = styled(Box)(
   ({ theme }) => `
   width: 100%;
-  min-height: 80px;
+  min-height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;

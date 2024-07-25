@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
@@ -6,8 +6,11 @@ import TextInputComponent from "app/shared-components/TextInputComponent";
 
 function ProductPrice({ props }) {
   const { productData, setProductData } = props;
+  const [isPriceError, setIsPriceError] = useState(false);
+  const [isPrPriceError, setIsPrPriceError] = useState(false);
 
   const handlePriceChange = (data) => {
+    setIsPriceError(!/^\d*$/.test(data));
     setProductData((prev) => ({
       ...prev,
       price: { ...prev.price, price: data },
@@ -15,11 +18,13 @@ function ProductPrice({ props }) {
   };
 
   const handleProductionPriceChange = (data) => {
+    setIsPrPriceError(!/^\d*$/.test(data));
     setProductData((prev) => ({
       ...prev,
       price: { ...prev.price, productionPrice: data },
     }));
   };
+  
   const header = (
     <HeaderContainer>
       <svg
@@ -43,11 +48,15 @@ function ProductPrice({ props }) {
         label='Production price'
         value={productData.price.productPrice}
         callback={handleProductionPriceChange}
+        error={isPrPriceError}
+        helperText='The productionprice must be a number'
       />
       <TextInputComponent
         label='Price'
         value={productData.price.price}
         callback={handlePriceChange}
+        error={isPriceError}
+        helperText='The price must be a number'
       />
     </ContentContainer>
   );

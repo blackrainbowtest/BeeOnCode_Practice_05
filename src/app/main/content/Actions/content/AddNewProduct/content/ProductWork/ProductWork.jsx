@@ -2,6 +2,7 @@ import { memo } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
+import ProductWorkForm from "./ProductWorkForm";
 
 function ProductWork({ props }) {
   const { productData, setProductData } = props;
@@ -24,7 +25,22 @@ function ProductWork({ props }) {
       Work
     </HeaderContainer>
   );
-  const content = <HeaderContainer>666</HeaderContainer>;
+  const content = (
+    <ContentContainer>
+      {productData.works.map((work, index) => {
+        return (
+          <ProductWorkForm
+            key={index}
+            work={work}
+            index={index}
+            canDelete={productData.works.length === 1}
+            addNew={productData.works.length === index + 1}
+            callback={setProductData}
+          />
+        );
+      })}
+    </ContentContainer>
+  );
   return <AccordionComponent header={header} content={content} />;
 }
 
@@ -33,5 +49,13 @@ export default memo(ProductWork);
 const HeaderContainer = styled(Box)(() => ({
   width: "100%",
   display: "flex",
+  gap: "10px",
+}));
+
+const ContentContainer = styled(Box)(() => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
   gap: "10px",
 }));

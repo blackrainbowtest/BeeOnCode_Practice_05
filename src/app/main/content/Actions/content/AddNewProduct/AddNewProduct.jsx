@@ -4,6 +4,8 @@ import ActionButtonComponent from "app/shared-components/ActionButtonComponent/A
 import ModalComponent from "app/shared-components/ModalComponent/ModalComponent";
 import NewProduct from "./content/NewProduct";
 
+import { css } from "styled-components";
+
 function AddNewProduct() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -13,7 +15,7 @@ function AddNewProduct() {
       <ActionButtonComponent
         callback={handleOpen}
         label={<AddIcon />}
-        customStyles={ActionButtonCss}
+        customStyles={ActionButtonStyle}
       />
       <ModalComponent open={open} handleClose={handleClose}>
         <NewProduct handleClose={handleClose} />
@@ -24,7 +26,7 @@ function AddNewProduct() {
 
 export default memo(AddNewProduct);
 
-const ActionButtonCss = `
+const ActionButtonStyle = ({ theme }) => css`
   min-height: 60px!important;
   min-width: 50px!important;
   border-radius: 10px 0px 0px 10px!important;

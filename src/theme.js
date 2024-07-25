@@ -31,6 +31,8 @@ export const theme = {
       main: '#F2F2F2',
       secondary: '#E6E6E6',
       dark: '#E8E8E8',
+      turnOn: '#B3B3B4',
+      black: "#464646",
       default: '#ffffff',
       search: '#E8EAEB',
       input: '#EBEBEB',

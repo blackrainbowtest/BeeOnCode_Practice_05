@@ -2,7 +2,9 @@ import { Button } from "@mui/material";
 import { memo } from "react";
 import styled, { css } from "styled-components";
 
-const ActionContent = styled(Button)(
+const ActionContent = styled(({ customstyles, ...otherProps }) => (
+  <Button {...otherProps} />
+))(
   ({ theme, customstyles }) => css`
     min-width: inherit !important;
     min-height: 32px;
@@ -20,15 +22,18 @@ const ActionContent = styled(Button)(
   `
 );
 
-function ActionButtonComponent({ callback, label = "Add", customStyles }) {
+function ActionButtonComponent({ callback = () => {}, label = "Add", customStyles }) {
   const handleMouseDownAction = (event) => {
     event.preventDefault();
   };
 
   const handleClickAction = (event) => {
     event.stopPropagation();
-    callback(event);
+    if (typeof callback === 'function') {
+      callback(event);
+    }
   };
+
   return (
     <ActionContent
       onClick={handleClickAction}
