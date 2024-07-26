@@ -4,27 +4,18 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 
-function ProductStonesRemove({ props }) {
-  const { index, callback } = props;
-  const handleRemoveStone = () => {
-    callback((prev) => ({
-      ...prev,
-      stones:
-        prev.stones.length > 1
-          ? prev.stones.filter((_, ind) => ind !== index)
-          : [...prev.stones],
-    }));
-  };
+function ButtonRemoveComponent({ index, callback = () => {} }) {
+
   return (
     <ActionButtonComponent
       label={<RemoveIcon />}
       customStyles={ActionButtonStyle}
-      callback={handleRemoveStone}
+      callback={callback}
     />
   );
 }
 
-export default memo(ProductStonesRemove);
+export default memo(ButtonRemoveComponent);
 
 const ActionButtonStyle = ({ theme }) => css`
   min-width: 18px !important;

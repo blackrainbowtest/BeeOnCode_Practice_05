@@ -1,24 +1,11 @@
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
-
-// goldType: "",
-// coatingType: "",
-// initialWeight: "",
-// finalWeight: "",
-// price: "",
-// currency: "",
+import ProductGoldForm from "./ProductGoldForm";
 
 function ProductGold({ props }) {
   const { productData, setProductData } = props;
-  const [goldList, setGoldList] = useState([]);
-
-  useEffect(() => {
-    if (productData.gold.length) {
-      console.log(productData.gold.length);
-    }
-  }, [productData.gold]);
 
   const header = (
     <HeaderContainer>
@@ -39,7 +26,22 @@ function ProductGold({ props }) {
       Gold
     </HeaderContainer>
   );
-  const content = <HeaderContainer>666</HeaderContainer>;
+  const content = (
+    <ContentContainer>
+      {productData.golds.map((gold, index) => {
+        return (
+          <ProductGoldForm
+            key={index}
+            gold={gold}
+            index={index}
+            canDelete={productData.golds.length === 1}
+            addNew={productData.golds.length === index + 1}
+            callback={setProductData}
+          />
+        );
+      })}
+    </ContentContainer>
+  );
   return <AccordionComponent header={header} content={content} />;
 }
 
@@ -48,5 +50,13 @@ export default memo(ProductGold);
 const HeaderContainer = styled(Box)(() => ({
   width: "100%",
   display: "flex",
+  gap: "10px",
+}));
+
+const ContentContainer = styled(Box)(() => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
   gap: "10px",
 }));

@@ -10,6 +10,7 @@ const StyledBox = styled(Box)(
     transform: translate(-50%, -50%);
     background: ${theme.palette.background.secondary}!important;
     outline: none;
+    border-radius: 5px;
   `
 );
 

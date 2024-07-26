@@ -9,10 +9,38 @@ import ProductStonesQuality from "./ProductStonesQuality";
 import ProductStonesPrice from "./ProductStonesPrice";
 import ProductStonesNumber from "./ProductStonesNumber";
 import ProductStonesGIA from "./ProductStonesGIA";
-import ProductStonesRemove from "./ProductStonesRemove";
-import ProductStonesAdd from "./ProductStonesAdd";
+import ButtonRemoveComponent from "app/shared-components/ButtonRemoveComponent";
+import ButtonAddComponent from "app/shared-components/ButtonAddComponent";
 
 function ProductStoneForm({ stone, index, canDelete, addNew, callback }) {
+  const handleRemoveStone = () => {
+    callback((prev) => ({
+      ...prev,
+      stones:
+        prev.stones.length > 1
+          ? prev.stones.filter((_, ind) => ind !== index)
+          : [...prev.stones],
+    }));
+  };
+  const handleAddStone = () => {
+    callback((prev) => ({
+      ...prev,
+      stones: [
+        ...prev.stones,
+        {
+          type: "",
+          count: "",
+          diametr: "",
+          weight: "",
+          quality: "",
+          price: "",
+          GIA: false,
+          number: "",
+        },
+      ],
+    }));
+  };
+
   return (
     <ContentContainer>
       <ProductStonesType props={{ stone, index, callback }} />
@@ -24,8 +52,12 @@ function ProductStoneForm({ stone, index, canDelete, addNew, callback }) {
       <ProductStonesGIA props={{ stone, index, callback }} />
       <ProductStonesNumber props={{ stone, index, callback }} />
       <AddNewContainer>
-        {canDelete ? null : <ProductStonesRemove props={{ index, callback }} />}
-        {addNew ? <ProductStonesAdd props={{ callback }} /> : null}
+        {canDelete ? (
+          <Empty />
+        ) : (
+          <ButtonRemoveComponent index={index} callback={handleRemoveStone} />
+        )}
+        {addNew ? <ButtonAddComponent callback={handleAddStone} /> : <Empty />}
       </AddNewContainer>
     </ContentContainer>
   );
@@ -46,4 +78,8 @@ const AddNewContainer = styled(Box)(() => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+}));
+
+const Empty = styled(Box)(() => ({
+  minWidth: "24px",
 }));

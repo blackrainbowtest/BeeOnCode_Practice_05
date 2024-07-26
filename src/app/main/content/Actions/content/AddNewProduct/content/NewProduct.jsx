@@ -21,7 +21,15 @@ function NewProduct({ handleClose }) {
     article: "",
     tags: [],
     images: [],
-    gold: [],
+    golds: [
+      {
+        startWeight: "",
+        weight: "",
+        price: "",
+        color: "",
+        prob: "",
+      }
+    ],
     price: {
       productionPrice: "",
       price: "",
@@ -108,6 +116,7 @@ const MainContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: "10px",
   padding: "30px",
+  borderRadius: "5px"
 }));
 
 const ContentContainer = styled(Box)(({ theme }) => ({

@@ -3,38 +3,17 @@ import { memo } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { css } from "styled-components";
 
-function ProductStonesAdd({ props }) {
-  const { callback } = props;
-
-  const handleAddStone = () => {
-    callback((prev) => ({
-      ...prev,
-      stones: [
-        ...prev.stones,
-        {
-          type: "",
-          count: "",
-          diametr: "",
-          weight: "",
-          quality: "",
-          price: "",
-          GIA: false,
-          number: "",
-        },
-      ],
-    }));
-  };
-
+function ButtonAddComponent({callback = () => {}}) {
   return (
     <ActionButtonComponent
       label={<AddIcon />}
       customStyles={ActionButtonStyle}
-      callback={handleAddStone}
+      callback={callback}
     />
   );
 }
 
-export default memo(ProductStonesAdd);
+export default memo(ButtonAddComponent);
 
 const ActionButtonStyle = ({ theme }) => css`
   min-width: 18px !important;
