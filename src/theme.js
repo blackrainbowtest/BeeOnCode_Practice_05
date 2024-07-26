@@ -39,6 +39,14 @@ export const theme = {
       button: '#C10016',
       buttonTransparent: '#C10016AA',
       upload: '#D3D3D3',
+      gold1: '#CCCCCC',
+      gold2: '#E9D07A',
+      gold3: '#EDC8C8',
+    },
+    border: {
+      gold1: '#999999',
+      gold2: '#C5A956',
+      gold3: '#9A7D7D',
     },
     shadow: {
       default: '0px 4px 8px rgb(0 0 0 / 0.1)',
