@@ -92,5 +92,15 @@
     }
   ],
   "products": [],
-  "users": []
+  "users": [
+    {
+      "id": "da87",
+      "name": "Արամ Առաքելյան",
+      "email": "araqelyan.aram.96@gmail.com",
+      "password": "$2a$10$1z1JsGgJxxFbRo2fxvSJwuHhhZbR.cBzN.oZVqWxYTC3rJ74T3HnC",
+      "registerDate": 1722087306,
+      "lastLoginDate": 1722087306,
+      "token": "17220897207614163cb5b95efa51c63ea40e6a9202"
+    }
+  ]
 }

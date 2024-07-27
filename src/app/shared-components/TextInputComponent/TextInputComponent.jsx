@@ -8,6 +8,7 @@ function TextInputComponent({
   id,
   label = "Text",
   variant = "standard",
+  type = "text",
   adornment = "",
   error,
   helperText = "error",
@@ -15,6 +16,7 @@ function TextInputComponent({
   return (
     <TextField
       id={id}
+      type={type}
       label={label}
       variant={variant}
       value={value}
