@@ -43,12 +43,8 @@ export function getCurrentUnixTime() {
 // token
 export function generatePseudoToken() {
     const timestamp = getCurrentUnixTime();
-    // random bytes generator
-    const array = new Uint8Array(16);
-    window.crypto.getRandomValues(array);
-    // convert bytes to HEX
-    const randomBytes = Array.from(array, byte => ('0' + byte.toString(16)).slice(-2)).join('');
-    // create token
-    const pseudoToken = `${timestamp}${randomBytes}`;
+    const randomBytes = Array.from({ length: 16 }, () => Math.floor(Math.random() * 256));
+    const randomHex = randomBytes.map(byte => ('0' + byte.toString(16)).slice(-2)).join('');
+    const pseudoToken = `${timestamp}${randomHex}`;
     return pseudoToken;
 }
