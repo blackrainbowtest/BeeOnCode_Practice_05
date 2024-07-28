@@ -47,7 +47,7 @@ function CategoryMainContainer({ children, customStyles }) {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Умножаем на 2 для увеличения скорости прокрутки
+    const walk = (x - startX) * 2;
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -64,7 +64,7 @@ function CategoryMainContainer({ children, customStyles }) {
   const handleTouchMove = (e) => {
     if (!isDown) return;
     const x = e.touches[0].pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Умножаем на 2 для увеличения скорости прокрутки
+    const walk = (x - startX) * 2;
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 

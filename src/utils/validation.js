@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+import CryptoJS from "crypto-js";
 
 export function validatePassword(password) {
     const hasNumber = /\d/.test(password);
@@ -30,8 +30,7 @@ export function validateEmail (email) {
   };
 
 export function hashPassword(password) {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
+    const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
     return hashedPassword;
 }
 

@@ -11,10 +11,9 @@ import { verifyToken } from 'features/auth/user_login/LoginAPI';
 const AuthWrapper = ({ children }) => {
     const [authStatus, setAuthStatus] = useState(null);
     const dispatch = useDispatch();
-
     useEffect(() => {
         const checkAuthStatus = async () => {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
             if (token) {
                 try {
                     const resultAction = await dispatch(verifyToken(token));

@@ -56,6 +56,8 @@ function SignInForm() {
           navigate("/");
           if (rememberMe) {
             localStorage.setItem("authToken", result.payload.token);
+          } else {
+            sessionStorage.setItem("authToken", result.payload.token);
           }
         }
       });
