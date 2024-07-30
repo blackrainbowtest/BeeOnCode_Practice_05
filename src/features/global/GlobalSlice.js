@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getCurrentFullUnixTime } from 'utils/validation';
 
 const initialState = {
   errors: [],
@@ -11,16 +12,18 @@ const globalSlice = createSlice({
   initialState,
   reducers: {
     addError: (state, action) => {
-      state.errors.push(action.payload);
+      const time = getCurrentFullUnixTime()
+      state.errors.push({ message: action.payload, timestamp: time });
     },
     removeError: (state, action) => {
-      state.errors = state.errors.filter((_, index) => index !== action.payload);
+      state.errors = state.errors.filter((error) => error.timestamp !== action.payload);
     },
     addNotification: (state, action) => {
-      state.notifications.push(action.payload);
+      const time = getCurrentFullUnixTime()
+      state.notifications.push({ message: action.payload, timestamp: time });
     },
     removeNotification: (state, action) => {
-      state.notifications = state.notifications.filter((_, index) => index !== action.payload);
+      state.notifications = state.notifications.filter((notification) => notification.timestamp !== action.payload);
     },
     setLoading: (state, action) => {
       state.loading = action.payload;

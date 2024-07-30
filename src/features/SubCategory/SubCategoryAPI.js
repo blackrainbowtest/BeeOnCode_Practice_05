@@ -2,7 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from 'app/base/base_url';
-import { addError, setLoading } from 'features/global/GlobalSlice';
+import { addError, addNotification, setLoading } from 'features/global/GlobalSlice';
 
 const url = `${apiUrl}/subCategory`;
 
@@ -27,6 +27,7 @@ export const addSubCategory = createAsyncThunk(
     async (subCategory, { dispatch, rejectWithValue }) => {
         try {
             const response = await axios.post(url, { ...subCategory });
+            dispatch(addNotification("Sub category add successful"))
             return response.data;
         } catch (err) {
             dispatch(addError(err.message));

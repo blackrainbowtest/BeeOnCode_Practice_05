@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import TextInputComponent from "app/shared-components/TextInputComponent";
 import { registerUser } from "features/auth/user_register/RegisterAPI";
-import { memo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -27,18 +27,21 @@ function SignUpForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleConfirmChange = (data) => {
-    setConfirmPassword(data);
-    if (password !== data) {
-      setConfirmPasswordError(true);
-      setConfirmPasswordHelperText("Passwords do not match.");
-    } else {
-      setConfirmPasswordError(false);
-      setConfirmPasswordHelperText("");
-    }
-  };
+  const handleConfirmChange = useCallback(
+    (data) => {
+      setConfirmPassword(data);
+      if (password !== data) {
+        setConfirmPasswordError(true);
+        setConfirmPasswordHelperText("Passwords do not match.");
+      } else {
+        setConfirmPasswordError(false);
+        setConfirmPasswordHelperText("");
+      }
+    },
+    [password]
+  );
 
-  const handleSubmitRegistration = () => {
+  const handleSubmitRegistration = useCallback(() => {
     const isNameValid = validateField(
       "Name",
       name,
@@ -77,7 +80,28 @@ function SignUpForm() {
         }
       });
     }
-  };
+  }, [
+    confirmPassword,
+    dispatch,
+    email,
+    handleConfirmChange,
+    name,
+    navigate,
+    password,
+  ]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        handleSubmitRegistration();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleSubmitRegistration]);
 
   return (
     <MainContainer>

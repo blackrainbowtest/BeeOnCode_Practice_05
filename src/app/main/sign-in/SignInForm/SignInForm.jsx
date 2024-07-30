@@ -2,7 +2,7 @@ import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import TextInputComponent from "app/shared-components/TextInputComponent";
 import { loginUser } from "features/auth/user_login/LoginAPI";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -22,13 +22,7 @@ function SignInForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (location.state && location.state.email) {
-      setEmail(location.state.email);
-    }
-  }, [location.state]);
-
-  const handleSubmitLogin = () => {
+  const handleSubmitLogin = useCallback(() => {
     const emailErrorText = validateEmail(email);
     const isEmailValid = validateField(
       "Email",
@@ -62,7 +56,24 @@ function SignInForm() {
         }
       });
     }
-  };
+  }, [dispatch, email, navigate, password, rememberMe]);
+
+  useEffect(() => {
+    if (location.state && location.state.email) {
+      setEmail(location.state.email);
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        handleSubmitLogin();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [location.state, handleSubmitLogin]);
 
   return (
     <MainContainer>

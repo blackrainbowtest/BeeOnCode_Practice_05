@@ -18,15 +18,16 @@ const userSlice = createSlice({
                 state.user = action.payload;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.user = action.payload;
+                state.user = action.payload[0];
+                state.isAuthenticated = true;
             })
             .addCase(verifyToken.fulfilled, (state, action) => {
-                state.user = action.payload;
+                state.user = action.payload[0];
+                state.isAuthenticated = true;
             })
             .addCase(logoutUser.fulfilled, (state) => {
                 state.isAuthenticated = false;
                 state.user = null;
-                state.error = null;
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.error = action.payload;

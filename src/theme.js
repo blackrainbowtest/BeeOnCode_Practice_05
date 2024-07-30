@@ -21,6 +21,7 @@ export const theme = {
     },
     text: {
       primary: '#847F80',
+      grey: '#B3B3B4',
     },
     error: {
       main: '#ff0000',

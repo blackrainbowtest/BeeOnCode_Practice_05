@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from 'app/base/base_url';
 import { convertImageToBase64 } from 'utils/image';
-import { addError, setLoading } from 'features/global/GlobalSlice';
+import { addError, addNotification, setLoading } from 'features/global/GlobalSlice';
 
 const url = `${apiUrl}/category`;
 
@@ -29,6 +29,7 @@ export const addCategory = createAsyncThunk(
         try {
             const base64Image = category.image ? await convertImageToBase64(category.image) : null;
             const response = await axios.post(url, { ...category, image: base64Image });
+            dispatch(addNotification("Category add successful"))
             return response.data;
         } catch (err) {
             dispatch(addError(err.message));

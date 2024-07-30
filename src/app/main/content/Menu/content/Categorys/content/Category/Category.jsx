@@ -7,17 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeCategory } from "features/Category/CategorySlice";
 import PopupComponent from "app/shared-components/PopupComponent/PopupComponent";
 import CategorysAdd from "app/shared-components/CategorysAddComponent"
-
-const MainContainer = styled(Box)(
-  ({ theme }) => `
-  width: 100%;
-  min-height: 80px;
-  padding: 0px 30px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  `
-);
+import CategoryMainContainer from 'app/shared-components/CategoryMainContainerComponent/CategoryMainContainer';
 
 const ButtonContainer = styled(Box)(
   ({ theme }) => `
@@ -86,7 +76,7 @@ function Category() {
   const id = open ? "simple-popup" : undefined;
 
   return (
-    <MainContainer>
+    <CategoryMainContainer>
       {category.map((c) => {
         return chooesedGender === c.gender ? (
           <CategoryComponent
@@ -112,7 +102,7 @@ function Category() {
       >
         <CategorysAdd close={handleClosePopup} />
       </PopupComponent>
-    </MainContainer>
+    </CategoryMainContainer>
   );
 }
 

@@ -5,6 +5,30 @@ import Action from "./content/Action";
 import Logo from "./content/Logo";
 import Search from "./content/Search";
 import { Outlet } from "react-router-dom";
+import NotificationManager from "./content/NotificationManager";
+
+function Layout() {
+  return (
+    <MainContainer sx={{ flexGrow: 1 }}>
+      <LayoutContainer>
+        <Logo />
+        <Search />
+        <Action />
+      </LayoutContainer>
+      <Outlet />
+      <NotificationManager />
+    </MainContainer>
+  );
+}
+
+export default memo(Layout);
+
+const MainContainer = styled(Box)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -27,25 +51,3 @@ const LayoutContainer = styled.div`
     min-height: 40px;
   }
 `;
-
-const MainContainer = styled(Box)`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-function Layout() {
-  return (
-    <MainContainer sx={{ flexGrow: 1 }}>
-      <LayoutContainer>
-        <Logo />
-        <Search />
-        <Action />
-      </LayoutContainer>
-      <Outlet />
-    </MainContainer>
-  );
-}
-
-export default memo(Layout);

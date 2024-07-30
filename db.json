@@ -89,18 +89,40 @@
       "id": "d698",
       "name": "fffffffffffffffffffffffffffffffff",
       "parent": "2"
+    },
+    {
+      "id": "4428",
+      "name": "888",
+      "parent": "2"
+    },
+    {
+      "id": "a382",
+      "name": "test",
+      "parent": "1"
+    },
+    {
+      "id": "950a",
+      "name": "test",
+      "parent": "da22"
     }
   ],
   "products": [],
   "users": [
     {
-      "id": "da87",
-      "name": "Արամ Առաքելյան",
+      "id": "6cc1",
+      "name": "Mister S.",
       "email": "araqelyan.aram.96@gmail.com",
-      "password": "$2a$10$1z1JsGgJxxFbRo2fxvSJwuHhhZbR.cBzN.oZVqWxYTC3rJ74T3HnC",
-      "registerDate": 1722087306,
-      "lastLoginDate": 1722087306,
-      "token": "17221706182f9665a8ea855b3dd9a70638ce75c509"
+      "password": "cba4648aeb329af15f2ce5cf6db072ef8a55d652fb5af1e632960bdbbc446d52",
+      "registerDate": 1722238731,
+      "lastLoginDate": 1722238731
+    },
+    {
+      "id": "3f56",
+      "name": "test",
+      "email": "test@gmail.com",
+      "password": "cba4648aeb329af15f2ce5cf6db072ef8a55d652fb5af1e632960bdbbc446d52",
+      "registerDate": 1722267378,
+      "lastLoginDate": 1722267378
     }
   ]
 }

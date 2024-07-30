@@ -2,7 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import apiUrl from 'app/base/base_url';
-import { addError, setLoading } from 'features/global/GlobalSlice';
+import { addError, addNotification, setLoading } from 'features/global/GlobalSlice';
 
 /**
  * Login user
@@ -12,26 +12,26 @@ export const loginUser = createAsyncThunk(
   async (userData, { dispatch, rejectWithValue }) => {
     try {
       dispatch(setLoading(true));
-
       const response = await axios.get(`${apiUrl}/users`, {
         params: {
           email: userData.email,
-          password: userData.password,
         },
       });
       if (response.data.length) {
         // get first user
         const user = response.data[0];
 
-        // patch user and add token
-        const updatedUserResponse = await axios.patch(`${apiUrl}/users/${user.id}`, {
-          token: userData.token,
-        });
-
-        return updatedUserResponse.data;
-      } else {
-        throw new Error('Invalid email or password.');
+        // check if user password is correct
+        if (user.password === userData.password) {
+          // patch user and add token
+          const updatedUserResponse = await axios.patch(`${apiUrl}/users/${user.id}`, {
+            token: userData.token,
+          });
+          return updatedUserResponse.data;
+        }
       }
+      // If no user found or password is incorrect
+      throw new Error('Invalid email or password.');
     } catch (err) {
       dispatch(addError(err.message));
       return rejectWithValue(err.message);
@@ -52,6 +52,7 @@ export const verifyToken = createAsyncThunk(
         params: { token }
       });
       if (response.data.length > 0) {
+        dispatch(addNotification("Login success."))
         return response.data;
       } else {
         throw new Error('Invalid token.');

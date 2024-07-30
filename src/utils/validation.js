@@ -39,6 +39,10 @@ export function getCurrentUnixTime() {
     return Math.floor(Date.now() / 1000);
 }
 
+export function getCurrentFullUnixTime() {
+    return Math.floor(Date.now());
+}
+
 // token
 export function generatePseudoToken() {
     const timestamp = getCurrentUnixTime();
