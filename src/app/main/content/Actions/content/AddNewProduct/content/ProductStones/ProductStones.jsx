@@ -3,9 +3,10 @@ import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import ProductStoneForm from "./ProductStoneForm";
+import { useSelector } from 'react-redux';
 
-function ProductStones({ props }) {
-  const { productData, setProductData } = props;
+function ProductStones() {
+  const productData = useSelector((state) => state?.product?.newData);
 
   const header = (
     <HeaderContainer>
@@ -48,7 +49,6 @@ function ProductStones({ props }) {
             index={index}
             canDelete={productData.stones.length === 1}
             addNew={productData.stones.length === index + 1}
-            callback={setProductData}
           />
         );
       })}

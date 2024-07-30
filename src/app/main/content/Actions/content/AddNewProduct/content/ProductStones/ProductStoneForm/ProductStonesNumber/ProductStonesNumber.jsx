@@ -1,23 +1,18 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { memo } from "react";
+import { stoneNumberChange } from "features/Product/ProductSlice";
+import { memo, useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductStonesNumber({ props }) {
-  const { stone, index, callback } = props;
+  const { stone, index } = props;
+  const dispatch = useDispatch();
 
-  const handleNumberChange = (data) => {
-    callback((prev) => ({
-      ...prev,
-      stones: prev.stones.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            number: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const handleNumberChange = useCallback(
+    (data) => {
+      dispatch(stoneNumberChange({ index, data }));
+    },
+    [dispatch, index]
+  );
 
   return (
     <TextInputComponent

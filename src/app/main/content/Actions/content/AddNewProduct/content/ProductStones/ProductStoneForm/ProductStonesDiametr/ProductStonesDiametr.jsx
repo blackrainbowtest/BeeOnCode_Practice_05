@@ -1,24 +1,20 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { memo, useState } from "react";
+import { stoneDiametrChange } from "features/Product/ProductSlice";
+import { memo, useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductStonesDiametr({ props }) {
-  const { stone, index, callback } = props;
+  const { stone, index } = props;
   const [isDiametrError, setIsDiametrError] = useState(false);
-  const handleDiametrChange = (data) => {
-    setIsDiametrError(!/^\d*$/.test(data));
-    callback((prev) => ({
-      ...prev,
-      stones: prev.stones.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            diametr: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const dispatch = useDispatch();
+
+  const handleDiametrChange = useCallback(
+    (data) => {
+      setIsDiametrError(!/^\d*$/.test(data));
+      dispatch(stoneDiametrChange({ index, data }));
+    },
+    [dispatch, index]
+  );
 
   return (
     <TextInputComponent

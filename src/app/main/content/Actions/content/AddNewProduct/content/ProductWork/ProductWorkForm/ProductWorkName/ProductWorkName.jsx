@@ -1,21 +1,14 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
+import { workNameChange } from "features/Product/ProductSlice";
 import { memo } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductWorkName({ props }) {
-  const { work, index, callback } = props;
+  const { work, index } = props;
+  const dispatch = useDispatch();
+
   const handleNameChange = (data) => {
-    callback((prev) => ({
-      ...prev,
-      works: prev.works.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            name: data,
-          };
-        }
-        return st;
-      }),
-    }));
+    dispatch(workNameChange({ index, data }));
   };
   return (
     <TextInputComponent

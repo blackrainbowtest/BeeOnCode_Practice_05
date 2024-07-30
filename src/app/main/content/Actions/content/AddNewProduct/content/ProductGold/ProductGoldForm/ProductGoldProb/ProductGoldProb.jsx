@@ -1,26 +1,20 @@
 import { Box } from "@mui/material";
 import ButtonProbComponent from "app/shared-components/ButtonProbComponent";
-import { memo } from "react";
+import { changeGoldProb } from "features/Product/ProductSlice";
+import { memo, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 
 function ProductGoldProb({ props }) {
-  const { gold, index, callback } = props;
-  console.log(gold)
-  const handleProbChange = (event, data) => {
-    callback((prev) => ({
-      ...prev,
-      golds: prev.golds.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            prob: data.prob,
-            color: data.color,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const { gold, index } = props;
+  const dispatch = useDispatch();
+
+  const handleProbChange = useCallback(
+    (_, data) => {
+      dispatch(changeGoldProb({ index, data }));
+    },
+    [dispatch, index]
+  );
   return (
     <AddNewContainer>
       <ButtonProbComponent

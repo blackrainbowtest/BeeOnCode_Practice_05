@@ -1,30 +1,36 @@
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import TextInputComponent from "app/shared-components/TextInputComponent";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  productPriceChange,
+  productProductionPriceChange,
+} from "features/Product/ProductSlice";
 
-function ProductPrice({ props }) {
-  const { productData, setProductData } = props;
+function ProductPrice() {
+  const dispatch = useDispatch();
+  const productData = useSelector((state) => state?.product?.newData);
   const [isPriceError, setIsPriceError] = useState(false);
   const [isPrPriceError, setIsPrPriceError] = useState(false);
 
-  const handlePriceChange = (data) => {
-    setIsPriceError(!/^\d*$/.test(data));
-    setProductData((prev) => ({
-      ...prev,
-      price: { ...prev.price, price: data },
-    }));
-  };
+  const handlePriceChange = useCallback(
+    (data) => {
+      setIsPriceError(!/^\d*$/.test(data));
+      dispatch(productPriceChange(data));
+    },
+    [dispatch]
+  );
 
-  const handleProductionPriceChange = (data) => {
-    setIsPrPriceError(!/^\d*$/.test(data));
-    setProductData((prev) => ({
-      ...prev,
-      price: { ...prev.price, productionPrice: data },
-    }));
-  };
-  
+  const handleProductionPriceChange = useCallback(
+    (data) => {
+      setIsPrPriceError(!/^\d*$/.test(data));
+      dispatch(productProductionPriceChange(data));
+    },
+    [dispatch]
+  );
+
   const header = (
     <HeaderContainer>
       <svg

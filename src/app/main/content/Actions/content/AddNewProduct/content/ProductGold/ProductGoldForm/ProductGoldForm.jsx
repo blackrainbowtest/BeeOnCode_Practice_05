@@ -1,48 +1,32 @@
 import { Box } from "@mui/material";
 import ButtonAddComponent from "app/shared-components/ButtonAddComponent";
 import ButtonRemoveComponent from "app/shared-components/ButtonRemoveComponent";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import styled, { css } from "styled-components";
 import ProductGoldProb from "./ProductGoldProb";
 import ProductGoldStartWeight from "./ProductGoldStartWeight";
 import ProductGoldWeight from "./ProductGoldWeight";
 import ProductGoldPrice from "./ProductGoldPrice";
-// startWeight: "",
-// weight: "",
-// price: "",
-// color: "",
-// prob: "",
-function ProductGoldForm({ gold, index, canDelete, addNew, callback }) {
-  const handleRemoveWork = () => {
-    callback((prev) => ({
-      ...prev,
-      golds:
-        prev.golds.length > 1
-          ? prev.golds.filter((_, ind) => ind !== index)
-          : [...prev.golds],
-    }));
-  };
-  const handleAddWork = () => {
-    callback((prev) => ({
-      ...prev,
-      golds: [
-        ...prev.golds,
-        {
-          name: "",
-          count: "",
-          price: "",
-          amount: "",
-          comment: "",
-        },
-      ],
-    }));
-  };
+import { useDispatch } from "react-redux";
+import { addGold, removeGold } from "features/Product/ProductSlice";
+
+function ProductGoldForm({ gold, index, canDelete, addNew }) {
+  const dispatch = useDispatch();
+  
+  const handleRemoveWork = useCallback(() => {
+    dispatch(removeGold(index));
+  }, [dispatch, index]);
+
+  const handleAddWork = useCallback(() => {
+    dispatch(addGold());
+  }, [dispatch]);
+
   return (
     <ContentContainer>
-      <ProductGoldProb props={{ gold, index, callback }} />
-      <ProductGoldStartWeight props={{ gold, index, callback }} />
-      <ProductGoldWeight props={{ gold, index, callback }} />
-      <ProductGoldPrice props={{ gold, index, callback }} />
+      <ProductGoldProb props={{ gold, index }} />
+      <ProductGoldStartWeight props={{ gold, index }} />
+      <ProductGoldWeight props={{ gold, index }} />
+      <ProductGoldPrice props={{ gold, index }} />
       <AddNewContainer>
         {canDelete ? (
           <Empty />

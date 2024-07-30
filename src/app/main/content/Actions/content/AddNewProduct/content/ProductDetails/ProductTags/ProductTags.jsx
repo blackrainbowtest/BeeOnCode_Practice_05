@@ -1,11 +1,14 @@
 import React, { memo } from "react";
 import TagInputComponent from "app/shared-components/TagInputComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { productDataTag } from "features/Product/ProductSlice";
 
-function ProductTags({ props }) {
-  const { productData, setProductData } = props;
+function ProductTags() {
+  const dispatch = useDispatch();
+  const productData = useSelector((state) => state?.product?.newData);
 
   const setProductDataTag = (tagArray) => {
-    setProductData((prev) => ({ ...prev, tags: tagArray }));
+    dispatch(productDataTag(tagArray));
   };
 
   return (

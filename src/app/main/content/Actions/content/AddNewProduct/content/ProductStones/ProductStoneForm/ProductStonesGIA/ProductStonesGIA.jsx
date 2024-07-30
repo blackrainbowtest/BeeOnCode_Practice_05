@@ -1,24 +1,19 @@
 import { Box, css, Switch } from "@mui/material";
-import { memo } from "react";
+import { stoneGIAChange } from "features/Product/ProductSlice";
+import { memo, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 function ProductStonesGIA({ props }) {
-  const { stone, index, callback } = props;
+  const { stone, index } = props;
+  const dispatch = useDispatch();
 
-  const handleGIAChange = (event) => {
-    callback((prev) => ({
-      ...prev,
-      stones: prev.stones.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            GIA: event.target.checked,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const handleGIAChange = useCallback(
+    (event) => {
+      dispatch(stoneGIAChange({ index, data: event.target.checked }));
+    },
+    [dispatch, index]
+  );
 
   return (
     <ContentContainer>
@@ -33,7 +28,7 @@ const ContentContainer = styled(Box)(() =>
   css({
     width: "100%",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   })
 );
 

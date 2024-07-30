@@ -1,47 +1,34 @@
 import { Box } from "@mui/material";
 import ButtonAddComponent from "app/shared-components/ButtonAddComponent";
 import ButtonRemoveComponent from "app/shared-components/ButtonRemoveComponent";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import styled, { css } from "styled-components";
 import ProductWorkName from "./ProductWorkName";
 import ProductWorkCount from "./ProductWorkCount";
 import ProductWorkPrice from "./ProductWorkPrice";
 import ProductWorkAmount from "./ProductWorkAmount";
 import ProductWorkComment from "./ProductWorkComment";
+import { useDispatch } from "react-redux";
+import { addWork, removeWork } from "features/Product/ProductSlice";
 
-function ProductWorkForm({ work, index, canDelete, addNew, callback }) {
-  const handleRemoveWork = () => {
-    callback((prev) => ({
-      ...prev,
-      works:
-        prev.works.length > 1
-          ? prev.works.filter((_, ind) => ind !== index)
-          : [...prev.works],
-    }));
-  };
-  const handleAddWork = () => {
-    callback((prev) => ({
-      ...prev,
-      works: [
-        ...prev.works,
-        {
-          name: "",
-          count: "",
-          price: "",
-          amount: "",
-          comment: "",
-        },
-      ],
-    }));
-  };
+function ProductWorkForm({ work, index, canDelete, addNew }) {
+  const dispatch = useDispatch();
+
+  const handleRemoveWork = useCallback(() => {
+    dispatch(removeWork(index));
+  }, [dispatch, index]);
+  
+  const handleAddWork = useCallback(() => {
+    dispatch(addWork());
+  }, [dispatch]);
 
   return (
     <ContentContainer>
-      <ProductWorkName props={{ work, index, callback }} />
-      <ProductWorkCount props={{ work, index, callback }} />
-      <ProductWorkPrice props={{ work, index, callback }} />
-      <ProductWorkAmount props={{ work, index, callback }} />
-      <ProductWorkComment props={{ work, index, callback }} />
+      <ProductWorkName props={{ work, index }} />
+      <ProductWorkCount props={{ work, index }} />
+      <ProductWorkPrice props={{ work, index }} />
+      <ProductWorkAmount props={{ work, index }} />
+      <ProductWorkComment props={{ work, index }} />
       <AddNewContainer>
         {canDelete ? (
           <Empty />

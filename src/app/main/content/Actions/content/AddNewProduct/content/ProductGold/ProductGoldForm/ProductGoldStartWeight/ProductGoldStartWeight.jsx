@@ -1,24 +1,20 @@
-import TextInputComponent from 'app/shared-components/TextInputComponent';
-import { memo, useState } from "react";
+import TextInputComponent from "app/shared-components/TextInputComponent";
+import { changeStartWeight } from "features/Product/ProductSlice";
+import { memo, useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductGoldStartWeight({ props }) {
-  const { gold, index, callback } = props;
+  const { gold, index } = props;
   const [isStartWeightError, setIsStartWeightError] = useState(false);
-  const handleStartWeightChange = (data) => {
-    setIsStartWeightError(!/^\d*\.?\d*$/.test(data));
-    callback((prev) => ({
-      ...prev,
-      golds: prev.golds.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            startWeight: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const dispatch = useDispatch();
+
+  const handleStartWeightChange = useCallback(
+    (data) => {
+      setIsStartWeightError(!/^\d*\.?\d*$/.test(data));
+      dispatch(changeStartWeight({ index, data }));
+    },
+    [dispatch, index]
+  );
   return (
     <TextInputComponent
       label='St. weight'

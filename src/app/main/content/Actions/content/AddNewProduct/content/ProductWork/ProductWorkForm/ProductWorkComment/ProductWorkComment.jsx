@@ -1,21 +1,14 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
+import { workCommentChange } from "features/Product/ProductSlice";
 import { memo } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductWorkComment({ props }) {
-  const { work, index, callback } = props;
+  const { work, index } = props;
+  const dispatch = useDispatch();
+
   const handleCommentChange = (data) => {
-    callback((prev) => ({
-      ...prev,
-      works: prev.works.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            comment: data,
-          };
-        }
-        return st;
-      }),
-    }));
+    dispatch(workCommentChange({ index, data }));
   };
   return (
     <TextInputComponent

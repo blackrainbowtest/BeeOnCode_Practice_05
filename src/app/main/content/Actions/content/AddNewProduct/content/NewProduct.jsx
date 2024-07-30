@@ -3,13 +3,14 @@ import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 import TitleActionComponent from "app/shared-components/TitleActionComponent/TitleActionComponent";
 import ProductClassification from "./ProductClassification";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductDetails from "./ProductDetails/ProductDetails";
 import ProductGold from "./ProductGold";
 import ProductWork from "./ProductWork";
 import ProductStones from "./ProductStones";
 import ProductPrice from "./ProductPrice";
-import ProductActions from './ProductActions';
+import ProductActions from "./ProductActions";
+import { resetNewData } from "features/Product/ProductSlice";
 
 function NewProduct({ handleClose }) {
   const category = useSelector((state) => state?.category?.data);
@@ -17,47 +18,13 @@ function NewProduct({ handleClose }) {
   const [gender, setGender] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
-  const [productData, setProductData] = useState({
-    article: "",
-    tags: [],
-    images: [],
-    golds: [
-      {
-        startWeight: "",
-        weight: "",
-        price: "",
-        color: "",
-        prob: "",
-      }
-    ],
-    price: {
-      productionPrice: "",
-      price: "",
-    },
-    stones: [
-      {
-        type: "",
-        count: "",
-        diametr: "",
-        weight: "",
-        quality: "",
-        price: "",
-        GIA: false,
-        number: ""
-      }
-    ],
-    works: [
-      {
-        name: "",
-        count: "",
-        price: "",
-        amount: "",
-        comment: ""
-      }
-    ]
-  });
+  const productData = useSelector((state) => state?.product?.newData);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(resetNewData());
+
     if (category.length === 0) {
       return;
     }
@@ -71,7 +38,7 @@ function NewProduct({ handleClose }) {
     } else {
       setSelectedSubCategory("");
     }
-  }, [category, selectedCategory, subCategory]);
+  }, [category, dispatch, selectedCategory, subCategory]);
 
   useEffect(() => {
     const currentCategory = category.filter((c) => c.gender === gender);
@@ -81,25 +48,29 @@ function NewProduct({ handleClose }) {
 
   return (
     <MainContainer>
-      <TitleActionComponent close={handleClose} title={"Add product"} />
-      <ProductClassification
-        props={{
-          gender,
-          setGender,
-          selectedCategory,
-          setSelectedCategory,
-          selectedSubCategory,
-          setSelectedSubCategory,
-        }}
-      />
-      <ProductDetails props={{ productData, setProductData }} />
-      <ContentContainer>
-        <ProductGold props={{ productData, setProductData }} />
-        <ProductWork props={{ productData, setProductData }} />
-        <ProductStones props={{ productData, setProductData }} />
-        <ProductPrice props={{ productData, setProductData }} />
-      </ContentContainer>
-      <ProductActions />
+      {Object.keys(productData).length !== 0 ? (
+        <>
+          <TitleActionComponent close={handleClose} title={"Add product"} />
+          <ProductClassification
+            props={{
+              gender,
+              setGender,
+              selectedCategory,
+              setSelectedCategory,
+              selectedSubCategory,
+              setSelectedSubCategory,
+            }}
+          />
+          <ProductDetails />
+          <ContentContainer>
+            <ProductGold />
+            <ProductWork />
+            <ProductStones />
+            <ProductPrice />
+          </ContentContainer>
+          <ProductActions close={handleClose} />
+        </>
+      ) : null}
     </MainContainer>
   );
 }
@@ -116,7 +87,7 @@ const MainContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: "10px",
   padding: "30px",
-  borderRadius: "5px"
+  borderRadius: "5px",
 }));
 
 const ContentContainer = styled(Box)(({ theme }) => ({

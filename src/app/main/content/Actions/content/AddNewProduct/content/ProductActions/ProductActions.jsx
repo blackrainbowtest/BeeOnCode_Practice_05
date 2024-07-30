@@ -2,11 +2,25 @@ import styled, { css } from "styled-components";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import { memo, useCallback } from "react";
 import { Box } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { resetNewData } from "features/Product/ProductSlice";
+import { addProduct } from "features/Product/ProductAPI";
+import { getCurrentFullUnixTime } from "utils/validation";
 
-function ProductActions() {
-  const handleAddButtonClick = useCallback((event) => {
-    console.log("Add");
-  }, []);
+function ProductActions({ close }) {
+  const dispatch = useDispatch();
+  const productData = useSelector((state) => state?.product?.newData);
+  const user = useSelector((state) => state?.user?.user);
+
+  const handleAddButtonClick = useCallback(
+    (event) => {
+      const currentTime = getCurrentFullUnixTime();
+      dispatch(addProduct({ productData, userId: user.id, currentTime }));
+      dispatch(resetNewData());
+      close();
+    },
+    [close, dispatch, productData, user.id]
+  );
 
   const handleWatchButtonClick = useCallback((event) => {
     console.log("Watch");
@@ -38,7 +52,7 @@ const ActionButtonStyle = ({ theme }) => css`
 const WatchButtonStyle = ({ theme }) => css`
   min-width: 160px !important;
   min-height: 32px !important;
-  background-color: transparent!important;
+  background-color: transparent !important;
   color: ${theme.palette.text.grey}!important;
   border: 1px solid ${theme.palette.text.grey}!important;
 `;

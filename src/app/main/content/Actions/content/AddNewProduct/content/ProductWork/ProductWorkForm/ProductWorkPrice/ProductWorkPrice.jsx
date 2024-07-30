@@ -1,24 +1,21 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { memo, useState } from "react";
+import { workPriceChange } from "features/Product/ProductSlice";
+import { memo, useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductWorkPrice({ props }) {
-  const { work, index, callback } = props;
+  const { work, index } = props;
   const [isPriceError, setIsPriceError] = useState(false);
-  const handlePriceChange = (data) => {
-    setIsPriceError(!/^\d*\.?\d*$/.test(data));
-    callback((prev) => ({
-      ...prev,
-      works: prev.works.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            price: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const dispatch = useDispatch();
+
+  const handlePriceChange = useCallback(
+    (data) => {
+      setIsPriceError(!/^\d*\.?\d*$/.test(data));
+      dispatch(workPriceChange({ index, data }));
+    },
+    [dispatch, index]
+  );
+
   return (
     <TextInputComponent
       label='Price'

@@ -3,9 +3,10 @@ import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import ProductGoldForm from "./ProductGoldForm";
+import { useSelector } from 'react-redux';
 
-function ProductGold({ props }) {
-  const { productData, setProductData } = props;
+function ProductGold() {
+  const productData = useSelector((state) => state?.product?.newData);
 
   const header = (
     <HeaderContainer>
@@ -36,7 +37,6 @@ function ProductGold({ props }) {
             index={index}
             canDelete={productData.golds.length === 1}
             addNew={productData.golds.length === index + 1}
-            callback={setProductData}
           />
         );
       })}

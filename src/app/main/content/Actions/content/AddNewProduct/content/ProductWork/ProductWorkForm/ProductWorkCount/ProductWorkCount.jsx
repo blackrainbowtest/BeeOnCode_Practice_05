@@ -1,24 +1,21 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { memo, useState } from "react";
+import { workCountChange } from "features/Product/ProductSlice";
+import { memo, useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductWorkCount({ props }) {
-  const { work, index, callback } = props;
+  const { work, index } = props;
   const [isCountError, setIsCountError] = useState(false);
-  const handleCountChange = (data) => {
-    setIsCountError(!/^\d*\.?\d*$/.test(data));
-    callback((prev) => ({
-      ...prev,
-      works: prev.works.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            count: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const dispatch = useDispatch();
+
+  const handleCountChange = useCallback(
+    (data) => {
+      setIsCountError(!/^\d*\.?\d*$/.test(data));
+      dispatch(workCountChange({ index, data }));
+    },
+    [dispatch, index]
+  );
+
   return (
     <TextInputComponent
       label='Count'

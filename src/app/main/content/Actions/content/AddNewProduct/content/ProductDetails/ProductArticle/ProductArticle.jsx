@@ -1,10 +1,14 @@
 import { memo } from "react";
 import TextInputComponent from "app/shared-components/TextInputComponent/TextInputComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { productArticle } from "features/Product/ProductSlice";
 
-function ProductArticle({ props }) {
-  const { productData, setProductData } = props;
+function ProductArticle() {
+  const dispatch = useDispatch();
+  const productData = useSelector((state) => state?.product?.newData);
+
   const handleProductArticle = (data) => {
-    setProductData((prev) => ({ ...prev, article: data }));
+    dispatch(productArticle(data));
   };
 
   return (

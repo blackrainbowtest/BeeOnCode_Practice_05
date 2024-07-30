@@ -1,46 +1,51 @@
 import { Box } from "@mui/material";
 import ImageCollectionComponent from "app/shared-components/ImageCollectionComponent";
 import ImageUploadComponent from "app/shared-components/ImageUploadComponent";
-import { memo } from "react";
+import { addNewImage, removeImage } from "features/Product/ProductSlice";
+import { memo, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 const MAX_IMAGES = 4;
 
-function ProductImages({ props }) {
-  const { productData, setProductData } = props;
+function ProductImages() {
+  const dispatch = useDispatch();
+  const productData = useSelector((state) => state?.product?.newData);
 
   /**
    * add image to NewProduct Images array
    * @param {File} newImage
    */
-  const handleAddNewImage = (newImage) => {
-    if (productData.images.length < MAX_IMAGES) {
-      setProductData((prev) => ({
-        ...prev,
-        images: [...prev.images, newImage],
-      }));
-    }
-  };
+  const handleAddNewImage = useCallback(
+    (newImage) => {
+      if (productData?.images && productData.images.length < MAX_IMAGES) {
+        dispatch(addNewImage(newImage));
+      }
+    },
+    [dispatch, productData.images]
+  );
 
   /**
    * remove image from NewProduct Images array
    * @param {Number} removedImageIndex
    */
-  const handleRemoveImage = (removedImageIndex) => {
-    if (productData.images.length) {
-      setProductData((prev) => ({
-        ...prev,
-        images: prev.images.filter((_, index) => index !== removedImageIndex),
-      }));
-    }
-  };
+  const handleRemoveImage = useCallback(
+    (removedImageIndex) => {
+      if (productData.images.length) {
+        dispatch(removeImage(removedImageIndex));
+      }
+    },
+    [dispatch, productData.images]
+  );
 
   return (
     <ImageContainer>
       <UploadContainer>
         <ImageUploadComponent
           callback={handleAddNewImage}
-          disabled={productData.images.length >= MAX_IMAGES}
+          disabled={
+            productData?.images && productData?.images?.length >= MAX_IMAGES
+          }
         />
       </UploadContainer>
       <CollectionContainer>

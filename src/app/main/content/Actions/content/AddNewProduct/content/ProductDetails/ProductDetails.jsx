@@ -5,13 +5,12 @@ import ProductImages from "./ProductImages";
 import ProductTags from "./ProductTags";
 import ProductArticle from "./ProductArticle";
 
-function ProductDetails({ props }) {
-  const { productData, setProductData } = props;
+function ProductDetails() {
   return (
     <MainContainer>
-      <ProductImages props={{ productData, setProductData }} />
-      <ProductTags props={{ productData, setProductData }} />
-      <ProductArticle props={{ productData, setProductData }} />
+      <ProductImages />
+      <ProductTags />
+      <ProductArticle />
     </MainContainer>
   );
 }

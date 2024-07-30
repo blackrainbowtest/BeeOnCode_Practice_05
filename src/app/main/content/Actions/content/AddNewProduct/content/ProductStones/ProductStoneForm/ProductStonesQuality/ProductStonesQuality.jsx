@@ -1,23 +1,19 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { memo } from "react";
+import { stoneQualityChange } from "features/Product/ProductSlice";
+import { memo, useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductStonesQuality({ props }) {
-  const { stone, index, callback } = props;
+  const { stone, index } = props;
+  const dispatch = useDispatch();
 
-  const handleQualityChange = (data) => {
-    callback((prev) => ({
-      ...prev,
-      stones: prev.stones.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            quality: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const handleQualityChange = useCallback(
+    (data) => {
+      dispatch(stoneQualityChange({ index, data }));
+    },
+    [dispatch, index]
+  );
+  
   return (
     <TextInputComponent
       label='Quality'

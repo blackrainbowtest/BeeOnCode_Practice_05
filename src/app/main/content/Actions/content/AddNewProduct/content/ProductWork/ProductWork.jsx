@@ -3,9 +3,10 @@ import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import ProductWorkForm from "./ProductWorkForm";
+import { useSelector } from 'react-redux';
 
-function ProductWork({ props }) {
-  const { productData, setProductData } = props;
+function ProductWork() {
+  const productData = useSelector((state) => state?.product?.newData);
 
   const header = (
     <HeaderContainer>
@@ -35,7 +36,6 @@ function ProductWork({ props }) {
             index={index}
             canDelete={productData.works.length === 1}
             addNew={productData.works.length === index + 1}
-            callback={setProductData}
           />
         );
       })}

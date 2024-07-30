@@ -53,21 +53,34 @@ export function resizeImage(file, maxWidth, maxHeight, callback) {
  * @param {File} imageFile - The image file object to be converted.
  * @returns {Promise<string>} - A promise that resolves to a Base64 string representing the image.
  */
-export async function convertImageToBase64(imageFile) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            resolve(reader.result.split(',')[1]);
-        };
-
-        reader.onerror = (error) => {
-            reject(error);
-        };
-
-        reader.readAsDataURL(imageFile);
-    });
+export async function convertImageToBase64(imageFiles) {
+    if (Array.isArray(imageFiles)) {
+        return Promise.all(imageFiles.map(file => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    resolve(reader.result.split(',')[1]);
+                };
+                reader.onerror = (error) => {
+                    reject(error);
+                };
+                reader.readAsDataURL(file);
+            });
+        }));
+    } else {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result.split(',')[1]);
+            };
+            reader.onerror = (error) => {
+                reject(error);
+            };
+            reader.readAsDataURL(imageFiles);
+        });
+    }
 }
+
 
 /**
  * Decodes a Base64 string into an image URL.

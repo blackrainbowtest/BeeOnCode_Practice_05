@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import styled, { css } from "styled-components";
 import ProductStonesType from "./ProductStonesType";
 import ProductStonesCount from "./ProductStonesCount";
@@ -11,46 +11,30 @@ import ProductStonesNumber from "./ProductStonesNumber";
 import ProductStonesGIA from "./ProductStonesGIA";
 import ButtonRemoveComponent from "app/shared-components/ButtonRemoveComponent";
 import ButtonAddComponent from "app/shared-components/ButtonAddComponent";
+import { useDispatch } from "react-redux";
+import { addStone, removeStone } from "features/Product/ProductSlice";
 
-function ProductStoneForm({ stone, index, canDelete, addNew, callback }) {
-  const handleRemoveStone = () => {
-    callback((prev) => ({
-      ...prev,
-      stones:
-        prev.stones.length > 1
-          ? prev.stones.filter((_, ind) => ind !== index)
-          : [...prev.stones],
-    }));
-  };
-  const handleAddStone = () => {
-    callback((prev) => ({
-      ...prev,
-      stones: [
-        ...prev.stones,
-        {
-          type: "",
-          count: "",
-          diametr: "",
-          weight: "",
-          quality: "",
-          price: "",
-          GIA: false,
-          number: "",
-        },
-      ],
-    }));
-  };
+function ProductStoneForm({ stone, index, canDelete, addNew }) {
+  const dispatch = useDispatch();
+
+  const handleRemoveStone = useCallback(() => {
+    dispatch(removeStone());
+  }, [dispatch]);
+
+  const handleAddStone = useCallback(() => {
+    dispatch(addStone());
+  }, [dispatch]);
 
   return (
     <ContentContainer>
-      <ProductStonesType props={{ stone, index, callback }} />
-      <ProductStonesCount props={{ stone, index, callback }} />
-      <ProductStonesDiametr props={{ stone, index, callback }} />
-      <ProductStonesWeight props={{ stone, index, callback }} />
-      <ProductStonesQuality props={{ stone, index, callback }} />
-      <ProductStonesPrice props={{ stone, index, callback }} />
-      <ProductStonesGIA props={{ stone, index, callback }} />
-      <ProductStonesNumber props={{ stone, index, callback }} />
+      <ProductStonesType props={{ stone, index }} />
+      <ProductStonesCount props={{ stone, index }} />
+      <ProductStonesDiametr props={{ stone, index }} />
+      <ProductStonesWeight props={{ stone, index }} />
+      <ProductStonesQuality props={{ stone, index }} />
+      <ProductStonesPrice props={{ stone, index }} />
+      <ProductStonesGIA props={{ stone, index }} />
+      <ProductStonesNumber props={{ stone, index }} />
       <AddNewContainer>
         {canDelete ? (
           <Empty />

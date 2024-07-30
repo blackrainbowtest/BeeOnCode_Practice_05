@@ -1,24 +1,21 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { memo, useState } from "react";
+import { stoneCountChange } from "features/Product/ProductSlice";
+import { memo, useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function ProductStonesCount({ props }) {
-  const { stone, index, callback } = props;
+  const { stone, index } = props;
   const [isCountError, setIsCountError] = useState(false);
-  const handleCountChange = (data) => {
-    setIsCountError(!/^\d*$/.test(data));
-    callback((prev) => ({
-      ...prev,
-      stones: prev.stones.map((st, ind) => {
-        if (index === ind) {
-          return {
-            ...st,
-            count: data,
-          };
-        }
-        return st;
-      }),
-    }));
-  };
+  const dispatch = useDispatch();
+
+  const handleCountChange = useCallback(
+    (data) => {
+      setIsCountError(!/^\d*$/.test(data));
+      dispatch(stoneCountChange({ index, data }));
+    },
+    [dispatch, index]
+  );
+
   return (
     <TextInputComponent
       label='Count'
