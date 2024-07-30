@@ -12,7 +12,6 @@ const MainContainer = styled(Box)(
   ({ theme }) => `
   width: 100%;
   min-height: 40px;
-  padding: 0px 30px;
   background: ${theme.palette.background.main}!important;
   display: flex;
   align-items: center;

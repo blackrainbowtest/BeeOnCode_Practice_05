@@ -1,16 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, getProducts } from './ProductAPI';
+import { addProduct, getProducts, deleteProduct } from './ProductAPI';
 
 const initialState = {
     data: [],
-    currentSubcategory: -1,
     newData: {}
 };
 
 const productSlice = createSlice({
     name: 'product',
     initialState,
-    // FIXME: add reducers
     reducers: {
         resetNewData: (state, _) => {
             state.newData = {
@@ -412,6 +410,9 @@ const productSlice = createSlice({
             })
             .addCase(addProduct.fulfilled, (state, action) => {
                 state.data = [...state.data, action.payload]
+            })
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                state.data = state.data.filter((prod) => prod.id !== action.payload)
             })
     },
 });

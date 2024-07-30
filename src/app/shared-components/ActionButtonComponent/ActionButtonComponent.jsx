@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 const ActionContent = styled(({ customstyles, ...otherProps }) => (
   <Button {...otherProps} />
 ))(
-  ({ theme, customstyles }) => css`
+  ({ theme, customstyles, isopen }) => css`
     min-width: inherit !important;
     min-height: 32px;
     padding: 12px 16px;
@@ -18,18 +18,28 @@ const ActionContent = styled(({ customstyles, ...otherProps }) => (
     font-size: 1.1rem;
     text-align: center;
     z-index: 1;
+    ${isopen === "true" &&
+    css`
+      transform: translateX(-50px);
+    `}
+    transition: transform 0.3s ease!important;
     ${customstyles}
   `
 );
 
-function ActionButtonComponent({ callback = () => {}, label = "Add", customStyles }) {
+function ActionButtonComponent({
+  callback = () => {},
+  label = "Add",
+  customStyles,
+  isOpen = false,
+}) {
   const handleMouseDownAction = (event) => {
     event.preventDefault();
   };
 
   const handleClickAction = (event) => {
     event.stopPropagation();
-    if (typeof callback === 'function') {
+    if (typeof callback === "function") {
       callback(event);
     }
   };
@@ -39,6 +49,7 @@ function ActionButtonComponent({ callback = () => {}, label = "Add", customStyle
       onClick={handleClickAction}
       onMouseDown={handleMouseDownAction}
       customstyles={customStyles}
+      isopen={isOpen.toString()}
     >
       {label}
     </ActionContent>

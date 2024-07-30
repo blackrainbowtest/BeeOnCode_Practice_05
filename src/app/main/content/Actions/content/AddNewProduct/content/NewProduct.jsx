@@ -68,7 +68,14 @@ function NewProduct({ handleClose }) {
             <ProductStones />
             <ProductPrice />
           </ContentContainer>
-          <ProductActions close={handleClose} />
+          <ProductActions
+            close={handleClose}
+            props={{
+              gender,
+              selectedCategory,
+              selectedSubCategory,
+            }}
+          />
         </>
       ) : null}
     </MainContainer>

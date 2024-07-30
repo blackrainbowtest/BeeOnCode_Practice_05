@@ -7,11 +7,11 @@ import Actions from "./Actions/Actions";
 
 const MainContainer = styled(Box)(({ theme }) => ({
   width: "100%",
-  height: "100%",
   backgroundColor: `${theme.palette.background.main}!important`,
   display: "flex",
   flexDirection: "column",
   position: "relative",
+  padding: "0px 50px"
 }));
 
 function Content() {

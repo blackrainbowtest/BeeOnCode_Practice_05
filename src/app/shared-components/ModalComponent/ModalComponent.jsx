@@ -14,7 +14,7 @@ const StyledBox = styled(Box)(
   `
 );
 
-function ModalComponent({ open, handleClose, children }) {
+function ModalComponent({ open = false, handleClose = () => {}, children }) {
   return (
     <Modal
       open={open}

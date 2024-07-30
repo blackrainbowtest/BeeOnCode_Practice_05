@@ -24,7 +24,7 @@ export const theme = {
       grey: '#B3B3B4',
     },
     error: {
-      main: '#ff0000',
+      main: '#F44336',
       text: '#ffffff',
       hover: '#e57373'
     },

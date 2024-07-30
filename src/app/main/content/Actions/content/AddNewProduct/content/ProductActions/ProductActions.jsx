@@ -7,7 +7,7 @@ import { resetNewData } from "features/Product/ProductSlice";
 import { addProduct } from "features/Product/ProductAPI";
 import { getCurrentFullUnixTime } from "utils/validation";
 
-function ProductActions({ close }) {
+function ProductActions({ close, props }) {
   const dispatch = useDispatch();
   const productData = useSelector((state) => state?.product?.newData);
   const user = useSelector((state) => state?.user?.user);
@@ -15,11 +15,29 @@ function ProductActions({ close }) {
   const handleAddButtonClick = useCallback(
     (event) => {
       const currentTime = getCurrentFullUnixTime();
-      dispatch(addProduct({ productData, userId: user.id, currentTime }));
+      console.log(props.selectedCategory)
+      dispatch(
+        addProduct({
+          productData,
+          userId: user.id,
+          currentTime,
+          gender: props.gender,
+          category: props.selectedCategory,
+          subcategory: props.selectedSubCategory,
+        })
+      );
       dispatch(resetNewData());
       close();
     },
-    [close, dispatch, productData, user.id]
+    [
+      close,
+      dispatch,
+      productData,
+      props.gender,
+      props.selectedCategory,
+      props.selectedSubCategory,
+      user.id,
+    ]
   );
 
   const handleWatchButtonClick = useCallback((event) => {

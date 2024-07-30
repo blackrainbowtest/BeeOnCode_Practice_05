@@ -5,7 +5,7 @@ import FilterProduct from "./content/Filter/Filter";
 
 const AbsolutePositionAddContainer = styled("div")(
   ({ theme }) => `
-    position: absolute;
+    position: fixed;
     top: 40%;
     right: 0;
     transform: translateY(-50%);
@@ -13,7 +13,7 @@ const AbsolutePositionAddContainer = styled("div")(
 );
 const AbsolutePositionFilterContainer = styled("div")(
   ({ theme }) => `
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 0;
     transform: translateY(-50%);

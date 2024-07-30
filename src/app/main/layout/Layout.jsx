@@ -40,6 +40,7 @@ const LayoutContainer = styled.div`
   position: sticky;
   top: 0px;
   background: ${(props) => props.theme.palette.background.default}!important;
+  z-index: 555;
 
   @media (max-width: 768px) {
     padding: 0px 10px;

@@ -25,10 +25,10 @@ export const getProducts = createAsyncThunk(
 // FIXME: add post and patch API later
 export const addProduct = createAsyncThunk(
     'products/addproducts',
-    async ({ productData, userId, currentTime }, { dispatch, rejectWithValue }) => {
+    async ({ productData, userId, currentTime, gender, category, subcategory }, { dispatch, rejectWithValue }) => {
         try {
             const base64Image = productData.images.length ? await convertImageToBase64(productData.images) : null;
-            const response = await axios.post(url, { ...productData, images: base64Image, user_id: userId, currentTime });
+            const response = await axios.post(url, { ...productData, images: base64Image, user_id: userId, currentTime, gender, category: category, subcategory });
             dispatch(addNotification("Product add successful"))
             return response.data;
         } catch (err) {
@@ -39,3 +39,19 @@ export const addProduct = createAsyncThunk(
         }
     }
 );
+
+export const deleteProduct = createAsyncThunk(
+    'products/deleteProduct',
+    async (product, { dispatch, rejectWithValue }) => {
+        try {
+            await axios.delete(`${url}/${product.id}`)
+            dispatch(addNotification(`Product ${product.article.length ? product.article : "A555"} delete successful`))
+            return product.id
+        } catch (err) {
+            dispatch(addError(err.message));
+            return rejectWithValue(err.message);
+        } finally {
+            dispatch(setLoading(false)); // maybe i dont need this one IDK
+        }
+    }
+)

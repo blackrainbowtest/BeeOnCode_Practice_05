@@ -7,7 +7,7 @@ import Category from './content/Category/Category';
 const MainContainer = styled(Box)`
   width: 100%;
   min-height: 80px;
-  padding: 30px 30px 0px 30px;
+  padding: 30px 0px 0px 0px;
   overflow: hidden;
   background: ${(props) => props.theme.palette.background.main}!important;
   display: flex;

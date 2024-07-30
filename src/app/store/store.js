@@ -4,6 +4,7 @@ import subCategoryReducer from 'features/SubCategory/SubCategorySlice'
 import globalReducer from 'features/global/GlobalSlice'
 import userReducer from 'features/auth/userSlice';
 import productReducer from 'features/Product/ProductSlice'
+import filterReducer from 'features/Filter/FilterSlice'
 
 export const store = configureStore({
     reducer: {
@@ -12,5 +13,13 @@ export const store = configureStore({
         user: userReducer,
         global: globalReducer,
         product: productReducer,
+        filter: filterReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['product/addNewImage'],
+                ignoredPaths: ['product.newData.images'],
+            },
+        }),
 });
