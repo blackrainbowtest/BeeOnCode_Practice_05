@@ -4,7 +4,7 @@ import { decodeBase64ToImage } from "utils/image";
 import noImage from "images/noImage.jpg";
 
 function DataImage({ images }) {
-  return images ? (
+  return images.length ? (
     <ImageItem src={decodeBase64ToImage(images[0])} alt={images[0].alt} />
   ) : (
     <ImageItem src={noImage} alt={"No image"} />

@@ -8,13 +8,19 @@ import ClearIcon from "@mui/icons-material/Clear";
 import ModalComponent from "app/shared-components/ModalComponent";
 import TitleActionComponent from "app/shared-components/TitleActionComponent";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
-import { useDispatch } from 'react-redux';
-import { deleteProduct } from 'features/Product/ProductAPI';
+import { useDispatch } from "react-redux";
+import { deleteProduct } from "features/Product/ProductAPI";
+import NewProduct from "app/main/content/Actions/content/AddNewProduct/content/NewProduct";
+import { setNewData } from "features/Product/ProductSlice";
 
 function DataAction({ elm }) {
   const [isActive, setIsActive] = useState(false);
   const [isModal, setIsModal] = useState(false);
-  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const dispatch = useDispatch();
 
   const handleClickButton = (event) => {
     setIsActive((prev) => !prev);
@@ -25,11 +31,12 @@ function DataAction({ elm }) {
   const handleCloseModal = () => {
     setIsModal(false);
   };
-  const handleEditButton = (event) => {
-    console.log("I am edit this");
+  const handleEditButton = async (event) => {
+    dispatch(setNewData(elm));
+    handleOpen();
   };
   const handleDeleteProduct = () => {
-    dispatch(deleteProduct(elm))
+    dispatch(deleteProduct(elm));
     setIsModal(false);
   };
   return (
@@ -82,6 +89,9 @@ function DataAction({ elm }) {
           </ActionContentContainer>
         </ModalComponent>
       ) : null}
+      <ModalComponent open={open} handleClose={handleClose}>
+        <NewProduct handleClose={handleClose} />
+      </ModalComponent>
     </MainContainer>
   );
 }
@@ -138,7 +148,7 @@ const ModalContentContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   padding: "5px 15px 5px 15px",
-  gap: "20px"
+  gap: "20px",
 }));
 
 const ActionButtonStyle = ({ theme }) => css`

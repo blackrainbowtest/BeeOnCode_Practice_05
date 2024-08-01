@@ -23,22 +23,36 @@ function NewProduct({ handleClose }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(resetNewData());
+    if (!productData.id) {
+      dispatch(resetNewData());
+      if (category.length === 0) {
+        return;
+      }
 
-    if (category.length === 0) {
-      return;
-    }
+      const currentSubCategory = subCategory.filter(
+        (sb) => sb.parent === selectedCategory
+      );
 
-    const currentSubCategory = subCategory.filter(
-      (sb) => sb.parent === selectedCategory
-    );
-
-    if (currentSubCategory.length) {
-      setSelectedSubCategory(currentSubCategory[0].id);
+      if (currentSubCategory.length) {
+        setSelectedSubCategory(currentSubCategory[0].id);
+      } else {
+        setSelectedSubCategory("");
+      }
     } else {
-      setSelectedSubCategory("");
+      setGender(productData.gender);
+      setSelectedCategory(productData.category);
+      setSelectedSubCategory(productData.subcategory);
     }
-  }, [category, dispatch, selectedCategory, subCategory]);
+  }, [
+    category,
+    dispatch,
+    productData.category,
+    productData.gender,
+    productData.id,
+    productData.subcategory,
+    selectedCategory,
+    subCategory,
+  ]);
 
   useEffect(() => {
     const currentCategory = category.filter((c) => c.gender === gender);
@@ -50,7 +64,7 @@ function NewProduct({ handleClose }) {
     <MainContainer>
       {Object.keys(productData).length !== 0 ? (
         <>
-          <TitleActionComponent close={handleClose} title={"Add product"} />
+          <TitleActionComponent close={handleClose} title={productData.id ? "Edit product" : "Add product"} />
           <ProductClassification
             props={{
               gender,

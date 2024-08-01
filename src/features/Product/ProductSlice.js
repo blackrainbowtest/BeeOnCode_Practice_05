@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, getProducts, deleteProduct } from './ProductAPI';
+import { addProduct, getProducts, deleteProduct, patchProduct } from './ProductAPI';
 
 const initialState = {
     data: [],
@@ -10,6 +10,9 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+        setNewData: (state, action) => {
+            state.newData = action.payload
+        },
         resetNewData: (state, _) => {
             state.newData = {
                 article: "",
@@ -402,7 +405,6 @@ const productSlice = createSlice({
             }
         },
     },
-    // FIXME: Add extra reducers
     extraReducers: (builder) => {
         builder
             .addCase(getProducts.fulfilled, (state, action) => {
@@ -414,13 +416,16 @@ const productSlice = createSlice({
             .addCase(deleteProduct.fulfilled, (state, action) => {
                 state.data = state.data.filter((prod) => prod.id !== action.payload)
             })
+            .addCase(patchProduct.fulfilled, (state, action) => {
+                state.data = state.data.map((prod) => prod.id === action.payload.id ? action.payload : prod)
+            })
     },
 });
 
 export default productSlice.reducer;
 
 export const {
-    resetNewData, addNewImage, removeImage, productDataTag, productArticle, addGold,
+    setNewData, resetNewData, addNewImage, removeImage, productDataTag, productArticle, addGold,
     removeGold, changeGoldProb, changeStartWeight, changeWeight, changeGoldDrice,
     productPriceChange, productProductionPriceChange, removeStone, addStone, stoneTypeChange,
     stoneCountChange, stoneDiametrChange, stoneWeightChange, stoneQualityChange, stonePriceChange,

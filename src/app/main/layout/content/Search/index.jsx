@@ -41,6 +41,7 @@ function Search() {
   };
 
   const handleClickSearching = (event) => {
+    // FIXME: Unknown searching logic, what fields are searched, how and where the results are displayed.
     console.log("Start searching");
   };
 

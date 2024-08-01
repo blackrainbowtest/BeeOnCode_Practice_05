@@ -5,9 +5,6 @@ import { memo, useCallback, useState } from "react";
 // import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import styled, { css } from "styled-components";
-import KaratContent from "../KaratContent";
-import PriceContent from "../PriceContent";
-import ProductionPrice from "../ProductionPrice";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,18 +12,17 @@ import {
   resetFilter,
   setFiltredData,
 } from "features/Filter/FilterSlice";
+import SliderComponent from "app/shared-components/SliderComponent";
 
 function MenuContent({ isopen }) {
   const filterData = useSelector((state) => state?.filter);
   const productData = useSelector((state) => state?.product);
-  const [value, setValue] = useState(null);
-  const [value2, setValue2] = useState(null);
-  const [carat, setCarat] = useState(null);
-  const [carat2, setCarat2] = useState(null);
-  const [price, setPrice] = useState(null);
-  const [price2, setPrice2] = useState(null);
-  const [prodPrice, setprodPrice] = useState(null);
-  const [prodPrice2, setprodPrice2] = useState(null);
+
+  const [value, setValue] = useState([null, null]);
+  const [weight, setWeight] = useState([0, 1000]);
+  const [carat, setCarat] = useState([0, 1000]);
+  const [price, setPrice] = useState([0, 100000]);
+  const [prodPrice, setprodPrice] = useState([0, 100000]);
   const dispatch = useDispatch();
 
   const handleFilterButtonClick = useCallback(() => {
@@ -36,33 +32,46 @@ function MenuContent({ isopen }) {
       dispatch(changeFilter(true));
       const tempData = productData.data.filter((elm) => {
         const currentTime = elm.currentTime;
-        const currentCarat = elm.stones.weight;
+        const currentWeight = elm.golds.reduce(
+          (sum, stone) => sum + stone.weight,
+          0
+        );
+        const currentCarat = elm.stones.reduce(
+          (sum, stone) => sum + stone.weight,
+          0
+        );
         const currentPrice = elm.price.price;
         const currentProdPrice = elm.price.productionPrice;
 
-        const isAfterValue = value ? currentTime >= value.valueOf() : true;
-
-        const isBeforeValue2 = value2 ? currentTime <= value2.valueOf() : true;
-
-        const isAfterCarat = carat ? currentCarat <= carat : true;
-
-        const isBeforeCarat = carat2 ? currentCarat <= carat2 : true;
-
-        const isAfterPrice = price ? currentPrice <= price : true;
-
-        const isBeforePrice = price2 ? currentPrice <= price2 : true;
-
-        const isAfterProdPrice = prodPrice
-          ? currentProdPrice <= prodPrice
+        const isAfterValue = value[0]
+          ? currentTime >= value[0].valueOf()
+          : true;
+        const isBeforeValue2 = value[1]
+          ? currentTime <= value[1].valueOf()
           : true;
 
-        const isBeforeProdPrice = prodPrice2
-          ? currentProdPrice <= prodPrice2
+        const isAfterWeight = weight[0] ? currentWeight >= weight[0] : true;
+        const isBeforeWeight = weight[1] ? currentWeight <= weight[1] : true;
+
+        const isAfterCarat = carat[0] ? currentCarat >= carat[0] : true;
+        const isBeforeCarat = carat[1] ? currentCarat <= carat[1] : true;
+
+        const isAfterPrice = price[0] ? currentPrice >= price[0] : true;
+        const isBeforePrice = price[1] ? currentPrice <= price[1] : true;
+
+        const isAfterProdPrice = prodPrice[0]
+          ? currentProdPrice >= prodPrice[0]
+          : true;
+
+        const isBeforeProdPrice = prodPrice[1]
+          ? currentProdPrice <= prodPrice[1]
           : true;
 
         return (
           isAfterValue &&
           isBeforeValue2 &&
+          isAfterWeight &&
+          isBeforeWeight &&
           isAfterCarat &&
           isBeforeCarat &&
           isAfterPrice &&
@@ -73,7 +82,16 @@ function MenuContent({ isopen }) {
       });
       dispatch(setFiltredData(tempData));
     }
-  }, [carat, carat2, dispatch, filterData.isFilter, price, price2, prodPrice, prodPrice2, productData.data, value, value2]);
+  }, [
+    carat,
+    dispatch,
+    filterData.isFilter,
+    price,
+    prodPrice,
+    productData.data,
+    value,
+    weight,
+  ]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -82,19 +100,47 @@ function MenuContent({ isopen }) {
           <DatePickerContainer>
             <DatePickerItem
               label='From'
-              value={value}
-              onChange={(newValue) => setValue(newValue)}
+              value={value[0]}
+              onChange={(newValue) => setValue((prev) => [newValue, prev[1]])}
             />
             <DatePickerItem
               label='To'
-              value={value2}
-              onChange={(newValue) => setValue2(newValue)}
+              value={value[1]}
+              onChange={(newValue) => setValue((prev) => [prev[0], newValue])}
             />
           </DatePickerContainer>
         </LocalizationProvider>
-        <KaratContent />
-        <PriceContent />
-        <ProductionPrice />
+
+        <SliderComponent
+          value={weight}
+          setValue={setWeight}
+          min={0}
+          max={1000}
+          adornment='gr'
+          title='Gold weight'
+        />
+        <SliderComponent
+          value={carat}
+          setValue={setCarat}
+          min={0}
+          max={1000}
+          title='Carat'
+        />
+        <SliderComponent
+          value={price}
+          setValue={setPrice}
+          min={0}
+          max={100000}
+          title='Price'
+        />
+        <SliderComponent
+          value={prodPrice}
+          setValue={setprodPrice}
+          min={0}
+          max={100000}
+          title='Production price'
+        />
+
         <ActionButtonComponent
           label={`${filterData.isFilter ? "Clear" : "Add"}`}
           customStyles={ActionButtonStyle}
@@ -129,25 +175,25 @@ const DatePickerContainer = styled(Box)(({ theme }) => ({
 const DatePickerItem = styled(DatePicker)(() => ({
   width: "140px",
   height: "30px",
-  fontSize: "14px", // Размер шрифта для ввода
+  fontSize: "14px",
   "& .MuiInputBase-root": {
     height: "100%",
   },
   "& .MuiFormLabel-root": {
     position: "absolute",
-    top: "50%", // Позиция лейбла в середине по вертикали
-    left: "5%", // Позиция лейбла по горизонтали
-    fontSize: "12px", // Размер шрифта лейбла
-    transform: "translateY(-50%)", // Центрирование по вертикали
-    transition: "all 0.2s ease", // Плавный переход
+    top: "50%",
+    left: "5%",
+    fontSize: "12px",
+    transform: "translateY(-50%)",
+    transition: "all 0.2s ease",
   },
   "& .MuiInputLabel-shrink": {
-    top: "-20%", // Позиция лейбла, когда он сдвинут вверх
+    top: "-20%",
     left: "12%",
-    transform: "translateY(0)", // Отменить вертикальное смещение
-    fontSize: "10px", // Размер шрифта для сжатого состояния
+    transform: "translateY(0)",
+    fontSize: "10px",
   },
   "& .MuiInputBase-input": {
-    fontSize: "12px", // Размер шрифта
+    fontSize: "12px",
   },
 }));

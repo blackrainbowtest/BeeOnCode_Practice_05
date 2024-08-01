@@ -24,10 +24,10 @@ export const getProducts = createAsyncThunk(
 
 // FIXME: add post and patch API later
 export const addProduct = createAsyncThunk(
-    'products/addproducts',
+    'products/addProducts',
     async ({ productData, userId, currentTime, gender, category, subcategory }, { dispatch, rejectWithValue }) => {
         try {
-            const base64Image = productData.images.length ? await convertImageToBase64(productData.images) : null;
+            const base64Image = productData.images.length ? await convertImageToBase64(productData.images) : [];
             const response = await axios.post(url, { ...productData, images: base64Image, user_id: userId, currentTime, gender, category: category, subcategory });
             dispatch(addNotification("Product add successful"))
             return response.data;
@@ -35,7 +35,7 @@ export const addProduct = createAsyncThunk(
             dispatch(addError(err.message));
             return rejectWithValue(err.message);
         } finally {
-            dispatch(setLoading(false)); // maybe i dont need this one IDK
+            dispatch(setLoading(false));
         }
     }
 );
@@ -51,7 +51,26 @@ export const deleteProduct = createAsyncThunk(
             dispatch(addError(err.message));
             return rejectWithValue(err.message);
         } finally {
-            dispatch(setLoading(false)); // maybe i dont need this one IDK
+            dispatch(setLoading(false));
         }
     }
 )
+
+export const patchProduct = createAsyncThunk(
+    'products/patchProducts',
+    async ({ productData, userId, currentTime, gender, category, subcategory }, { dispatch, rejectWithValue }) => {
+        try {
+            const base64Image = productData.images.length ? await convertImageToBase64(productData.images) : [];
+            const response = await axios.patch(`${url}/${productData.id}`, {
+                ...productData, images: base64Image, user_id: userId, currentTime, gender, category: category, subcategory
+            });
+            dispatch(addNotification("Product patch successful"))
+            return response.data;
+        } catch (err) {
+            dispatch(addError(err.message));
+            return rejectWithValue(err.message);
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+);

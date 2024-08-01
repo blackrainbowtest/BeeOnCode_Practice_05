@@ -3,6 +3,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from "@mui/icons-material/Close";
 import { memo } from "react";
 import styled from "styled-components";
+import { decodeBase64ToImage } from "utils/image";
 
 /**
  * Component for displaying a collection of images.
@@ -23,10 +24,17 @@ function ImageCollectionComponent({ images, callback, count }) {
     if (index < images.length) {
       return (
         <CollectionItemContainer key={index}>
-          <ImageItem
-            src={URL.createObjectURL(images[index])}
-            alt={images[index].alt}
-          />
+          {typeof images[index] === "string" ? (
+            <ImageItem
+              src={decodeBase64ToImage(images[index])}
+              alt={images[0].alt}
+            />
+          ) : (
+            <ImageItem
+              src={URL.createObjectURL(images[index])}
+              alt={images[index]?.alt}
+            />
+          )}
           <DeleteButton onClick={(e) => handleDeleteImage(e, index)}>
             <CloseIcon />
           </DeleteButton>

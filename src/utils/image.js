@@ -56,16 +56,20 @@ export function resizeImage(file, maxWidth, maxHeight, callback) {
 export async function convertImageToBase64(imageFiles) {
     if (Array.isArray(imageFiles)) {
         return Promise.all(imageFiles.map(file => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    resolve(reader.result.split(',')[1]);
-                };
-                reader.onerror = (error) => {
-                    reject(error);
-                };
-                reader.readAsDataURL(file);
-            });
+            if (typeof file === 'string') {
+                return file;
+            } else {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        resolve(reader.result.split(',')[1]);
+                    };
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
         }));
     } else {
         return new Promise((resolve, reject) => {

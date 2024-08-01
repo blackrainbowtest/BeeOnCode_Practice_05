@@ -4,7 +4,7 @@ import { memo, useCallback } from "react";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { resetNewData } from "features/Product/ProductSlice";
-import { addProduct } from "features/Product/ProductAPI";
+import { addProduct, patchProduct } from "features/Product/ProductAPI";
 import { getCurrentFullUnixTime } from "utils/validation";
 
 function ProductActions({ close, props }) {
@@ -15,17 +15,31 @@ function ProductActions({ close, props }) {
   const handleAddButtonClick = useCallback(
     (event) => {
       const currentTime = getCurrentFullUnixTime();
-      console.log(props.selectedCategory)
-      dispatch(
-        addProduct({
-          productData,
-          userId: user.id,
-          currentTime,
-          gender: props.gender,
-          category: props.selectedCategory,
-          subcategory: props.selectedSubCategory,
-        })
-      );
+
+      if (!productData.id) {
+        dispatch(
+          addProduct({
+            productData,
+            userId: user.id,
+            currentTime,
+            gender: props.gender,
+            category: props.selectedCategory,
+            subcategory: props.selectedSubCategory,
+          })
+        );
+      } else {
+        // FIXME: add patch reduces
+        dispatch(
+          patchProduct({
+            productData,
+            userId: user.id,
+            currentTime,
+            gender: props.gender,
+            category: props.selectedCategory,
+            subcategory: props.selectedSubCategory,
+          })
+        );
+      }
       dispatch(resetNewData());
       close();
     },
@@ -52,7 +66,7 @@ function ProductActions({ close, props }) {
         callback={handleWatchButtonClick}
       />
       <ActionButtonComponent
-        label='Add'
+        label={productData.id ? "Save" : "Add"}
         customStyles={ActionButtonStyle}
         callback={handleAddButtonClick}
       />
