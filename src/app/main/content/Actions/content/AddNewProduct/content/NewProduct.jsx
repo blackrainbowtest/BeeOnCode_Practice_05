@@ -64,7 +64,10 @@ function NewProduct({ handleClose }) {
     <MainContainer>
       {Object.keys(productData).length !== 0 ? (
         <>
-          <TitleActionComponent close={handleClose} title={productData.id ? "Edit product" : "Add product"} />
+          <TitleActionComponent
+            close={handleClose}
+            title={productData.id ? "Edit product" : "Add product"}
+          />
           <ProductClassification
             props={{
               gender,

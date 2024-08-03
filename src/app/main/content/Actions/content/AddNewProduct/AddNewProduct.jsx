@@ -5,11 +5,17 @@ import ModalComponent from "app/shared-components/ModalComponent/ModalComponent"
 import NewProduct from "./content/NewProduct";
 
 import { css } from "styled-components";
+import { useDispatch } from 'react-redux';
+import { resetNewData } from 'features/Product/ProductSlice';
 
 function AddNewProduct() {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    dispatch(resetNewData())
+    setOpen(false)
+  };
   return (
     <>
       <ActionButtonComponent

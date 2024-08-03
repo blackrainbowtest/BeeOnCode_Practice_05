@@ -11,16 +11,19 @@ import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import { useDispatch } from "react-redux";
 import { deleteProduct } from "features/Product/ProductAPI";
 import NewProduct from "app/main/content/Actions/content/AddNewProduct/content/NewProduct";
-import { setNewData } from "features/Product/ProductSlice";
+import { resetNewData, setNewData } from "features/Product/ProductSlice";
 
 function DataAction({ elm }) {
+  const dispatch = useDispatch();
+  
   const [isActive, setIsActive] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const dispatch = useDispatch();
+  const handleClose = () => {
+    dispatch(resetNewData());
+    setOpen(false);
+  };
 
   const handleClickButton = (event) => {
     setIsActive((prev) => !prev);
