@@ -11,6 +11,7 @@ import ProductStones from "./ProductStones";
 import ProductPrice from "./ProductPrice";
 import ProductActions from "./ProductActions";
 import { resetNewData } from "features/Product/ProductSlice";
+import { FormProvider, useForm } from "react-hook-form";
 
 function NewProduct({ handleClose }) {
   const category = useSelector((state) => state?.category?.data);
@@ -19,6 +20,40 @@ function NewProduct({ handleClose }) {
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const productData = useSelector((state) => state?.product?.newData);
+
+  const methods = useForm({
+    defaultValues: {
+      article: "",
+      tags: [],
+      images: [],
+      golds: [{ startWeight: "", weight: "", price: "", color: "", prob: "" }],
+      price: { productionPrice: "", price: "" },
+      stones: [
+        {
+          type: "",
+          count: "",
+          diametr: "",
+          weight: "",
+          quality: "",
+          price: "",
+          GIA: false,
+          number: "",
+        },
+      ],
+      works: [{ name: "", count: "", price: "", amount: "", comment: "" }],
+    },
+    mode: "onChange", // или 'onBlur' в зависимости от ваших предпочтений
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   const dispatch = useDispatch();
 
@@ -61,41 +96,30 @@ function NewProduct({ handleClose }) {
   }, [category, gender]);
 
   return (
-    <MainContainer>
-      {Object.keys(productData).length !== 0 ? (
-        <>
-          <TitleActionComponent
-            close={handleClose}
-            title={productData.id ? "Edit product" : "Add product"}
-          />
-          <ProductClassification
-            props={{
-              gender,
-              setGender,
-              selectedCategory,
-              setSelectedCategory,
-              selectedSubCategory,
-              setSelectedSubCategory,
-            }}
-          />
+    <FormProvider {...methods}>
+      <MainContainer>
+        <TitleActionComponent
+          close={handleClose}
+          title={productData.id ? "Edit product" : "Add product"}
+        />
+        <ProductClassification
+          props={{
+            gender,
+            setGender,
+            selectedCategory,
+            setSelectedCategory,
+            selectedSubCategory,
+            setSelectedSubCategory,
+          }}
+        />
+        <ContentContainer onSubmit={methods.handleSubmit(onSubmit)}>
           <ProductDetails />
-          <ContentContainer>
-            <ProductGold />
-            <ProductWork />
-            <ProductStones />
-            <ProductPrice />
-          </ContentContainer>
-          <ProductActions
-            close={handleClose}
-            props={{
-              gender,
-              selectedCategory,
-              selectedSubCategory,
-            }}
-          />
-        </>
-      ) : null}
-    </MainContainer>
+
+          <ProductPrice />
+          <button type='submit'>Submit</button>
+        </ContentContainer>
+      </MainContainer>
+    </FormProvider>
   );
 }
 
@@ -111,12 +135,32 @@ const MainContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: "10px",
   padding: "30px",
-  borderRadius: "5px",
+  borderRadius: "5px"
 }));
 
-const ContentContainer = styled(Box)(({ theme }) => ({
+const ContentContainer = styled("form")(({ theme }) => ({
   width: "100%",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
 }));
+
+// {/* <form onSubmit={methods.handleSubmit(onSubmit)}>
+//   <ProductDetails />
+//   {/*
+//           <ContentContainer>
+//             <ProductGold />
+//             <ProductWork />
+//             <ProductStones />
+//             
+//           </ContentContainer>
+//           <ProductActions
+//             close={handleClose}
+//             props={{
+//               gender,
+//               selectedCategory,
+//               selectedSubCategory,
+//             }}
+//           /> */}
+//   <button type='submit'>Submit</button>
+// </form>; */}

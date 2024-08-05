@@ -8,6 +8,7 @@ import { addProduct, patchProduct } from "features/Product/ProductAPI";
 import { getCurrentFullUnixTime } from "utils/validation";
 
 function ProductActions({ close, props }) {
+  // FIXME: hook-form import 
   const dispatch = useDispatch();
   const productData = useSelector((state) => state?.product?.newData);
   const user = useSelector((state) => state?.user?.user);

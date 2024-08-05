@@ -1,21 +1,25 @@
 import { memo } from "react";
 import TextInputComponent from "app/shared-components/TextInputComponent/TextInputComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { productArticle } from "features/Product/ProductSlice";
+import { useFormContext } from "react-hook-form";
 
 function ProductArticle() {
-  const dispatch = useDispatch();
-  const productData = useSelector((state) => state?.product?.newData);
-
-  const handleProductArticle = (data) => {
-    dispatch(productArticle(data));
-  };
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <TextInputComponent
       label='Article'
-      value={productData?.article}
-      callback={handleProductArticle}
+      {...register("article", {
+        required: "Article is required",
+        minLength: {
+          value: 4,
+          message: "Article must be at least 4 characters long",
+        },
+      })}
+      error={!!errors.article}
+      helperText={errors.article?.message || ""}
     />
   );
 }

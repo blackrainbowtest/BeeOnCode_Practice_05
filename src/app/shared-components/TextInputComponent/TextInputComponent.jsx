@@ -1,10 +1,10 @@
-import { memo } from "react";
+import React, { forwardRef, memo } from "react";
 import TextField from "@mui/material/TextField";
 import { InputAdornment } from "@mui/material";
 
-function TextInputComponent({
+const TextInputComponent = forwardRef(({
   value,
-  callback,
+  callback = () => {},
   id,
   label = "Text",
   variant = "standard",
@@ -12,7 +12,9 @@ function TextInputComponent({
   adornment = "",
   error,
   helperText = "error",
-}) {
+  onBlur,
+  ...rest
+}, ref) => {
   return (
     <TextField
       id={id}
@@ -28,8 +30,11 @@ function TextInputComponent({
           <InputAdornment position='end'>{adornment}</InputAdornment>
         ),
       }}
+      ref={ref}
+      {...rest}
+      onBlur={onBlur}
     />
   );
-}
+});
 
 export default memo(TextInputComponent);

@@ -1,38 +1,21 @@
-import { memo, useCallback, useState } from "react";
+import { memo } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  productPriceChange,
-  productProductionPriceChange,
-} from "features/Product/ProductSlice";
+import { useFormContext, Controller } from "react-hook-form";
 
 function ProductPrice() {
-  const dispatch = useDispatch();
-  const productData = useSelector((state) => state?.product?.newData);
-  const [isPriceError, setIsPriceError] = useState(false);
-  const [isPrPriceError, setIsPrPriceError] = useState(false);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
-  const handlePriceChange = useCallback(
-    (data) => {
-      setIsPriceError(!/^\d*$/.test(data));
-      dispatch(productPriceChange(data));
-    },
-    [dispatch]
-  );
-
-  const handleProductionPriceChange = useCallback(
-    (data) => {
-      setIsPrPriceError(!/^\d*$/.test(data));
-      dispatch(productProductionPriceChange(data));
-    },
-    [dispatch]
-  );
+  const hasPriceError = errors.price?.price;
+  const hasProductionPriceError = errors.price?.productPrice;
 
   const header = (
-    <HeaderContainer>
+    <HeaderContainer haserror={hasPriceError || hasProductionPriceError}>
       <svg
         width='18'
         height='18'
@@ -48,34 +31,63 @@ function ProductPrice() {
       Price
     </HeaderContainer>
   );
+
   const content = (
     <ContentContainer>
-      <TextInputComponent
-        label='Production price'
-        value={productData.price.productPrice}
-        callback={handleProductionPriceChange}
-        error={isPrPriceError}
-        helperText='The productionprice must be a number'
+      <Controller
+        name='price.productPrice'
+        control={control}
+        defaultValue=''
+        rules={{
+          required: "Production price is required",
+          validate: (value) =>
+            /^\d+(\.\d{1,2})?$/.test(value) ||
+            "The production price must be a number",
+        }}
+        render={({ field, fieldState }) => (
+          <TextInputComponent
+            label='Production price'
+            value={field.value}
+            onChange={field.onChange} // Обработчик изменений
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
       />
-      <TextInputComponent
-        label='Price'
-        value={productData.price.price}
-        callback={handlePriceChange}
-        error={isPriceError}
-        helperText='The price must be a number'
+      <Controller
+        name='price.price'
+        control={control}
+        defaultValue=''
+        rules={{
+          required: "Price is required",
+          validate: (value) =>
+            /^\d+(\.\d{1,2})?$/.test(value) || "The price must be a number",
+        }}
+        render={({ field, fieldState }) => (
+          <TextInputComponent
+            label='Price'
+            value={field.value}
+            onChange={field.onChange} // Обработчик изменений
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
       />
     </ContentContainer>
   );
+
   return <AccordionComponent header={header} content={content} />;
 }
 
 export default memo(ProductPrice);
 
-const HeaderContainer = styled(Box)(() => ({
+const HeaderContainer = styled(Box)(({ theme, haserror }) => ({
   width: "100%",
   display: "flex",
   gap: "10px",
+  color: haserror ? theme.palette.error.main : theme.palette.text.primary,
 }));
+
 const ContentContainer = styled(Box)(() => ({
   width: "100%",
   display: "flex",

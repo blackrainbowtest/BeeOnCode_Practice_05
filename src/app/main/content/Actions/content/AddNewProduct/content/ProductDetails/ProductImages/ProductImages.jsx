@@ -1,56 +1,64 @@
 import { Box } from "@mui/material";
 import ImageCollectionComponent from "app/shared-components/ImageCollectionComponent";
 import ImageUploadComponent from "app/shared-components/ImageUploadComponent";
-import { addNewImage, removeImage } from "features/Product/ProductSlice";
-import { memo, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { memo } from "react";
+import { useFormContext, Controller, useWatch } from "react-hook-form";
 import styled from "styled-components";
 
 const MAX_IMAGES = 4;
 
 function ProductImages() {
-  const dispatch = useDispatch();
-  const productData = useSelector((state) => state?.product?.newData);
+  const { control, setValue, clearErrors } = useFormContext();
 
-  /**
-   * add image to NewProduct Images array
-   * @param {File} newImage
-   */
-  const handleAddNewImage = useCallback(
-    (newImage) => {
-      if (productData?.images && productData.images.length < MAX_IMAGES) {
-        dispatch(addNewImage(newImage));
-      }
-    },
-    [dispatch, productData.images]
-  );
+  const images = useWatch({ control, name: "images" }) || [];
 
-  /**
-   * remove image from NewProduct Images array
-   * @param {Number} removedImageIndex
-   */
-  const handleRemoveImage = useCallback(
-    (removedImageIndex) => {
-      if (productData.images.length) {
-        dispatch(removeImage(removedImageIndex));
-      }
-    },
-    [dispatch, productData.images]
-  );
+  const handleAddNewImage = (newImage) => {
+    if (images.length < MAX_IMAGES) {
+      setValue("images", [...images, newImage]);
+
+      clearErrors("images");
+    }
+  };
+
+  const handleRemoveImage = (removedImageIndex) => {
+    const updatedImages = images.filter(
+      (_, index) => index !== removedImageIndex
+    );
+    setValue("images", updatedImages);
+
+    if (updatedImages.length === 0) {
+      clearErrors("images");
+    }
+  };
 
   return (
     <ImageContainer>
       <UploadContainer>
-        <ImageUploadComponent
-          callback={handleAddNewImage}
-          disabled={
-            productData?.images && productData?.images?.length >= MAX_IMAGES
-          }
+        <Controller
+          name='images'
+          control={control}
+          defaultValue={[]}
+          rules={{
+            validate: (value) => value.length > 0 || "Image is required",
+          }}
+          render={({ field, fieldState }) => (
+            <>
+              <ImageUploadComponent
+                callback={handleAddNewImage}
+                disabled={field.value.length >= MAX_IMAGES}
+                label={
+                  fieldState.error && (
+                    <ErrorText>{fieldState.error.message}</ErrorText>
+                  )
+                }
+              />
+            </>
+          )}
         />
       </UploadContainer>
       <CollectionContainer>
         <ImageCollectionComponent
-          images={productData.images}
+          images={images}
           callback={handleRemoveImage}
           count={MAX_IMAGES}
         />
@@ -79,4 +87,9 @@ const UploadContainer = styled("div")(() => ({
 
 const CollectionContainer = styled("div")(() => ({
   minHeight: "34px",
+}));
+
+const ErrorText = styled("div")(({ theme }) => ({
+  color: theme.palette.error.main,
+  fontSize: "0.875rem",
 }));

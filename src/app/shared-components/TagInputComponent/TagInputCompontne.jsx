@@ -38,56 +38,55 @@ const CustomChip = styled(Chip)(({ theme }) => ({
 }));
 
 function TagInputComponent({
-  value = [],
-  callback,
-  id,
+  field,
+  fieldState,
   label = "Tags",
   variant = "standard",
 }) {
+  const { value, onChange, onBlur } = field;
+  const { error } = fieldState;
+
   const handleAddTag = (_, tagToAdd) => {
     if (typeof tagToAdd === "string") {
       if (tagToAdd.trim() && !value.includes(tagToAdd.trim())) {
-        callback([...value, tagToAdd.trim()]);
+        onChange([...value, tagToAdd.trim()]);
       }
     } else if (tagToAdd && tagToAdd.length > value.length) {
-      callback(tagToAdd);
+      onChange(tagToAdd);
     }
   };
 
   const handleDeleteTag = (tagToDelete) => {
-    callback(value.filter((tag) => tag !== tagToDelete));
+    onChange(value.filter((tag) => tag !== tagToDelete));
   };
 
   return (
     <AutocompleteContainer
       multiple
-      id={id}
+      id={field.name}
       options={[]}
       value={value}
       freeSolo
       onChange={handleAddTag}
+      onBlur={onBlur}
       renderTags={(value) =>
-        value.map((option, index) => {
-          return (
-            <CustomChip
-              key={index}
-              variant='outlined'
-              label={option}
-              onDelete={() => handleDeleteTag(option)}
-              deleteIcon={<CloseIcon className='custom-delete-icon' />}
-            />
-          );
-        })
+        value.map((option, index) => (
+          <CustomChip
+            key={index}
+            variant='outlined'
+            label={option}
+            onDelete={() => handleDeleteTag(option)}
+            deleteIcon={<CloseIcon className='custom-delete-icon' />}
+          />
+        ))
       }
       renderInput={(params) => (
         <TextFieldContainer
           {...params}
           label={label}
           variant={variant}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: null,
-          }}
+          error={!!error}
+          helperText={error ? error.message : ""}
         />
       )}
     />

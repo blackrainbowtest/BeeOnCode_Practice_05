@@ -1,22 +1,25 @@
 import React, { memo } from "react";
+import { useFormContext, Controller } from "react-hook-form";
 import TagInputComponent from "app/shared-components/TagInputComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { productDataTag } from "features/Product/ProductSlice";
 
 function ProductTags() {
-  const dispatch = useDispatch();
-  const productData = useSelector((state) => state?.product?.newData);
-
-  const setProductDataTag = (tagArray) => {
-    dispatch(productDataTag(tagArray));
-  };
+  const { control, formState: { errors } } = useFormContext();
 
   return (
-    <TagInputComponent
-      value={productData.tags}
-      callback={setProductDataTag}
-      id='tag-input'
-      label='Enter tags'
+    <Controller
+      name="tags"
+      control={control}
+      defaultValue={[]}
+      rules={{
+        validate: value => value.length > 0 || "At least one tag is required"
+      }}
+      render={({ field, fieldState }) => (
+        <TagInputComponent
+          field={field}
+          fieldState={fieldState}
+          label="Enter tags"
+        />
+      )}
     />
   );
 }
