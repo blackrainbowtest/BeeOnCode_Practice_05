@@ -1,29 +1,30 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { changeWeight } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-function ProductGoldWeight({ props }) {
-  const { gold, index } = props;
-  const [isWeightError, setIsWeightError] = useState(false);
-  const dispatch = useDispatch();
+function ProductGoldWeight({ gold, index }) {
+  const { control } = useFormContext();
 
-  const handleWeightChange = useCallback(
-    (data) => {
-      setIsWeightError(!/^\d*\.?\d*$/.test(data));
-      dispatch(changeWeight({ index, data }));
-    },
-    [dispatch, index]
-  );
-  
   return (
-    <TextInputComponent
-      label='Weight'
-      value={gold.weight}
-      callback={handleWeightChange}
-      error={isWeightError}
-      helperText='Not a number'
-      adornment='Gr'
+    <Controller
+      name={`golds.${index}.weight`}
+      control={control}
+      defaultValue={gold?.weight ?? ""}
+      rules={{
+        required: "Gold weight is required",
+        validate: (value) =>
+          /^\d+(\.\d{1,2})?$/.test(value) || "Weight must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Weight'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+          adornment='Gr'
+        />
+      )}
     />
   );
 }

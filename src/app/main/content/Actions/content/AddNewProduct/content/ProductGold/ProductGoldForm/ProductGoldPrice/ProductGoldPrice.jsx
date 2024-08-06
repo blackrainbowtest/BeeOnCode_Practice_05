@@ -1,29 +1,29 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { changeGoldDrice } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-function ProductGoldPrice({ props }) {
-  const { gold, index } = props;
-  const [isPriceError, setIsPriceError] = useState(false);
-  const dispatch = useDispatch();
+function ProductGoldPrice({ gold, index }) {
+  const { control } = useFormContext();
 
-  const handlePriceChange = useCallback(
-    (data) => {
-      setIsPriceError(!/^\d*\.?\d*$/.test(data));
-      dispatch(changeGoldDrice({ index, data }));
-    },
-    [dispatch, index]
-  );
-  
   return (
-    <TextInputComponent
-      label='Price'
-      value={gold.price}
-      callback={handlePriceChange}
-      error={isPriceError}
-      helperText='Not a number'
-      adornment='$'
+    <Controller
+      name={`golds.${index}.price`}
+      control={control}
+      defaultValue={gold?.price ?? ""}
+      rules={{
+        required: "Gold price is required",
+        validate: (value) =>
+          /^\d+(\.\d{1,2})?$/.test(value) || "Price must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Price'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }

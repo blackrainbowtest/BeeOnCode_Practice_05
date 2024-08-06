@@ -1,24 +1,27 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { stoneTypeChange } from "features/Product/ProductSlice";
-import { memo, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-function ProductStoneType({ props }) {
-  const { stone, index } = props;
-  const dispatch = useDispatch();
-
-  const handleTypeChange = useCallback(
-    (data) => {
-      dispatch(stoneTypeChange({ index, data }));
-    },
-    [dispatch, index]
-  );
+function ProductStoneType({ stone, index }) {
+  const { control } = useFormContext();
 
   return (
-    <TextInputComponent
-      label='Type'
-      value={stone.type}
-      callback={handleTypeChange}
+    <Controller
+      name={`stones.${index}.type`}
+      control={control}
+      defaultValue={stone?.type ?? ""}
+      rules={{
+        required: "Stone type is required",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Type'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }

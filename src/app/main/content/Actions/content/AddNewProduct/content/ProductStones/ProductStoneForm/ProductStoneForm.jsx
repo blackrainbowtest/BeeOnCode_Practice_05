@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import styled, { css } from "styled-components";
 import ProductStonesType from "./ProductStonesType";
 import ProductStonesCount from "./ProductStonesCount";
@@ -11,37 +11,26 @@ import ProductStonesNumber from "./ProductStonesNumber";
 import ProductStonesGIA from "./ProductStonesGIA";
 import ButtonRemoveComponent from "app/shared-components/ButtonRemoveComponent";
 import ButtonAddComponent from "app/shared-components/ButtonAddComponent";
-import { useDispatch } from "react-redux";
-import { addStone, removeStone } from "features/Product/ProductSlice";
 
-function ProductStoneForm({ stone, index, canDelete, addNew }) {
-  const dispatch = useDispatch();
-
-  const handleRemoveStone = useCallback(() => {
-    dispatch(removeStone());
-  }, [dispatch]);
-
-  const handleAddStone = useCallback(() => {
-    dispatch(addStone());
-  }, [dispatch]);
+function ProductStoneForm({ stone, index, canDelete, addNew, onRemove, onAdd }) {
 
   return (
     <ContentContainer>
-      <ProductStonesType props={{ stone, index }} />
-      <ProductStonesCount props={{ stone, index }} />
-      <ProductStonesDiametr props={{ stone, index }} />
-      <ProductStonesWeight props={{ stone, index }} />
-      <ProductStonesQuality props={{ stone, index }} />
-      <ProductStonesPrice props={{ stone, index }} />
-      <ProductStonesGIA props={{ stone, index }} />
-      <ProductStonesNumber props={{ stone, index }} />
+      <ProductStonesType stone={stone} index={index} />
+      <ProductStonesCount stone={stone} index={index} />
+      <ProductStonesDiametr stone={stone} index={index} />
+      <ProductStonesWeight stone={stone} index={index} />
+      <ProductStonesQuality stone={stone} index={index} />
+      <ProductStonesPrice stone={stone} index={index} />
+      <ProductStonesGIA stone={stone} index={index} />
+      <ProductStonesNumber stone={stone} index={index} />
       <AddNewContainer>
         {canDelete ? (
           <Empty />
         ) : (
-          <ButtonRemoveComponent index={index} callback={handleRemoveStone} />
+          <ButtonRemoveComponent index={index} callback={onRemove} />
         )}
-        {addNew ? <ButtonAddComponent callback={handleAddStone} /> : <Empty />}
+        {addNew ? <ButtonAddComponent callback={onAdd} /> : <Empty />}
       </AddNewContainer>
     </ContentContainer>
   );

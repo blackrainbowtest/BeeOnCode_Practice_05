@@ -1,25 +1,31 @@
 import { Box } from "@mui/material";
 import ButtonProbComponent from "app/shared-components/ButtonProbComponent";
-import { changeGoldProb } from "features/Product/ProductSlice";
-import { memo, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
 
-function ProductGoldProb({ props }) {
-  const { gold, index } = props;
-  const dispatch = useDispatch();
+function ProductGoldProb({ index }) {
+  const { control, trigger, setValue   } = useFormContext();
+  
+  const { fields,} = useFieldArray({
+    control,
+    name: "golds",
+  });
 
-  const handleProbChange = useCallback(
-    (_, data) => {
-      dispatch(changeGoldProb({ index, data }));
-    },
-    [dispatch, index]
-  );
+  const gold = fields[index] || {};
+
+  const handleProbChange = (prob, color) => {
+    const updatedGold = { ...gold, prob, color };
+    setValue(`golds.${index}`, updatedGold);
+    gold.prob = prob
+    gold.color = color
+    trigger();
+  };
+
   return (
     <AddNewContainer>
       <ButtonProbComponent
         label='585'
-        callback={handleProbChange}
+        callback={() => handleProbChange(585, 1)}
         prob={585}
         color={1}
         customStyles={GoldProbStyle}
@@ -27,7 +33,7 @@ function ProductGoldProb({ props }) {
       />
       <ButtonProbComponent
         label='585'
-        callback={handleProbChange}
+        callback={() => handleProbChange(585, 2)}
         prob={585}
         color={2}
         customStyles={GoldProbStyle}
@@ -35,7 +41,7 @@ function ProductGoldProb({ props }) {
       />
       <ButtonProbComponent
         label='585'
-        callback={handleProbChange}
+        callback={() => handleProbChange(585, 3)}
         prob={585}
         color={3}
         customStyles={GoldProbStyle}
@@ -43,7 +49,7 @@ function ProductGoldProb({ props }) {
       />
       <ButtonProbComponent
         label='750'
-        callback={handleProbChange}
+        callback={() => handleProbChange(750, 1)}
         prob={750}
         color={1}
         customStyles={GoldProbStyle}
@@ -51,7 +57,7 @@ function ProductGoldProb({ props }) {
       />
       <ButtonProbComponent
         label='750'
-        callback={handleProbChange}
+        callback={() => handleProbChange(750, 2)}
         prob={750}
         color={2}
         customStyles={GoldProbStyle}
@@ -59,7 +65,7 @@ function ProductGoldProb({ props }) {
       />
       <ButtonProbComponent
         label='750'
-        callback={handleProbChange}
+        callback={() => handleProbChange(750, 3)}
         prob={750}
         color={3}
         customStyles={GoldProbStyle}
@@ -69,7 +75,7 @@ function ProductGoldProb({ props }) {
   );
 }
 
-export default memo(ProductGoldProb);
+export default ProductGoldProb;
 
 const AddNewContainer = styled(Box)(() => ({
   minWidth: "50%",

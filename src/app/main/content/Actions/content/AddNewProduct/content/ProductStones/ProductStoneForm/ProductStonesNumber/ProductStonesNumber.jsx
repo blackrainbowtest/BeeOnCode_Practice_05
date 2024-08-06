@@ -1,24 +1,24 @@
+import { Controller, useFormContext } from "react-hook-form";
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { stoneNumberChange } from "features/Product/ProductSlice";
-import { memo, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
 
-function ProductStonesNumber({ props }) {
-  const { stone, index } = props;
-  const dispatch = useDispatch();
-
-  const handleNumberChange = useCallback(
-    (data) => {
-      dispatch(stoneNumberChange({ index, data }));
-    },
-    [dispatch, index]
-  );
+function ProductStonesNumber({ stone, index }) {
+  const { control } = useFormContext();
 
   return (
-    <TextInputComponent
-      label='Number'
-      value={stone.number}
-      callback={handleNumberChange}
+    <Controller
+      name={`stones.${index}.number`}
+      control={control}
+      defaultValue={stone?.number ?? ''}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Number'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }

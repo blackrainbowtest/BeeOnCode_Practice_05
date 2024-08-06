@@ -1,24 +1,27 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { stoneQualityChange } from "features/Product/ProductSlice";
-import { memo, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from 'react-hook-form';
 
-function ProductStonesQuality({ props }) {
-  const { stone, index } = props;
-  const dispatch = useDispatch();
-
-  const handleQualityChange = useCallback(
-    (data) => {
-      dispatch(stoneQualityChange({ index, data }));
-    },
-    [dispatch, index]
-  );
+function ProductStonesQuality({ stone, index }) {
+  const { control } = useFormContext();
   
   return (
-    <TextInputComponent
-      label='Quality'
-      value={stone.quality}
-      callback={handleQualityChange}
+    <Controller
+      name={`stones.${index}.quality`}
+      control={control}
+      defaultValue={stone?.quality ?? ""}
+      rules={{
+        required: "Stone quality is required",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Quality'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }

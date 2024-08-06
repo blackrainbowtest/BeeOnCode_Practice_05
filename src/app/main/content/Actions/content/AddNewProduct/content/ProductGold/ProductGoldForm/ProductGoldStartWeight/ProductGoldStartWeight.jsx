@@ -1,28 +1,30 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { changeStartWeight } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from 'react-hook-form';
 
-function ProductGoldStartWeight({ props }) {
-  const { gold, index } = props;
-  const [isStartWeightError, setIsStartWeightError] = useState(false);
-  const dispatch = useDispatch();
+function ProductGoldStartWeight({ gold, index }) {
+  const { control } = useFormContext();
 
-  const handleStartWeightChange = useCallback(
-    (data) => {
-      setIsStartWeightError(!/^\d*\.?\d*$/.test(data));
-      dispatch(changeStartWeight({ index, data }));
-    },
-    [dispatch, index]
-  );
   return (
-    <TextInputComponent
-      label='St. weight'
-      value={gold.startWeight}
-      callback={handleStartWeightChange}
-      error={isStartWeightError}
-      helperText='Not a number'
-      adornment='Gr'
+    <Controller
+      name={`golds.${index}.startWeight`}
+      control={control}
+      defaultValue={gold?.startWeight ?? ""}
+      rules={{
+        required: "Gold startWeight is required",
+        validate: (value) =>
+          /^\d+(\.\d{1,2})?$/.test(value) || "St. weight must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='St. weight'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+          adornment='Gr'
+        />
+      )}
     />
   );
 }

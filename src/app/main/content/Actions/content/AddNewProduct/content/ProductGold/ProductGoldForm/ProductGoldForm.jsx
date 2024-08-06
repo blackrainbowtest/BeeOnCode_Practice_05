@@ -1,45 +1,33 @@
 import { Box } from "@mui/material";
 import ButtonAddComponent from "app/shared-components/ButtonAddComponent";
 import ButtonRemoveComponent from "app/shared-components/ButtonRemoveComponent";
-import { memo, useCallback } from "react";
 import styled, { css } from "styled-components";
 import ProductGoldProb from "./ProductGoldProb";
 import ProductGoldStartWeight from "./ProductGoldStartWeight";
 import ProductGoldWeight from "./ProductGoldWeight";
 import ProductGoldPrice from "./ProductGoldPrice";
-import { useDispatch } from "react-redux";
-import { addGold, removeGold } from "features/Product/ProductSlice";
 
-function ProductGoldForm({ gold, index, canDelete, addNew }) {
-  const dispatch = useDispatch();
-  
-  const handleRemoveWork = useCallback(() => {
-    dispatch(removeGold(index));
-  }, [dispatch, index]);
-
-  const handleAddWork = useCallback(() => {
-    dispatch(addGold());
-  }, [dispatch]);
+function ProductGoldForm({ gold, index, canDelete, addNew, onRemove, onAdd }) {
 
   return (
     <ContentContainer>
-      <ProductGoldProb props={{ gold, index }} />
-      <ProductGoldStartWeight props={{ gold, index }} />
-      <ProductGoldWeight props={{ gold, index }} />
-      <ProductGoldPrice props={{ gold, index }} />
+      <ProductGoldProb gold={gold} index={index} />
+      <ProductGoldStartWeight gold={gold} index={index} />
+      <ProductGoldWeight gold={gold} index={index} />
+      <ProductGoldPrice gold={gold} index={index} />
       <AddNewContainer>
         {canDelete ? (
           <Empty />
         ) : (
-          <ButtonRemoveComponent index={index} callback={handleRemoveWork} />
+          <ButtonRemoveComponent index={index} callback={onRemove} />
         )}
-        {addNew ? <ButtonAddComponent callback={handleAddWork} /> : <Empty />}
+        {addNew ? <ButtonAddComponent callback={onAdd} /> : <Empty />}
       </AddNewContainer>
     </ContentContainer>
   );
 }
 
-export default memo(ProductGoldForm);
+export default ProductGoldForm;
 
 const ContentContainer = styled(Box)(() =>
   css({

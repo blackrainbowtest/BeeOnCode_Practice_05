@@ -2,14 +2,45 @@ import { memo } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
-import ProductWorkForm from "./ProductWorkForm";
-import { useSelector } from 'react-redux';
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import ProductWorkForm from './ProductWorkForm';
 
 function ProductWork() {
-  const productData = useSelector((state) => state?.product?.newData);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "works",
+  });
+
+  const addNewWork = () => {
+    append({
+      name: "",
+      count: "",
+      price: "",
+      amount: "",
+      comment: "",
+    });
+  };
+
+  const removeWork = (index) => {
+    if (fields.length > 1) {
+      remove(index);
+    }
+  };
+
+  const hasAnyWorkError = fields.some((_, index) => {
+    return (
+      errors.works?.[index] !== undefined &&
+      Object.values(errors.works[index]).some((e) => e !== undefined)
+    );
+  });
 
   const header = (
-    <HeaderContainer>
+    <HeaderContainer haserror={hasAnyWorkError.toString()}>
       <svg
         width='18'
         height='18'
@@ -28,17 +59,25 @@ function ProductWork() {
   );
   const content = (
     <ContentContainer>
-      {productData.works.map((work, index) => {
-        return (
-          <ProductWorkForm
-            key={index}
-            work={work}
-            index={index}
-            canDelete={productData.works.length === 1}
-            addNew={productData.works.length === index + 1}
-          />
-        );
-      })}
+      <Controller
+        name='works'
+        control={control}
+        render={({ field }) =>
+          field.value.map((work, index) => {
+            return (
+              <ProductWorkForm
+                key={index}
+                work={work}
+                index={index}
+                canDelete={fields.length === 1}
+                addNew={fields.length === index + 1}
+                onAdd={addNewWork}
+                onRemove={() => removeWork(index)}
+              />
+            );
+          })
+        }
+      />
     </ContentContainer>
   );
   return <AccordionComponent header={header} content={content} />;
@@ -46,10 +85,12 @@ function ProductWork() {
 
 export default memo(ProductWork);
 
-const HeaderContainer = styled(Box)(() => ({
+const HeaderContainer = styled(Box)(({ theme, haserror }) => ({
   width: "100%",
   display: "flex",
   gap: "10px",
+  color:
+    haserror === "true" ? theme.palette.error.main : theme.palette.text.primary,
 }));
 
 const ContentContainer = styled(Box)(() => ({

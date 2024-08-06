@@ -1,23 +1,21 @@
 import { Box, css, Switch } from "@mui/material";
-import { stoneGIAChange } from "features/Product/ProductSlice";
-import { memo, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
-function ProductStonesGIA({ props }) {
-  const { stone, index } = props;
-  const dispatch = useDispatch();
-
-  const handleGIAChange = useCallback(
-    (event) => {
-      dispatch(stoneGIAChange({ index, data: event.target.checked }));
-    },
-    [dispatch, index]
-  );
+function ProductStonesGIA({ stone, index }) {
+  const { control } = useFormContext();
 
   return (
     <ContentContainer>
-      <CustomSwitch checked={stone.GIA} onChange={handleGIAChange} />
+      <Controller
+        name={`stones.${index}.GIA`}
+        control={control}
+        defaultValue={stone?.GIA ?? false}
+        render={({ field, fieldState }) => (
+          <CustomSwitch checked={field.value} onChange={field.onChange} />
+        )}
+      />
     </ContentContainer>
   );
 }

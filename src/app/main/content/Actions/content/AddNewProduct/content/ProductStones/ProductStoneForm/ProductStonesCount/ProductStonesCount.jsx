@@ -1,30 +1,29 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { stoneCountChange } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-function ProductStonesCount({ props }) {
-  const { stone, index } = props;
-  const [isCountError, setIsCountError] = useState(false);
-  const dispatch = useDispatch();
-
-  const handleCountChange = useCallback(
-    (data) => {
-      setIsCountError(!/^\d*$/.test(data));
-      dispatch(stoneCountChange({ index, data }));
-    },
-    [dispatch, index]
-  );
+function ProductStonesCount({ stone, index }) {
+  const { control } = useFormContext();
 
   return (
-    <TextInputComponent
-      label='Count'
-      value={stone.count}
-      callback={handleCountChange}
-      error={isCountError}
-      helperText='Not a number'
+    <Controller
+      name={`stones.${index}.count`}
+      control={control}
+      defaultValue={stone?.count ?? ""}
+      rules={{
+        required: "Stone count is required",
+        validate: (value) => /^\d*$/.test(value) || "Count must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Count'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }
-
 export default memo(ProductStonesCount);

@@ -1,29 +1,30 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { stoneWeightChange } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-function ProductStonesWeight({ props }) {
-  const { stone, index } = props;
-  const [isWeightError, setIsWeightError] = useState(false);
-  const dispatch = useDispatch();
-
-  const handleWeightChange = useCallback(
-    (data) => {
-      setIsWeightError(!/^\d*\.?\d*$/.test(data));
-      dispatch(stoneWeightChange({ index, data }));
-    },
-    [dispatch, index]
-  );
+function ProductStonesWeight({ stone, index }) {
+  const { control } = useFormContext();
 
   return (
-    <TextInputComponent
-      label='Weight'
-      value={stone.weight}
-      callback={handleWeightChange}
-      error={isWeightError}
-      helperText='Not a number'
-      adornment='Mm'
+    <Controller
+      name={`stones.${index}.weight`}
+      control={control}
+      defaultValue={stone?.weight ?? ""}
+      rules={{
+        required: "Stone weight is required",
+        validate: (value) =>
+          /^\d+(\.\d{1,2})?$/.test(value) || "Weight must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Weight'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+          adornment="Ct"
+        />
+      )}
     />
   );
 }

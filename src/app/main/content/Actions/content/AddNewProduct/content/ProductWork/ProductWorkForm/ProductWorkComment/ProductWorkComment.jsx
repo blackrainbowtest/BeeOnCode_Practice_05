@@ -1,20 +1,24 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { workCommentChange } from "features/Product/ProductSlice";
 import { memo } from "react";
-import { useDispatch } from "react-redux";
+import { Controller, useFormContext } from 'react-hook-form';
 
-function ProductWorkComment({ props }) {
-  const { work, index } = props;
-  const dispatch = useDispatch();
+function ProductWorkComment({ work, index }) {
+  const { control } = useFormContext();
 
-  const handleCommentChange = (data) => {
-    dispatch(workCommentChange({ index, data }));
-  };
   return (
-    <TextInputComponent
-      label='Comment'
-      value={work.comment}
-      callback={handleCommentChange}
+    <Controller
+      name={`stones.${index}.comment`}
+      control={control}
+      defaultValue={work?.comment ?? ""}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Comment'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }

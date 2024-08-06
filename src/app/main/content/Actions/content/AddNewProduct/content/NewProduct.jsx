@@ -23,24 +23,25 @@ function NewProduct({ handleClose }) {
 
   const methods = useForm({
     defaultValues: {
-      article: "",
-      tags: [],
+      article: "A544",
+      tags: ['ts'],
       images: [],
-      golds: [{ startWeight: "", weight: "", price: "", color: "", prob: "" }],
-      price: { productionPrice: "", price: "" },
+      golds: [{ id: "defGold_001", startWeight: 54.05, weight: 50.05, price: 1700, color: 1, prob: 585 }],
+      price: { productionPrice: 174000.00, price: 200000.00 },
       stones: [
         {
-          type: "",
-          count: "",
-          diametr: "",
-          weight: "",
-          quality: "",
-          price: "",
+          id: "defStone_001",
+          type: "Briliant",
+          count: 1,
+          diametr: 1.25,
+          weight: 2.15,
+          quality: "Normal",
+          price: 14780.00,
           GIA: false,
-          number: "",
+          number: "ASR877-544",
         },
       ],
-      works: [{ name: "", count: "", price: "", amount: "", comment: "" }],
+      works: [{ id: "defWork_001", name: "Connect", count: "2", price: "1400", amount: "1", comment: "Test comment" }],
     },
     mode: "onChange", // или 'onBlur' в зависимости от ваших предпочтений
   });
@@ -53,6 +54,7 @@ function NewProduct({ handleClose }) {
 
   const onSubmit = (data) => {
     console.log(data);
+    console.log("___________________________-");
   };
 
   const dispatch = useDispatch();
@@ -114,7 +116,8 @@ function NewProduct({ handleClose }) {
         />
         <ContentContainer onSubmit={methods.handleSubmit(onSubmit)}>
           <ProductDetails />
-          
+          <ProductGold />
+          <ProductWork />
           <ProductStones />
           <ProductPrice />
           <button type='submit'>Submit</button>
@@ -124,7 +127,7 @@ function NewProduct({ handleClose }) {
   );
 }
 
-export default memo(NewProduct);
+export default NewProduct;
 
 const MainContainer = styled(Box)(({ theme }) => ({
   width: "860px",
@@ -150,8 +153,8 @@ const ContentContainer = styled("form")(({ theme }) => ({
 //   <ProductDetails />
 //   {/*
 //           <ContentContainer>
-//             <ProductGold />
-//             <ProductWork />
+//             
+//             
 //             
 //             
 //           </ContentContainer>

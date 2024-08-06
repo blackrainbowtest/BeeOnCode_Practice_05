@@ -35,7 +35,7 @@ function ProductPrice() {
   const content = (
     <ContentContainer>
       <Controller
-        name='price.productPrice'
+        name='price.productionPrice'
         control={control}
         defaultValue=''
         rules={{

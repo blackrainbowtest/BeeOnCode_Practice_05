@@ -1,22 +1,28 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { workNameChange } from "features/Product/ProductSlice";
 import { memo } from "react";
-import { useDispatch } from "react-redux";
+import { Controller, useFormContext } from "react-hook-form";
 
-function ProductWorkName({ props }) {
-  const { work, index } = props;
-  const dispatch = useDispatch();
+function ProductWorkName({ work, index }) {
+  const { control } = useFormContext();
 
-  const handleNameChange = (data) => {
-    dispatch(workNameChange({ index, data }));
-  };
   return (
-    <TextInputComponent
-      label='Name'
-      value={work.name}
-      callback={handleNameChange}
+    <Controller
+      name={`stones.${index}.name`}
+      control={control}
+      defaultValue={work?.name ?? ""}
+      rules={{
+        required: "Work name is required",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Name'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }
-
 export default memo(ProductWorkName);

@@ -3,13 +3,45 @@ import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import ProductStoneForm from "./ProductStoneForm";
-import { useSelector } from 'react-redux';
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 function ProductStones() {
-  const productData = useSelector((state) => state?.product?.newData);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "stones",
+  });
+
+  const addNewStone = () => {
+    append({
+      type: "",
+      count: 0,
+      diametr: 0,
+      weight: 0,
+      quality: "",
+      price: 0,
+      number: "",
+      gia: false,
+    });
+  };
+
+  const removeStone = (index) => {
+    if (fields.length > 1) {
+      remove(index);
+    }
+  };
+
+  const hasAnyStoneError = fields.some((_, index) => {
+    return errors.stones?.[index] !== undefined && 
+      Object.values(errors.stones[index]).some(e => e !== undefined);
+  });
 
   const header = (
-    <HeaderContainer>
+    <HeaderContainer haserror={hasAnyStoneError.toString()}>
       <svg
         width='18'
         height='18'
@@ -39,19 +71,28 @@ function ProductStones() {
       Stones
     </HeaderContainer>
   );
+
   const content = (
     <ContentContainer>
-      {productData.stones.map((stone, index) => {
-        return (
-          <ProductStoneForm
-            key={index}
-            stone={stone}
-            index={index}
-            canDelete={productData.stones.length === 1}
-            addNew={productData.stones.length === index + 1}
-          />
-        );
-      })}
+      <Controller
+        name='stones'
+        control={control}
+        render={({ field }) =>
+          field.value.map((stone, index) => {
+            return (
+              <ProductStoneForm
+                key={index}
+                stone={stone}
+                index={index}
+                canDelete={fields.length === 1}
+                addNew={fields.length === index + 1}
+                onAdd={addNewStone}
+                onRemove={() => removeStone(index)}
+              />
+            );
+          })
+        }
+      />
     </ContentContainer>
   );
 
@@ -60,10 +101,11 @@ function ProductStones() {
 
 export default memo(ProductStones);
 
-const HeaderContainer = styled(Box)(() => ({
+const HeaderContainer = styled(Box)(({ theme, haserror }) => ({
   width: "100%",
   display: "flex",
   gap: "10px",
+  color: haserror === "true" ? theme.palette.error.main : theme.palette.text.primary,
 }));
 
 const ContentContainer = styled(Box)(() => ({

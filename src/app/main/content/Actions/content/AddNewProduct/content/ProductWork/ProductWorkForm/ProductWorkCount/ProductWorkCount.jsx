@@ -1,28 +1,29 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { workCountChange } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from 'react-hook-form';
 
-function ProductWorkCount({ props }) {
-  const { work, index } = props;
-  const [isCountError, setIsCountError] = useState(false);
-  const dispatch = useDispatch();
+function ProductWorkCount({ work, index }) {
+  const { control } = useFormContext();
 
-  const handleCountChange = useCallback(
-    (data) => {
-      setIsCountError(!/^\d*\.?\d*$/.test(data));
-      dispatch(workCountChange({ index, data }));
-    },
-    [dispatch, index]
-  );
 
   return (
-    <TextInputComponent
-      label='Count'
-      value={work.count}
-      callback={handleCountChange}
-      error={isCountError}
-      helperText='Not a number'
+    <Controller
+      name={`stones.${index}.count`}
+      control={control}
+      defaultValue={work?.count ?? ""}
+      rules={{
+        required: "Work count is required",
+        validate: (value) => /^\d*$/.test(value) || "Count must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Count'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+        />
+      )}
     />
   );
 }

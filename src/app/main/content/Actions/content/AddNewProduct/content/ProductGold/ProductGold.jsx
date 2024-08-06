@@ -1,15 +1,39 @@
-import { memo } from "react";
 import AccordionComponent from "app/shared-components/AccordionComponent";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import ProductGoldForm from "./ProductGoldForm";
-import { useSelector } from 'react-redux';
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 function ProductGold() {
-  const productData = useSelector((state) => state?.product?.newData);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "golds",
+  });
+
+  const addNewGold = () => {
+    append({ startWeight: "", weight: "", price: "", color: "", prob: "" });
+  };
+
+  const removeGold = (index) => {
+    if (fields.length > 1) {
+      remove(index);
+    }
+  };
+
+  const hasAnyGoldeError = fields.some((_, index) => {
+    return (
+      errors.golds?.[index] !== undefined &&
+      Object.values(errors.golds[index]).some((e) => e !== undefined)
+    );
+  });
 
   const header = (
-    <HeaderContainer>
+    <HeaderContainer haserror={hasAnyGoldeError.toString()}>
       <svg
         width='24'
         height='18'
@@ -29,28 +53,38 @@ function ProductGold() {
   );
   const content = (
     <ContentContainer>
-      {productData.golds.map((gold, index) => {
-        return (
-          <ProductGoldForm
-            key={index}
-            gold={gold}
-            index={index}
-            canDelete={productData.golds.length === 1}
-            addNew={productData.golds.length === index + 1}
-          />
-        );
-      })}
+      <Controller
+        name='golds'
+        control={control}
+        render={({ field }) =>
+          field.value.map((gold, index) => {
+            return (
+              <ProductGoldForm
+                key={index}
+                gold={gold}
+                index={index}
+                canDelete={fields.length === 1}
+                addNew={fields.length === index + 1}
+                onAdd={addNewGold}
+                onRemove={() => removeGold(index)}
+              />
+            );
+          })
+        }
+      />
     </ContentContainer>
   );
   return <AccordionComponent header={header} content={content} />;
 }
 
-export default memo(ProductGold);
+export default ProductGold;
 
-const HeaderContainer = styled(Box)(() => ({
+const HeaderContainer = styled(Box)(({ theme, haserror }) => ({
   width: "100%",
   display: "flex",
   gap: "10px",
+  color:
+    haserror === "true" ? theme.palette.error.main : theme.palette.text.primary,
 }));
 
 const ContentContainer = styled(Box)(() => ({

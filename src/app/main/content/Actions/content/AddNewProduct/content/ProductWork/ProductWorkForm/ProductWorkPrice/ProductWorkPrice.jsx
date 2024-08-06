@@ -1,29 +1,30 @@
 import TextInputComponent from "app/shared-components/TextInputComponent";
-import { workPriceChange } from "features/Product/ProductSlice";
-import { memo, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo } from "react";
+import { Controller, useFormContext } from 'react-hook-form';
 
-function ProductWorkPrice({ props }) {
-  const { work, index } = props;
-  const [isPriceError, setIsPriceError] = useState(false);
-  const dispatch = useDispatch();
-
-  const handlePriceChange = useCallback(
-    (data) => {
-      setIsPriceError(!/^\d*\.?\d*$/.test(data));
-      dispatch(workPriceChange({ index, data }));
-    },
-    [dispatch, index]
-  );
+function ProductWorkPrice({ work, index }) {
+  const { control } = useFormContext();
 
   return (
-    <TextInputComponent
-      label='Price'
-      value={work.price}
-      callback={handlePriceChange}
-      error={isPriceError}
-      helperText='Not a number'
-      adornment='$'
+    <Controller
+      name={`stones.${index}.price`}
+      control={control}
+      defaultValue={work?.price ?? ""}
+      rules={{
+        required: "Work price is required",
+        validate: (value) =>
+          /^\d+(\.\d{1,2})?$/.test(value) || "Price must be a number",
+      }}
+      render={({ field, fieldState }) => (
+        <TextInputComponent
+          label='Price'
+          value={field.value}
+          onChange={field.onChange}
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
+          adornment='$'
+        />
+      )}
     />
   );
 }
