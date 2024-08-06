@@ -25,10 +25,10 @@ export const getProducts = createAsyncThunk(
 // FIXME: add post and patch API later
 export const addProduct = createAsyncThunk(
     'products/addProducts',
-    async ({ productData, userId, currentTime, gender, category, subcategory }, { dispatch, rejectWithValue }) => {
+    async (productData, { dispatch, rejectWithValue }) => {
         try {
             const base64Image = productData.images.length ? await convertImageToBase64(productData.images) : [];
-            const response = await axios.post(url, { ...productData, images: base64Image, user_id: userId, currentTime, gender, category: category, subcategory });
+            const response = await axios.post(url, { ...productData, images: base64Image });
             dispatch(addNotification("Product add successful"))
             return response.data;
         } catch (err) {

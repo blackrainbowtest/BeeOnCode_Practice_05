@@ -10,100 +10,116 @@ import ProductWork from "./ProductWork";
 import ProductStones from "./ProductStones";
 import ProductPrice from "./ProductPrice";
 import ProductActions from "./ProductActions";
-import { resetNewData } from "features/Product/ProductSlice";
 import { FormProvider, useForm } from "react-hook-form";
+import { addProduct } from "features/Product/ProductAPI";
+import { getCurrentUnixTime } from "utils/validation";
 
 function NewProduct({ handleClose }) {
-  const category = useSelector((state) => state?.category?.data);
+  const dispatch = useDispatch();
+  const categorys = useSelector((state) => state?.category?.data);
   const subCategory = useSelector((state) => state?.subCategory?.data);
+  const currentUser = useSelector((state) => state?.user?.user);
+  const currentData = useSelector((state) => state?.product?.currentData);
   const [gender, setGender] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(-1);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
-  const productData = useSelector((state) => state?.product?.newData);
 
   const methods = useForm({
-    defaultValues: {
-      article: "A544",
-      tags: ['ts'],
-      images: [],
-      golds: [{ id: "defGold_001", startWeight: 54.05, weight: 50.05, price: 1700, color: 1, prob: 585 }],
-      price: { productionPrice: 174000.00, price: 200000.00 },
-      stones: [
-        {
-          id: "defStone_001",
-          type: "Briliant",
-          count: 1,
-          diametr: 1.25,
-          weight: 2.15,
-          quality: "Normal",
-          price: 14780.00,
-          GIA: false,
-          number: "ASR877-544",
+    defaultValues: currentData.id
+      ? currentData
+      : {
+          article: "A544",
+          tags: ["ts"],
+          images: [],
+          golds: [
+            {
+              id: "defGold_001",
+              startWeight: 54.05,
+              weight: 50.05,
+              price: 1700,
+              color: 1,
+              prob: 585,
+            },
+          ],
+          price: { productionPrice: 174000.0, price: 200000.0 },
+          stones: [
+            {
+              id: "defStone_001",
+              type: "Briliant",
+              count: 1,
+              diametr: 1.25,
+              weight: 2.15,
+              quality: "Normal",
+              price: 14780.0,
+              GIA: false,
+              number: "ASR877-544",
+            },
+          ],
+          works: [
+            {
+              id: "defWork_001",
+              name: "Connect",
+              count: "2",
+              price: "1400",
+              amount: "1",
+              comment: "Test comment",
+            },
+          ],
         },
-      ],
-      works: [{ id: "defWork_001", name: "Connect", count: "2", price: "1400", amount: "1", comment: "Test comment" }],
-    },
-    mode: "onChange", // или 'onBlur' в зависимости от ваших предпочтений
+    mode: "onChange", // or 'onBlur' ll update on submit click
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
-
   const onSubmit = (data) => {
-    console.log(data);
-    console.log("___________________________-");
+    dispatch(
+      addProduct({
+        ...data,
+        userId: currentUser.id,
+        currentTime: getCurrentUnixTime(),
+        gender: gender,
+        category: selectedCategory,
+        subcategory: selectedSubCategory,
+      })
+    );
+    handleClose();
   };
 
-  const dispatch = useDispatch();
-
+  // gender set hook
   useEffect(() => {
-    if (!productData.id) {
-      dispatch(resetNewData());
-      if (category.length === 0) {
-        return;
-      }
-
-      const currentSubCategory = subCategory.filter(
-        (sb) => sb.parent === selectedCategory
-      );
-
-      if (currentSubCategory.length) {
-        setSelectedSubCategory(currentSubCategory[0].id);
-      } else {
-        setSelectedSubCategory("");
-      }
-    } else {
-      setGender(productData.gender);
-      setSelectedCategory(productData.category);
-      setSelectedSubCategory(productData.subcategory);
+    if (currentData.id) {
+      setGender(currentData.gender);
     }
-  }, [
-    category,
-    dispatch,
-    productData.category,
-    productData.gender,
-    productData.id,
-    productData.subcategory,
-    selectedCategory,
-    subCategory,
-  ]);
+  }, [currentData]);
 
+  // Category set hook
   useEffect(() => {
-    const currentCategory = category.filter((c) => c.gender === gender);
-    const newCategory = currentCategory.length ? currentCategory[0].id : -1;
-    setSelectedCategory(newCategory);
-  }, [category, gender]);
+    const activeCategorys = categorys.filter((c) => c.gender === gender);
+    const newCategory = activeCategorys.length ? activeCategorys[0].id : -1;
+    if (currentData.id) {
+      setSelectedCategory(currentData.category);
+    } else {
+      setSelectedCategory(newCategory);
+    }
+  }, [categorys, gender, currentData]);
+
+  // subCategory set hook
+  useEffect(() => {
+    const activeSubCategorys = subCategory.filter(
+      (sb) => sb.parent === selectedCategory
+    );
+    const newSubCategory = activeSubCategorys.length
+      ? activeSubCategorys[0].id
+      : -1;
+    if (currentData.category === selectedCategory && currentData.id) {
+      setSelectedSubCategory(currentData.subcategory);
+    } else {
+      setSelectedSubCategory(newSubCategory);
+    }
+  }, [currentData, selectedCategory, subCategory]);
 
   return (
     <FormProvider {...methods}>
       <MainContainer>
-        <TitleActionComponent
-          close={handleClose}
-          title={productData.id ? "Edit product" : "Add product"}
-        />
+        <TitleActionComponent close={handleClose} title={"Add product"} />
         <ProductClassification
           props={{
             gender,
@@ -120,14 +136,14 @@ function NewProduct({ handleClose }) {
           <ProductWork />
           <ProductStones />
           <ProductPrice />
-          <button type='submit'>Submit</button>
+          <ProductActions />
         </ContentContainer>
       </MainContainer>
     </FormProvider>
   );
 }
 
-export default NewProduct;
+export default memo(NewProduct);
 
 const MainContainer = styled(Box)(({ theme }) => ({
   width: "860px",
@@ -139,7 +155,7 @@ const MainContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: "10px",
   padding: "30px",
-  borderRadius: "5px"
+  borderRadius: "5px",
 }));
 
 const ContentContainer = styled("form")(({ theme }) => ({
@@ -147,24 +163,5 @@ const ContentContainer = styled("form")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  gap: "10px",
 }));
-
-// {/* <form onSubmit={methods.handleSubmit(onSubmit)}>
-//   <ProductDetails />
-//   {/*
-//           <ContentContainer>
-//             
-//             
-//             
-//             
-//           </ContentContainer>
-//           <ProductActions
-//             close={handleClose}
-//             props={{
-//               gender,
-//               selectedCategory,
-//               selectedSubCategory,
-//             }}
-//           /> */}
-//   <button type='submit'>Submit</button>
-// </form>; */}

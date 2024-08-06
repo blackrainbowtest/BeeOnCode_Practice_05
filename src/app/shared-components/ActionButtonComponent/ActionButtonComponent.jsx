@@ -32,6 +32,7 @@ function ActionButtonComponent({
   label = "Add",
   customStyles,
   isOpen = false,
+  type = "button",
 }) {
   const handleMouseDownAction = (event) => {
     event.preventDefault();
@@ -50,6 +51,7 @@ function ActionButtonComponent({
       onMouseDown={handleMouseDownAction}
       customstyles={customStyles}
       isopen={isOpen.toString()}
+      type={type}
     >
       {label}
     </ActionContent>

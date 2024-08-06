@@ -11,17 +11,16 @@ import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import { useDispatch } from "react-redux";
 import { deleteProduct } from "features/Product/ProductAPI";
 import NewProduct from "app/main/content/Actions/content/AddNewProduct/content/NewProduct";
-import { resetNewData, setNewData } from "features/Product/ProductSlice";
+import { setCurrentData } from 'features/Product/ProductSlice';
 
 function DataAction({ elm }) {
   const dispatch = useDispatch();
-  
+
   const [isActive, setIsActive] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    dispatch(resetNewData());
     setOpen(false);
   };
 
@@ -35,9 +34,10 @@ function DataAction({ elm }) {
     setIsModal(false);
   };
   const handleEditButton = async (event) => {
-    dispatch(setNewData(elm));
+    await dispatch(setCurrentData(elm));
     handleOpen();
   };
+  
   const handleDeleteProduct = () => {
     dispatch(deleteProduct(elm));
     setIsModal(false);

@@ -5,16 +5,16 @@ import ModalComponent from "app/shared-components/ModalComponent/ModalComponent"
 import NewProduct from "./content/NewProduct";
 
 import { css } from "styled-components";
+import { resetCurrentData } from 'features/Product/ProductSlice';
 import { useDispatch } from 'react-redux';
-import { resetNewData } from 'features/Product/ProductSlice';
 
 function AddNewProduct() {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    dispatch(resetNewData())
     setOpen(false)
+    dispatch(resetCurrentData());
   };
   return (
     <>
