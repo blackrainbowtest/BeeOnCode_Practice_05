@@ -114,7 +114,8 @@ function NewProduct({ handleClose }) {
         />
         <ContentContainer onSubmit={methods.handleSubmit(onSubmit)}>
           <ProductDetails />
-
+          
+          <ProductStones />
           <ProductPrice />
           <button type='submit'>Submit</button>
         </ContentContainer>
@@ -151,7 +152,7 @@ const ContentContainer = styled("form")(({ theme }) => ({
 //           <ContentContainer>
 //             <ProductGold />
 //             <ProductWork />
-//             <ProductStones />
+//             
 //             
 //           </ContentContainer>
 //           <ProductActions

@@ -48,7 +48,7 @@ function ProductPrice() {
           <TextInputComponent
             label='Production price'
             value={field.value}
-            onChange={field.onChange} // Обработчик изменений
+            onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -67,7 +67,7 @@ function ProductPrice() {
           <TextInputComponent
             label='Price'
             value={field.value}
-            onChange={field.onChange} // Обработчик изменений
+            onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
