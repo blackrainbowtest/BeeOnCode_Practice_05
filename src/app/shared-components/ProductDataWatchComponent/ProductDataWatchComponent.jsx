@@ -7,11 +7,11 @@ import GenderIconComponent from "../GenderIconComponent";
 import { unixTimeToDate } from 'utils/validation';
 import DataWatchInfoComponent from './DataWatchInfoComponent';
 import DataWatchImageComponent from './DataWatchImageComponent';
+import { theme } from 'theme';
 
 function ProductDataWatchComponent({ handleClose, currentFormData }) {
   const gender = useSelector((state) => state?.category?.gender);
 
-  console.log(currentFormData);
   return (
     <MainContainer>
       <TitleActionComponent
@@ -21,8 +21,8 @@ function ProductDataWatchComponent({ handleClose, currentFormData }) {
         }
       />
       <ContentContainer sx={{ flexGrow: 1 }}>
-        <DataWatchImageComponent />
-        <DataWatchInfoComponent />
+        <DataWatchImageComponent images={currentFormData.images}/>
+        <DataWatchInfoComponent data={currentFormData} />
       </ContentContainer>
     </MainContainer>
   );
@@ -30,7 +30,7 @@ function ProductDataWatchComponent({ handleClose, currentFormData }) {
 
 export default memo(ProductDataWatchComponent);
 
-const MainContainer = styled(Box)(() => ({
+const MainContainer = styled(Box)(({theme}) => ({
   width: "860px",
   minHeight: "680px",
   display: "flex",
@@ -38,6 +38,7 @@ const MainContainer = styled(Box)(() => ({
   gap: "10px",
   padding: "30px",
   borderRadius: "5px",
+  backgroundColor: theme.palette.background.main
 }));
 
 const ContentContainer = styled(Box)(() => ({

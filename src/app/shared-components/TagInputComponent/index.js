@@ -1,1 +1,1 @@
-export { default } from './TagInputCompontne';
+export { default } from './TagInputComponent';

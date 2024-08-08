@@ -22,6 +22,7 @@ export const theme = {
     text: {
       primary: '#847F80',
       grey: '#B3B3B4',
+      dark: "#4F4F4F",
     },
     error: {
       main: '#F44336',
@@ -31,6 +32,7 @@ export const theme = {
     background: {
       main: '#F2F2F2',
       secondary: '#E6E6E6',
+      gray: "#C1C1C1",
       dark: '#E8E8E8',
       turnOn: '#B3B3B4',
       black: "#464646",

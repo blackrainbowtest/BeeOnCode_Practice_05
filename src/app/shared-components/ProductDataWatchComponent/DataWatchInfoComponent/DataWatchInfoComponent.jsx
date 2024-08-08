@@ -1,11 +1,28 @@
 import { Box } from "@mui/material";
 import { memo } from "react";
 import styled from "styled-components";
+import WatchCategoryComponent from "./WatchCategoryComponent";
+import WatchShortInfoComponent from "./WatchShortInfoComponent";
+import WatchTagComponent from "./WatchTagComponent";
+import WatchGoldComponent from "./WatchGoldComponent";
+import WatchWorkComponent from "./WatchWorkComponent";
+import WatchStoneComponent from "./WatchStoneComponent";
 
-function DataWatchInfoComponent() {
-  return <MainContainer>
-    666
-  </MainContainer>;
+function DataWatchInfoComponent({ data }) {
+  return (
+    <MainContainer>
+      <WatchCategoryComponent />
+      <WatchShortInfoComponent
+        article={data.article}
+        price={data.price.price}
+        prodPrice={data.price.productionPrice}
+      />
+      <WatchTagComponent tags={data.tags} />
+      <WatchGoldComponent golds={data.golds} />
+      <WatchWorkComponent />
+      <WatchStoneComponent />
+    </MainContainer>
+  );
 }
 
 export default memo(DataWatchInfoComponent);
