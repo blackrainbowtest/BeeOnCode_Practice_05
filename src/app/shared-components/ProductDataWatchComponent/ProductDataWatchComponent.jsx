@@ -7,7 +7,6 @@ import GenderIconComponent from "../GenderIconComponent";
 import { unixTimeToDate } from 'utils/validation';
 import DataWatchInfoComponent from './DataWatchInfoComponent';
 import DataWatchImageComponent from './DataWatchImageComponent';
-import { theme } from 'theme';
 
 function ProductDataWatchComponent({ handleClose, currentFormData }) {
   const gender = useSelector((state) => state?.category?.gender);

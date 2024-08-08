@@ -8,7 +8,7 @@ function ProductWorkCount({ work, index }) {
 
   return (
     <Controller
-      name={`stones.${index}.count`}
+      name={`works.${index}.count`}
       control={control}
       defaultValue={work?.count ?? ""}
       rules={{

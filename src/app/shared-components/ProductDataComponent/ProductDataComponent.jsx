@@ -61,7 +61,7 @@ function ProductDataComponent({ handleClose }) {
               name: "Connect",
               count: "2",
               price: "1400",
-              amount: "1",
+              amount: "1500",
               comment: "Test comment",
             },
           ],
@@ -150,7 +150,7 @@ function ProductDataComponent({ handleClose }) {
           <ProductWork />
           <ProductStones />
           <ProductPrice />
-          <ProductActions />
+          <ProductActions props={{gender, selectedCategory, selectedSubCategory}}/>
         </ContentContainer>
       </MainContainer>
     </FormProvider>

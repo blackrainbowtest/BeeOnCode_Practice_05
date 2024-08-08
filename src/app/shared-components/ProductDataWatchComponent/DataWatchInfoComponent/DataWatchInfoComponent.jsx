@@ -9,18 +9,19 @@ import WatchWorkComponent from "./WatchWorkComponent";
 import WatchStoneComponent from "./WatchStoneComponent";
 
 function DataWatchInfoComponent({ data }) {
+
   return (
     <MainContainer>
-      <WatchCategoryComponent />
+      <WatchCategoryComponent category={data.category} subCateogry={data.subCategory} />
       <WatchShortInfoComponent
         article={data.article}
         price={data.price.price}
         prodPrice={data.price.productionPrice}
       />
-      <WatchTagComponent tags={data.tags} />
-      <WatchGoldComponent golds={data.golds} />
-      <WatchWorkComponent />
-      <WatchStoneComponent />
+      <WatchTagComponent tags={data.tags ?? []} />
+      <WatchGoldComponent golds={data.golds ?? []} />
+      <WatchWorkComponent works={data.works ?? []} />
+      <WatchStoneComponent stones={data.stones ?? []} />
     </MainContainer>
   );
 }

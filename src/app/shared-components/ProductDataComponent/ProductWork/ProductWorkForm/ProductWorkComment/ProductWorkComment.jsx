@@ -7,7 +7,7 @@ function ProductWorkComment({ work, index }) {
 
   return (
     <Controller
-      name={`stones.${index}.comment`}
+      name={`works.${index}.comment`}
       control={control}
       defaultValue={work?.comment ?? ""}
       render={({ field, fieldState }) => (

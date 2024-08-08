@@ -2,20 +2,29 @@ import styled, { css } from "styled-components";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import { memo, useState } from "react";
 import { Box } from "@mui/system";
-import ModalComponent from 'app/shared-components/ModalComponent';
-import ProductDataWatchComponent from 'app/shared-components/ProductDataWatchComponent';
-import { useFormContext } from 'react-hook-form';
+import ModalComponent from "app/shared-components/ModalComponent";
+import ProductDataWatchComponent from "app/shared-components/ProductDataWatchComponent";
+import { useFormContext } from "react-hook-form";
 
-function ProductActions() {
+function ProductActions({ props }) {
+  const { gender, selectedCategory, selectedSubCategory } = props;
   const { getValues } = useFormContext();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false)
+    setOpen(false);
   };
 
-  const currentFormData = getValues();
-  
+  let currentFormData = getValues();
+
+  currentFormData = {
+    ...currentFormData,
+    gender: currentFormData.gender ?? gender,
+    selectedCategory: currentFormData.selectedCategory ?? selectedCategory,
+    selectedSubCategory:
+      currentFormData.selectedSubCategory ?? selectedSubCategory,
+  };
+
   return (
     <MainContainer>
       <ActionButtonComponent
@@ -29,7 +38,10 @@ function ProductActions() {
         type={"submit"}
       />
       <ModalComponent open={open} handleClose={handleClose}>
-        <ProductDataWatchComponent handleClose={handleClose} currentFormData={currentFormData} />
+        <ProductDataWatchComponent
+          handleClose={handleClose}
+          currentFormData={currentFormData}
+        />
       </ModalComponent>
     </MainContainer>
   );

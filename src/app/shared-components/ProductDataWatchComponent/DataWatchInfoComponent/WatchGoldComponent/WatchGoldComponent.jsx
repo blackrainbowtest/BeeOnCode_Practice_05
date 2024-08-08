@@ -12,7 +12,6 @@ import { memo } from "react";
 import styled, { css } from "styled-components";
 
 function WatchGoldComponent({ golds = [] }) {
-  console.log(golds);
 
   return (
     <MainContainer>
@@ -38,7 +37,7 @@ function WatchGoldComponent({ golds = [] }) {
           sx={{
             minWidth: 390,
             border: "1px solid #ccc",
-            "&& td, & th": { border: "1px solid #ccc", padding: "5px" },
+            "&& td, && th": { border: "1px solid #ccc!important", padding: "5px" },
           }}
           aria-label='simple table'
         >

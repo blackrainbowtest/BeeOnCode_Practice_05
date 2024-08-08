@@ -7,7 +7,7 @@ function ProductWorkPrice({ work, index }) {
 
   return (
     <Controller
-      name={`stones.${index}.price`}
+      name={`works.${index}.price`}
       control={control}
       defaultValue={work?.price ?? ""}
       rules={{

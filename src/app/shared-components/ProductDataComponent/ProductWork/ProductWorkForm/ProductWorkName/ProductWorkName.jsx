@@ -7,7 +7,7 @@ function ProductWorkName({ work, index }) {
 
   return (
     <Controller
-      name={`stones.${index}.name`}
+      name={`works.${index}.name`}
       control={control}
       defaultValue={work?.name ?? ""}
       rules={{
