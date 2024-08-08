@@ -10,8 +10,8 @@ import TitleActionComponent from "app/shared-components/TitleActionComponent";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
 import { useDispatch } from "react-redux";
 import { deleteProduct } from "features/Product/ProductAPI";
-import NewProduct from "app/main/content/Actions/content/AddNewProduct/content/NewProduct";
-import { setCurrentData } from 'features/Product/ProductSlice';
+import { resetCurrentData, setCurrentData } from 'features/Product/ProductSlice';
+import ProductDataComponent from 'app/shared-components/ProductDataComponent';
 
 function DataAction({ elm }) {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ function DataAction({ elm }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
+    dispatch(resetCurrentData());
   };
 
   const handleClickButton = (event) => {
@@ -93,7 +94,7 @@ function DataAction({ elm }) {
         </ModalComponent>
       ) : null}
       <ModalComponent open={open} handleClose={handleClose}>
-        <NewProduct handleClose={handleClose} />
+        <ProductDataComponent handleClose={handleClose} />
       </ModalComponent>
     </MainContainer>
   );

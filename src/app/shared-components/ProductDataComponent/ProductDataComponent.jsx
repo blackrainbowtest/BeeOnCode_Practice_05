@@ -9,12 +9,12 @@ import ProductGold from "./ProductGold";
 import ProductWork from "./ProductWork";
 import ProductStones from "./ProductStones";
 import ProductPrice from "./ProductPrice";
-import ProductActions from "./ProductActions";
+import ProductActions from './ProductActions';
 import { FormProvider, useForm } from "react-hook-form";
-import { addProduct } from "features/Product/ProductAPI";
+import { addProduct, patchProduct } from "features/Product/ProductAPI";
 import { getCurrentUnixTime } from "utils/validation";
 
-function NewProduct({ handleClose }) {
+function ProductDataComponent({ handleClose }) {
   const dispatch = useDispatch();
   const categorys = useSelector((state) => state?.category?.data);
   const subCategory = useSelector((state) => state?.subCategory?.data);
@@ -70,16 +70,30 @@ function NewProduct({ handleClose }) {
   });
 
   const onSubmit = (data) => {
-    dispatch(
-      addProduct({
-        ...data,
-        userId: currentUser.id,
-        currentTime: getCurrentUnixTime(),
-        gender: gender,
-        category: selectedCategory,
-        subcategory: selectedSubCategory,
-      })
-    );
+    if (!currentData.id) {
+      dispatch(
+        addProduct({
+          ...data,
+          userId: currentUser.id,
+          currentTime: getCurrentUnixTime(),
+          gender: gender,
+          category: selectedCategory,
+          subcategory: selectedSubCategory,
+        })
+      );
+    } else {
+      dispatch(
+        patchProduct({
+          ...data,
+          userId: currentUser.id,
+          currentTime: getCurrentUnixTime(),
+          gender: gender,
+          category: selectedCategory,
+          subcategory: selectedSubCategory,
+        })
+      );
+    }
+    
     handleClose();
   };
 
@@ -119,7 +133,7 @@ function NewProduct({ handleClose }) {
   return (
     <FormProvider {...methods}>
       <MainContainer>
-        <TitleActionComponent close={handleClose} title={"Add product"} />
+        <TitleActionComponent close={handleClose} title={currentData.id ? "Edit product" : "Add product"} />
         <ProductClassification
           props={{
             gender,
@@ -143,7 +157,7 @@ function NewProduct({ handleClose }) {
   );
 }
 
-export default memo(NewProduct);
+export default memo(ProductDataComponent);
 
 const MainContainer = styled(Box)(({ theme }) => ({
   width: "860px",

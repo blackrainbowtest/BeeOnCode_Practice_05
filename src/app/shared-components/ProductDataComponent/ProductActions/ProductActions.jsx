@@ -1,26 +1,36 @@
 import styled, { css } from "styled-components";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent";
-import { memo, useCallback } from "react";
+import { memo, useState } from "react";
 import { Box } from "@mui/system";
+import ModalComponent from 'app/shared-components/ModalComponent';
+import ProductDataWatchComponent from 'app/shared-components/ProductDataWatchComponent';
+import { useFormContext } from 'react-hook-form';
 
-function ProductActions({ onAddClick }) {
-  const handleWatchButtonClick = useCallback((event) => {
-    console.log("Watch");
-  }, []);
+function ProductActions() {
+  const { getValues } = useFormContext();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false)
+  };
 
+  const currentFormData = getValues();
+  
   return (
     <MainContainer>
       <ActionButtonComponent
         label='Watch'
         customStyles={WatchButtonStyle}
-        callback={handleWatchButtonClick}
+        callback={handleOpen}
       />
       <ActionButtonComponent
         label={"Add"}
         customStyles={ActionButtonStyle}
-        callback={() => {}}
         type={"submit"}
       />
+      <ModalComponent open={open} handleClose={handleClose}>
+        <ProductDataWatchComponent handleClose={handleClose} currentFormData={currentFormData} />
+      </ModalComponent>
     </MainContainer>
   );
 }

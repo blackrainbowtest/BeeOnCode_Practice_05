@@ -2,11 +2,11 @@ import { memo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import ActionButtonComponent from "app/shared-components/ActionButtonComponent/ActionButtonComponent";
 import ModalComponent from "app/shared-components/ModalComponent/ModalComponent";
-import NewProduct from "./content/NewProduct";
 
 import { css } from "styled-components";
 import { resetCurrentData } from 'features/Product/ProductSlice';
 import { useDispatch } from 'react-redux';
+import ProductDataComponent from 'app/shared-components/ProductDataComponent';
 
 function AddNewProduct() {
   const dispatch = useDispatch()
@@ -24,7 +24,7 @@ function AddNewProduct() {
         customStyles={ActionButtonStyle}
       />
       <ModalComponent open={open} handleClose={handleClose}>
-        <NewProduct handleClose={handleClose} />
+        <ProductDataComponent handleClose={handleClose} />
       </ModalComponent>
     </>
   );

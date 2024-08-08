@@ -58,11 +58,11 @@ export const deleteProduct = createAsyncThunk(
 
 export const patchProduct = createAsyncThunk(
     'products/patchProducts',
-    async ({ productData, userId, currentTime, gender, category, subcategory }, { dispatch, rejectWithValue }) => {
+    async (productData, { dispatch, rejectWithValue }) => {
         try {
             const base64Image = productData.images.length ? await convertImageToBase64(productData.images) : [];
             const response = await axios.patch(`${url}/${productData.id}`, {
-                ...productData, images: base64Image, user_id: userId, currentTime, gender, category: category, subcategory
+                ...productData, images: base64Image
             });
             dispatch(addNotification("Product patch successful"))
             return response.data;
