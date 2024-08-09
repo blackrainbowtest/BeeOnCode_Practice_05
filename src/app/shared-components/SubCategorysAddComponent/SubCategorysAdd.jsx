@@ -36,7 +36,6 @@ function SubCategorysAdd({ close }) {
 
   const handleActionPopup = () => {
     if (subCategoryName.trim()) {
-      console.log();
       dispatch(
         addSubCategory({ name: subCategoryName, parent: categoryItem.id })
       );

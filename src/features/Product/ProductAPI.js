@@ -22,7 +22,6 @@ export const getProducts = createAsyncThunk(
     }
 );
 
-// FIXME: add post and patch API later
 export const addProduct = createAsyncThunk(
     'products/addProducts',
     async (productData, { dispatch, rejectWithValue }) => {

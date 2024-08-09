@@ -8,7 +8,6 @@ export const logoutUser = createAsyncThunk(
   'user/logoutUser',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      // FIXME: used json-server and logout just cleanup authToken
       dispatch(addNotification("Logout success."))
       return true;
     // eslint-disable-next-line no-unreachable

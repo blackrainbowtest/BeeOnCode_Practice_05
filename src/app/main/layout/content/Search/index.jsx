@@ -1,5 +1,7 @@
 import { IconButton, Input, InputAdornment } from "@mui/material";
+import { setArticle } from "features/Filter/FilterSlice";
 import { memo, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 const InputComponent = styled(Input)`
@@ -24,16 +26,18 @@ const InputIconButton = styled(IconButton)`
   background: ${(props) => props.theme.palette.background.button}!important;
   color: ${(props) => props.theme.palette.common.white}!important;
   & svg {
-      width: 50px;
-      height: 27px;
-    }
+    width: 50px;
+    height: 27px;
+  }
 `;
 
 function Search() {
   const [searchText, setSearchText] = useState("");
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setSearchText(event.target.value);
+    dispatch(setArticle(event.target.value));
   };
 
   const handleMouseDownSearching = (event) => {
@@ -42,7 +46,8 @@ function Search() {
 
   const handleClickSearching = (event) => {
     // FIXME: Unknown searching logic, what fields are searched, how and where the results are displayed.
-    console.log("Start searching");
+    dispatch(setArticle(searchText));
+    console.log(searchText);
   };
 
   return (
@@ -50,7 +55,7 @@ function Search() {
       value={searchText}
       onChange={handleChange}
       endAdornment={
-        <InputAdornment position="end">
+        <InputAdornment position='end'>
           <InputIconButton
             size='small'
             aria-label='toggle password visibility'

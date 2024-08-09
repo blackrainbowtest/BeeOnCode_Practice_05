@@ -1,14 +1,14 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { removeError, removeNotification } from "features/global/GlobalSlice";
 
-// FIXME: add refs for height calculation
 function NotificationManager() {
   const [snackbars, setSnackbars] = useState([]);
   const errors = useSelector((state) => state?.global?.errors);
   const notifications = useSelector((state) => state?.global?.notifications);
   const dispatch = useDispatch();
+  const snackbarRefs = useRef([]);
 
   useEffect(() => {
     // Combine errors and notifications with time stamps
@@ -43,15 +43,28 @@ function NotificationManager() {
     }
   };
 
+  useEffect(() => {
+    // Measure heights of snackbars
+    snackbarRefs.current = snackbarRefs.current.slice(0, snackbars.length);
+    snackbars.forEach((_, index) => {
+      if (snackbarRefs.current[index]) {
+        const height = snackbarRefs.current[index].clientHeight;
+        snackbarRefs.current[index].style.bottom = `${
+          10 + index * (height + 10)
+        }px`;
+      }
+    });
+  }, [snackbars]);
+
   return snackbars.map((snackbar, index) => (
     <Snackbar
-      key={`${snackbar.timestamp}-${index}`} // Use timestamp as a unique key
+      key={`${snackbar.timestamp}-${index}`}
       open={true}
       autoHideDuration={6000}
       onClose={handleClose(snackbar)}
+      ref={(el) => (snackbarRefs.current[index] = el)}
       style={{
         position: "fixed",
-        bottom: 10 + index * 70, // Adjust the bottom offset for each notification
         right: "10px",
         width: "auto",
         maxWidth: "300px",

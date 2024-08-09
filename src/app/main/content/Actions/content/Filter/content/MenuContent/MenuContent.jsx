@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 // import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import styled, { css } from "styled-components";
@@ -11,27 +11,30 @@ import {
   changeFilter,
   resetFilter,
   setFiltredData,
+  setValue,
+  setWeight,
+  setCarat,
+  setPrice,
+  setprodPrice,
 } from "features/Filter/FilterSlice";
 import SliderComponent from "app/shared-components/SliderComponent";
 
 function MenuContent({ isopen }) {
-  const filterData = useSelector((state) => state?.filter);
+  const { isFilter, value, weight, carat, price, prodPrice, article } =
+    useSelector((state) => state?.filter);
   const productData = useSelector((state) => state?.product);
 
-  const [value, setValue] = useState([null, null]);
-  const [weight, setWeight] = useState([0, 1000]);
-  const [carat, setCarat] = useState([0, 1000]);
-  const [price, setPrice] = useState([0, 100000]);
-  const [prodPrice, setprodPrice] = useState([0, 100000]);
   const dispatch = useDispatch();
 
   const handleFilterButtonClick = useCallback(() => {
-    if (filterData.isFilter) {
+    if (isFilter) {
       dispatch(resetFilter());
     } else {
       dispatch(changeFilter(true));
+
       const tempData = productData.data.filter((elm) => {
-        const currentTime = elm.currentTime;
+        const currentArticle = elm.article;
+        const currentTime = elm.currentTime * 1000;
         const currentWeight = elm.golds.reduce(
           (sum, stone) => sum + stone.weight,
           0
@@ -46,9 +49,11 @@ function MenuContent({ isopen }) {
         const isAfterValue = value[0]
           ? currentTime >= value[0].valueOf()
           : true;
-        const isBeforeValue2 = value[1]
+        const isBeforeValue = value[1]
           ? currentTime <= value[1].valueOf()
           : true;
+
+        const isArticle = article !== "" ? currentArticle.toLowerCase().includes(article.toLowerCase()) : true;
 
         const isAfterWeight = weight[0] ? currentWeight >= weight[0] : true;
         const isBeforeWeight = weight[1] ? currentWeight <= weight[1] : true;
@@ -68,8 +73,9 @@ function MenuContent({ isopen }) {
           : true;
 
         return (
+          isArticle &&
           isAfterValue &&
-          isBeforeValue2 &&
+          isBeforeValue &&
           isAfterWeight &&
           isBeforeWeight &&
           isAfterCarat &&
@@ -80,18 +86,30 @@ function MenuContent({ isopen }) {
           isBeforeProdPrice
         );
       });
+
       dispatch(setFiltredData(tempData));
     }
-  }, [
-    carat,
-    dispatch,
-    filterData.isFilter,
-    price,
-    prodPrice,
-    productData.data,
-    value,
-    weight,
-  ]);
+  }, [article, carat, dispatch, isFilter, price, prodPrice, productData.data, value, weight]);
+
+  const changeValue = (data) => {
+    dispatch(setValue(data));
+  };
+
+  const changeWeight = (data) => {
+    dispatch(setWeight(data));
+  };
+
+  const changeCarat = (data) => {
+    dispatch(setCarat(data));
+  };
+
+  const changePrice = (data) => {
+    dispatch(setPrice(data));
+  };
+
+  const changeProdPrice = (data) => {
+    dispatch(setprodPrice(data));
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -101,19 +119,19 @@ function MenuContent({ isopen }) {
             <DatePickerItem
               label='From'
               value={value[0]}
-              onChange={(newValue) => setValue((prev) => [newValue, prev[1]])}
+              onChange={(newValue) => changeValue([newValue, value[1]])}
             />
             <DatePickerItem
               label='To'
               value={value[1]}
-              onChange={(newValue) => setValue((prev) => [prev[0], newValue])}
+              onChange={(newValue) => changeValue([value[0], newValue])}
             />
           </DatePickerContainer>
         </LocalizationProvider>
 
         <SliderComponent
           value={weight}
-          setValue={setWeight}
+          setValue={changeWeight}
           min={0}
           max={1000}
           adornment='gr'
@@ -121,28 +139,28 @@ function MenuContent({ isopen }) {
         />
         <SliderComponent
           value={carat}
-          setValue={setCarat}
+          setValue={changeCarat}
           min={0}
           max={1000}
           title='Carat'
         />
         <SliderComponent
           value={price}
-          setValue={setPrice}
+          setValue={changePrice}
           min={0}
           max={100000}
           title='Price'
         />
         <SliderComponent
           value={prodPrice}
-          setValue={setprodPrice}
+          setValue={changeProdPrice}
           min={0}
           max={100000}
           title='Production price'
         />
 
         <ActionButtonComponent
-          label={`${filterData.isFilter ? "Clear" : "Add"}`}
+          label={`${isFilter ? "Clear" : "Add"}`}
           customStyles={ActionButtonStyle}
           callback={handleFilterButtonClick}
         />

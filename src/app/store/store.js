@@ -17,9 +17,6 @@ export const store = configureStore({
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: ['product/addNewImage'],
-                ignoredPaths: ['product.newData.images'],
-            },
+            serializableCheck: false,
         }),
 });

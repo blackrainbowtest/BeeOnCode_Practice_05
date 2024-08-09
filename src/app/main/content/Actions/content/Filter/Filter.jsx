@@ -16,8 +16,9 @@ function FilterProduct() {
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+  
   const handleClick = useCallback(() => {
-    // FIXME: Additional verification can be added if necessary.
+    // NOTE: Additional verification can be added if necessary.
   }, []);
 
   return (
