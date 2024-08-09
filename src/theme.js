@@ -51,6 +51,7 @@ export const theme = {
       gold1: '#999999',
       gold2: '#C5A956',
       gold3: '#9A7D7D',
+      gray: "#4F4F4F",
     },
     shadow: {
       default: '0px 4px 8px rgb(0 0 0 / 0.1)',

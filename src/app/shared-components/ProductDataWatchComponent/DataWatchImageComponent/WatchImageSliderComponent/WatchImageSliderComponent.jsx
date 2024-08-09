@@ -1,11 +1,9 @@
 import { Box, Button } from "@mui/material";
-import { memo, useState } from "react";
+import { memo } from "react";
 import styled from "styled-components";
 import { decodeBase64ToImage } from "utils/image";
 
-function WatchImageSliderComponent({ images }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+function WatchImageSliderComponent({ images, currentIndex, setCurrentIndex }) {
   const prevImg = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
@@ -18,7 +16,6 @@ function WatchImageSliderComponent({ images }) {
     );
   };
 
-  console.log(images);
   return (
     <MainContainer>
       <ButtonContainer onClick={prevImg}>{"<"}</ButtonContainer>

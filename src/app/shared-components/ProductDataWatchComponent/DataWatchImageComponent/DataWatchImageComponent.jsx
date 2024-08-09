@@ -6,13 +6,12 @@ import WatchImageSliderComponent from "./WatchImageSliderComponent";
 import WatchSmallImagesComponent from "./WatchSmallImagesComponent";
 
 function DataWatchImageComponent({ data }) {
-  const [images, setImages] = useState(data.images);
-  console.log(data);
-  console.log(images);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
   return (
     <MainContainer>
-      <WatchImageSliderComponent images={images} />
-      <WatchSmallImagesComponent sx={{ flexGrow: 1 }} />
+      <WatchImageSliderComponent images={data.images} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+      <WatchSmallImagesComponent sx={{ flexGrow: 1 }} images={data.images} currentIndex={currentIndex} />
       <WatchActionComponent canSell={!!data.id} />
     </MainContainer>
   );
