@@ -27,7 +27,7 @@ export const addSubCategory = createAsyncThunk(
     async (subCategory, { dispatch, rejectWithValue }) => {
         try {
             const response = await axios.post(url, { ...subCategory });
-            dispatch(addNotification("Sub category add successful"))
+            dispatch(addNotification("Sub category add successful"));
             return response.data;
         } catch (err) {
             dispatch(addError(err.message));

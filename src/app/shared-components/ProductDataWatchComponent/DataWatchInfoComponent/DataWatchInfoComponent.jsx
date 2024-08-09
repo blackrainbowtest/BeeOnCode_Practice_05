@@ -12,7 +12,7 @@ function DataWatchInfoComponent({ data }) {
 
   return (
     <MainContainer>
-      <WatchCategoryComponent category={data.category} subCateogry={data.subCategory} />
+      <WatchCategoryComponent categoryID={data.category} subCateogryID={data.subcategory} />
       <WatchShortInfoComponent
         article={data.article}
         price={data.price.price}

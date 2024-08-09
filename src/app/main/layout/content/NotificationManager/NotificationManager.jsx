@@ -3,6 +3,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { removeError, removeNotification } from "features/global/GlobalSlice";
 
+// FIXME: add refs for height calculation
 function NotificationManager() {
   const [snackbars, setSnackbars] = useState([]);
   const errors = useSelector((state) => state?.global?.errors);

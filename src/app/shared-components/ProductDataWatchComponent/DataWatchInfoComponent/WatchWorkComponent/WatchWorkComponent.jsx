@@ -33,8 +33,10 @@ function WatchWorkComponent({ works }) {
         <Table
           sx={{
             minWidth: 390,
-            border: "1px solid #ccc",
-            "&& td, && th": { border: "1px solid #ccc!important", padding: "5px" },
+            "&& td, && th": {
+              border: "1px solid #ccc!important",
+              padding: "5px",
+            },
           }}
           aria-label='simple table'
         >
@@ -54,10 +56,19 @@ function WatchWorkComponent({ works }) {
               >
                 <TableCell align='center'>{row.name}</TableCell>
                 <TableCell align='center'>{row.count}</TableCell>
-                <TableCell align='center'>{row.price}</TableCell>
-                <TableCell align='center'>{row.amount}</TableCell>
+                <TableCell align='center'>{row.price} $</TableCell>
+                <TableCell align='center'>{row.amount} $</TableCell>
               </TableRow>
             ))}
+            <TableRow sx={{ border: 0 }}>
+              <TableCell
+                align='center'
+                colSpan={3}
+              ></TableCell>
+              <TableCell align='center'>
+                Total: {Number(works.reduce((total, row) => total + row.amount, 0))} $
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

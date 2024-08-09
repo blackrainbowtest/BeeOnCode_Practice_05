@@ -20,7 +20,7 @@ function ProductDataWatchComponent({ handleClose, currentFormData }) {
         }
       />
       <ContentContainer sx={{ flexGrow: 1 }}>
-        <DataWatchImageComponent images={currentFormData.images}/>
+        <DataWatchImageComponent data={currentFormData}/>
         <DataWatchInfoComponent data={currentFormData} />
       </ContentContainer>
     </MainContainer>

@@ -1,16 +1,19 @@
 import { Box } from "@mui/material";
-import { memo } from "react";
+import { memo, useState } from "react";
 import styled from "styled-components";
 import WatchActionComponent from "./WatchActionComponent";
 import WatchImageSliderComponent from "./WatchImageSliderComponent";
 import WatchSmallImagesComponent from "./WatchSmallImagesComponent";
 
-function DataWatchImageComponent() {
+function DataWatchImageComponent({ data }) {
+  const [images, setImages] = useState(data.images);
+  console.log(data);
+  console.log(images);
   return (
     <MainContainer>
-      <WatchImageSliderComponent />
-      <WatchSmallImagesComponent />
-      <WatchActionComponent />
+      <WatchImageSliderComponent images={images} />
+      <WatchSmallImagesComponent sx={{ flexGrow: 1 }} />
+      <WatchActionComponent canSell={!!data.id} />
     </MainContainer>
   );
 }

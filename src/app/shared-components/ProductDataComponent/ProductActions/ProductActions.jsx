@@ -20,9 +20,8 @@ function ProductActions({ props }) {
   currentFormData = {
     ...currentFormData,
     gender: currentFormData.gender ?? gender,
-    selectedCategory: currentFormData.selectedCategory ?? selectedCategory,
-    selectedSubCategory:
-      currentFormData.selectedSubCategory ?? selectedSubCategory,
+    category: currentFormData.selectedCategory ?? selectedCategory,
+    subcategory: currentFormData.selectedSubCategory ?? selectedSubCategory,
   };
 
   return (

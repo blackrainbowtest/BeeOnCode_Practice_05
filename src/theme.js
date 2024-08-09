@@ -45,6 +45,7 @@ export const theme = {
       gold1: '#CCCCCC',
       gold2: '#E9D07A',
       gold3: '#EDC8C8',
+      green: "#007227",
     },
     border: {
       gold1: '#999999',
