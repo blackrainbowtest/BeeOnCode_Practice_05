@@ -1,7 +1,12 @@
 import { IconButton, Input, InputAdornment } from "@mui/material";
-import { setArticle } from "features/Filter/FilterSlice";
+import {
+  changeFilter,
+  resetFilter,
+  setArticle,
+  setFiltredData,
+} from "features/Filter/FilterSlice";
 import { memo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 const InputComponent = styled(Input)`
@@ -34,10 +39,18 @@ const InputIconButton = styled(IconButton)`
 function Search() {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
+  const productData = useSelector((state) => state?.product);
+  const { value, weight, carat, price, prodPrice, article } = useSelector(
+    (state) => state?.filter
+  );
 
   const handleChange = (event) => {
     setSearchText(event.target.value);
     dispatch(setArticle(event.target.value));
+    if (event.target.value === "") {
+      dispatch(changeFilter(false));
+      dispatch(resetFilter());
+    }
   };
 
   const handleMouseDownSearching = (event) => {
@@ -45,9 +58,64 @@ function Search() {
   };
 
   const handleClickSearching = (event) => {
-    // FIXME: Unknown searching logic, what fields are searched, how and where the results are displayed.
     dispatch(setArticle(searchText));
-    console.log(searchText);
+    dispatch(changeFilter(true));
+
+    const tempData = productData.data.filter((elm) => {
+      const currentArticle = elm.article;
+      const currentTime = elm.currentTime * 1000;
+      const currentWeight = elm.golds.reduce(
+        (sum, stone) => sum + stone.weight,
+        0
+      );
+      const currentCarat = elm.stones.reduce(
+        (sum, stone) => sum + stone.weight,
+        0
+      );
+      const currentPrice = elm.price.price;
+      const currentProdPrice = elm.price.productionPrice;
+
+      const isAfterValue = value[0] ? currentTime >= value[0].valueOf() : true;
+      const isBeforeValue = value[1] ? currentTime <= value[1].valueOf() : true;
+
+      const isArticle =
+        article !== ""
+          ? currentArticle.toLowerCase().includes(article.toLowerCase())
+          : true;
+
+      const isAfterWeight = weight[0] ? currentWeight >= weight[0] : true;
+      const isBeforeWeight = weight[1] ? currentWeight <= weight[1] : true;
+
+      const isAfterCarat = carat[0] ? currentCarat >= carat[0] : true;
+      const isBeforeCarat = carat[1] ? currentCarat <= carat[1] : true;
+
+      const isAfterPrice = price[0] ? currentPrice >= price[0] : true;
+      const isBeforePrice = price[1] ? currentPrice <= price[1] : true;
+
+      const isAfterProdPrice = prodPrice[0]
+        ? currentProdPrice >= prodPrice[0]
+        : true;
+
+      const isBeforeProdPrice = prodPrice[1]
+        ? currentProdPrice <= prodPrice[1]
+        : true;
+
+      return (
+        isArticle &&
+        isAfterValue &&
+        isBeforeValue &&
+        isAfterWeight &&
+        isBeforeWeight &&
+        isAfterCarat &&
+        isBeforeCarat &&
+        isAfterPrice &&
+        isBeforePrice &&
+        isAfterProdPrice &&
+        isBeforeProdPrice
+      );
+    });
+
+    dispatch(setFiltredData(tempData));
   };
 
   return (
